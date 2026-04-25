@@ -1,0 +1,32 @@
+{
+  "name": "foodie",
+  "version": "1.0.0",
+  "description": "## A MERN app that allows the user to search for different meals or recipes, add ingredients into a grocery list and more!",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js",
+    "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
+    "install": "cd server && npm i && cd ../client && npm i",
+    "build": "cd client && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/momaki9/Foodie.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/momaki9/Foodie/issues"
+  },
+  "homepage": "https://github.com/momaki9/Foodie#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "apollo-server-express": "^3.13.0",
+    "express": "^5.2.1",
+    "graphql": "^16.13.2"
+  }
+}
