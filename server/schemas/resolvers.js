@@ -42,10 +42,11 @@ const resolvers = {
 
             return { token, user };
         },
-        addRecipe: async (parent, { title, description }) => {
+        addRecipe: async (parent, { title, description, ingredients }) => {
+
             if (context.user) {
-                const recipe = new Recipe( { title, description });
-                await User.findByIdAndUpdate(context.user._id, {
+                const recipe = new Recipe( { title, description, ingredients });
+                await User.findByIdAndUpdate("69ed670f5255c9a244042091", {
                     $push: { createdRecipes: recipe }
                 });
                 return recipe;

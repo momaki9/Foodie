@@ -17,6 +17,7 @@ const typeDefs = gql`
         _id: ID
         title: String!
         description: String!
+        ingredients: [Ingredient]
         image: String
         link: String
         rating: Int
@@ -26,6 +27,20 @@ const typeDefs = gql`
         _id: ID
         items: [String]!
         title: String
+    }
+    
+    type Ingredient {
+        _id: ID
+        name: String!
+        amount: Float
+        unit: String
+    }
+
+    input recipeIngredients {
+        _id: ID
+        name: String!
+        amount: Float
+        unit: String
     }
 
     type Auth {
@@ -40,7 +55,7 @@ const typeDefs = gql`
     type Mutation {
         login(username: String!, password: String!): Auth
         signup(username: String!, email: String!, password: String!): Auth
-        addRecipe(title: String!, description: String!, image: String, link: String, rating: Int): Recipe
+        addRecipe(title: String!, description: String!, ingredients: [recipeIngredients]!, image: String, link: String, rating: Int): Recipe
         makeList(items: [String]!): GroceryList
     }
 `;
