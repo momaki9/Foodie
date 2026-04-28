@@ -10,7 +10,7 @@ const resolvers = {
                     {
                         _id: context.user._id
                     }
-                    // TODO: what does the line below do/mean?
+                    // excludes the password
                 ).select('-__v -password');
                 return user;
             }
@@ -18,9 +18,9 @@ const resolvers = {
         }
     },
     Mutation: {
-        signup: async (parent, args) => {
+        signup: async (parent, { username, email, password }) => {
 
-            const user = await User.create(args);
+            const user = await User.create({ username, email, password });
             const token = signToken(user);
 
             return { token, user };

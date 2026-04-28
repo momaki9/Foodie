@@ -7,6 +7,7 @@ const typeDefs = gql`
         _id: ID
         username: String!
         email: String!
+        password: String!
         recipeCount: Int
         savedRecipes: [Recipe]
         createdRecipes: [Recipe]
