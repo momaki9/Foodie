@@ -15,6 +15,9 @@ const resolvers = {
             return user;
             // }
             // throw new AuthenticationError("You need to be logged in");
+        },
+        users: async () => {
+            return User.find();
         }
     },
     Mutation: {
