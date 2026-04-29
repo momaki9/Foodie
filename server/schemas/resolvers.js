@@ -1,20 +1,20 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { User, Recipe } = require("../models");
+const { User } = require("../models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
     Query: {
         me: async (parent, args, context) => {
-            if (context.user) {
-                const user = await User.findOne(
-                    {
-                        _id: context.user._id
-                    }
-                    // excludes the password
-                ).select('-__v -password');
-                return user;
-            }
-            throw new AuthenticationError("You need to be logged in");
+            // if (context.user) {
+            const user = await User.findOne(
+                {
+                    _id: "69f18a118a0f2f485c2ec5da"
+                }
+                // excludes the password
+            ).select('-__v -password');
+            return user;
+            // }
+            // throw new AuthenticationError("You need to be logged in");
         }
     },
     Mutation: {
@@ -26,7 +26,7 @@ const resolvers = {
             return { token, user };
         },
         login: async (parent, { username, password }) => {
-            const user = await User.findOne( { username });
+            const user = await User.findOne({ username });
 
             if (!user) {
                 throw new AuthenticationError("Check your login info!");
@@ -42,21 +42,34 @@ const resolvers = {
 
             return { token, user };
         },
-        addRecipe: async (parent, { title, description, ingredients }) => {
+        addRecipe: async (parent, { recipeData }, context) => {
 
-            if (context.user) {
-                const recipe = new Recipe( { title, description, ingredients });
-                await User.findByIdAndUpdate("69ed670f5255c9a244042091", {
-                    $push: { createdRecipes: recipe }
-                });
-                return recipe;
-            }
-            throw new AuthenticationError("You must be logged in first")
+            // if (context.user) {
+            // const recipe = new Recipe({ title, description, ingredients });
+            const updatedUser = await User.findByIdAndUpdate(
+                { _id: "69f18a118a0f2f485c2ec5da" },
+                { $push: { createdRecipes: recipeData } },
+                { new: true }
+            );
+            console.log(updatedUser)
+            return updatedUser;
+            // }
+            // throw new AuthenticationError("You must be logged in first")
         },
-        // TODO: figure out how to do the mutation below (if needed)
-        // makeList: async () => {
+        // TODO: remove id and replace with context.user._id
+        createGroceryList: async (parent, { listData }, context) => {
 
-        // }
+            // if (context.user) {
+            const updatedUser = await User.findByIdAndUpdate(
+                { _id: "69f18a118a0f2f485c2ec5da" },
+                { $push: { groceryLists: listData } },
+                { new: true }
+            );
+            console.log(updatedUser)
+            return updatedUser;
+            // }
+            // throw new AuthenticationError("Log in first")
+        }
     }
 }
 

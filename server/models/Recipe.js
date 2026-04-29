@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
+const ingredientSchema = require("./Ingredient");
 
-const ingredientSchema = require("./Ingredient")
 const recipeSchema = new Schema(
     {
         title: {
@@ -24,6 +24,4 @@ const recipeSchema = new Schema(
     }
 );
 
-const Recipe = model("Recipe", recipeSchema)
-
-module.exports = Recipe;
+module.exports = recipeSchema;

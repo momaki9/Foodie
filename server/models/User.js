@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require("bcrypt");
 
-const Recipe = require('./Recipe');
+const recipeSchema = require('./Recipe');
 const groceryListSchema = require("./GroceryList");
 
 const userSchema = new Schema(
@@ -29,12 +29,7 @@ const userSchema = new Schema(
                 ref: 'Recipe'
             }
         ],
-        createdRecipes: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Recipe'
-            }
-        ],
+        createdRecipes: [recipeSchema],
         groceryLists: [groceryListSchema]
     },
     {
