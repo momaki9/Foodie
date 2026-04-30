@@ -16,6 +16,9 @@ const resolvers = {
         },
         users: async () => {
             return User.find();
+        },
+        allRecipes: async () => {
+            return Recipe.find();
         }
     },
     Mutation: {
@@ -54,6 +57,9 @@ const resolvers = {
                 return recipe;
             }
             throw new AuthenticationError("You must be logged in first");
+        },
+        updateRecipe: async (parent, args, context) => {
+            return await Recipe.findByIdAndUpdate(args._id, args, { new: true })
         },
         // TODO: remove id and replace with context.user._id
         createGroceryList: async (parent, { listData }, context) => {
