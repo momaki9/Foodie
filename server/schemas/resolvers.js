@@ -59,7 +59,10 @@ const resolvers = {
             throw new AuthenticationError("You must be logged in first");
         },
         updateRecipe: async (parent, args, context) => {
-            return await Recipe.findByIdAndUpdate(args._id, args, { new: true })
+            if (context.user) {
+                return await Recipe.findByIdAndUpdate(args._id, args, { new: true });
+            }
+            throw new AuthenticationError("Log in first!");
         },
         // TODO: remove id and replace with context.user._id
         createGroceryList: async (parent, { listData }, context) => {
