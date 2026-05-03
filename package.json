@@ -22,11 +22,11 @@
   },
   "homepage": "https://github.com/momaki9/Foodie#readme",
   "devDependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^5.1.0"
   },
   "dependencies": {
-    "apollo-server-express": "^3.13.0",
-    "express": "^5.2.1",
-    "graphql": "^16.13.2"
+    "apollo-server-express": "^2.25.3",
+    "express": "^4.17.2",
+    "graphql": "^15.8.0"
   }
 }

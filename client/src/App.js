@@ -7,8 +7,10 @@ import {
   createHttpLink
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import NavComp from "./components/Nav";
+import Login from "./pages/Login";
 
-const httpLink = createHttpLink({ uri: '/graphql'});
+const httpLink = createHttpLink({ uri: '/graphql' });
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("id_token");
@@ -29,7 +31,13 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <p>test</p>
+        <NavComp />
+        <Routes>
+          <Route
+            path="/login"
+            element={<Login />}
+          />
+        </Routes>
       </Router>
     </ApolloProvider>
   );
