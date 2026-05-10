@@ -2,34 +2,39 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import React, { useState } from 'react';
+import IngredientRow from '../components/IngredientForm';
 
 function AddRecipePage() {
 
-  const ingredientField = (
-    <>
-      <Form.Group as={Col} controlId="formGridName">
-        <Form.Label>Ingredient Name</Form.Label>
-        <Form.Control />
-      </Form.Group>
-      <Form.Group as={Col} controlId="formGridAmount">
-        <Form.Label>Amount</Form.Label>
-        <Form.Control />
-      </Form.Group>
+  const [ingredientForm, setIngredientForm] = useState([{ id: crypto.randomUUID(), ingredientName: "", amount: 0, unit: "" }]);
 
-      <Form.Group as={Col} controlId="formGridUnit">
-        <Form.Label>Unit</Form.Label>
-        <Form.Control as="select" defaultValue="Choose...">
-          <option>Choose...</option>
-          <option>Cup</option>
-          <option>Tsp</option>
-          <option>Tbs</option>
-          <option>Oz</option>
-        </Form.Control>
-      </Form.Group>
-    </>
-  );
+  const addRow = () => {
+    setIngredientForm((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        ingredientName: "",
+        amount: 0,
+        unit: ""
+      }
+    ]);
+  };
 
-  const [ingredientForm, setIngredientForm] = useState([ingredientField]);
+  const deleteRow = (id) => {
+    setIngredientForm((prev) =>
+      prev.filter((row) => row.id !== id)
+    );
+  };
+
+  const updateRow = (id, field, value) => {
+    setIngredientForm((prev) =>
+      prev.map((row) =>
+        row.id === id
+          ? { ...row, [field]: value }
+          : row
+      )
+    );
+  };
 
   return (
     <Form>
@@ -44,14 +49,15 @@ function AddRecipePage() {
         <Form.Label>Description</Form.Label>
         <Form.Control placeholder="Describe your recipe..." />
       </Form.Group>
-      {ingredientForm.map((item, i) => (
-        <Form.Row key={i}>
-          {item}
-          {/* <Button value={i} onClick={(e) => console.log(e.target.value)}>Delete row</Button> */}
-        </Form.Row>
-        
+      {ingredientForm.map((row) => (
+        <IngredientRow
+          key={row.id}
+          row={row}
+          deleteRow={deleteRow}
+          updateRow={updateRow}
+        />
       ))}
-      <Button onClick={() => setIngredientForm((prev) => prev.concat([ingredientField]))}>Add Row</Button>
+      <Button type='button' onClick={addRow}>Add Row</Button>
       <Form.Group controlId="formGridImage">
         <Form.Label>Image</Form.Label>
         <Form.Control placeholder="Provide a link to an image" />
@@ -70,3 +76,44 @@ function AddRecipePage() {
 }
 
 export default AddRecipePage;
+
+// function AddRecipePage() {
+//   const [ingredientForm, setIngredientForm] = useState([
+//     {
+//       id: crypto.randomUUID(),
+//       ingredientName: "",
+//       amount: 0,
+//       unit: ""
+//     }
+//   ]);
+
+//   const addRow = () => {
+//     setIngredientForm((prev) => [
+//       ...prev,
+//       {
+//         id: crypto.randomUUID(),
+//         ingredientName: "",
+//         amount: 0,
+//         unit: ""
+//       }
+//     ]);
+//   };
+
+//   const deleteRow = (id) => {
+//     setIngredientForm((prev) =>
+//       prev.filter((row) => row.id !== id)
+//     );
+//   };
+
+
+
+//   return (
+//     <Form>
+//
+
+//       <Button type="button" onClick={addRow}>
+//         Add Row
+//       </Button>
+//     </Form>
+//   );
+// }
