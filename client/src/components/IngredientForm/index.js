@@ -2,6 +2,7 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
+import "../../index.css";
 
 function IngredientRow({ row, updateRow, deleteRow }) {
   return (
@@ -9,9 +10,9 @@ function IngredientRow({ row, updateRow, deleteRow }) {
       <Form.Group as={Col}>
         <Form.Label>Ingredient Name</Form.Label>
         <Form.Control
-          value={row.ingredientName}
+          value={row.name}
           onChange={(e) =>
-            updateRow(row.id, "ingredientName", e.target.value)
+            updateRow(row.id, "name", e.target.value)
           }
         />
       </Form.Group>
@@ -45,10 +46,11 @@ function IngredientRow({ row, updateRow, deleteRow }) {
       </Form.Group>
 
       <Button
+        id="remove-btn"
         type="button"
         onClick={() => deleteRow(row.id)}
       >
-        Remove
+        X
       </Button>
     </Form.Row>
   );

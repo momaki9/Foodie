@@ -11,3 +11,13 @@ export const LOGIN_USER = gql`
         }
     }
 `;
+
+export const ADD_RECIPE = gql`
+    mutation addRecipe($recipeData: RecipeInput!) {
+        addRecipe(recipeData: $recipeData) {
+            _id
+            title
+            description
+        }
+    }
+`;

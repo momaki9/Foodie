@@ -1,0 +1,13 @@
+.nav-link {
+    padding: 12px;
+}
+
+#remove-btn {
+   background-color: brown;
+}
+
+.form-el {
+    width: 90%;
+    align-items: center;
+    margin-left: 3%;
+}

@@ -2,54 +2,54 @@ import React from "react";
 import Auth from "../../utils/auth";
 import Nav from 'react-bootstrap/Nav';
 import { Link } from "react-router-dom";
-
+import '../../index.css';
 
 function NavComp() {
 
     function showNavigation() {
         if (Auth.loggedIn()) {
             return (
-                <Nav className="justify-content-center" activeKey="/">
+                <>
                     <Nav.Item>
-                        <Link to="/">Home</Link>
+                        <Link className="nav-link" to="/">Home</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link to="/explore">Explore</Link>
+                        <Link className="nav-link" to="/explore">Explore</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link to="/add">Add Recipes</Link>
+                        <Link className="nav-link" to="/add">Add Recipes</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link to="/list">Grocery List</Link>
+                        <Link className="nav-link" to="/list">Grocery List</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link to="#">Logout</Link>
+                        <Link className="nav-link" to="#">Logout</Link>
                     </Nav.Item>
-                </Nav>
+                </>
             )
         } else {
             return (
-                <Nav className="justify-content-center" activeKey="/">
+                <>
                     <Nav.Item>
-                        <Nav.Link href="/">Home</Nav.Link>
+                        <Link className="nav-link" href="/">Home</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link href="#">Explore</Nav.Link>
+                        <Link className="nav-link" href="#">Explore</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link href="/login">Login</Nav.Link>
+                        <Link className="nav-link" href="/login">Login</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link href="#">Signup</Nav.Link>
+                        <Link className="nav-link" href="#">Signup</Link>
                     </Nav.Item>
-                </Nav>
+                </>
             )
         }
     }
     return (
-        <>
+        <Nav className="justify-content-center" activeKey="/">
             {showNavigation()}
-        </>
+        </Nav>
     )
 }
 
