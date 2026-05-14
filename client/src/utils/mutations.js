@@ -21,3 +21,15 @@ export const ADD_RECIPE = gql`
         }
     }
 `;
+
+export const SIGN_UP = gql`
+    mutation signup($username: String!, $email: String!, $password: String!) {
+        signup(username: $username, email: $email, password: $password) {
+            token
+            user {
+                _id
+                username
+            }
+        }
+    }
+`;

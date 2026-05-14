@@ -15,7 +15,7 @@ function NavComp() {
                         <Link className="nav-link" to="/">Home</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link className="nav-link" to="/explore">Explore</Link>
+                        <Link className="nav-link" to="#">Explore</Link>
                     </Nav.Item>
                     <Nav.Item>
                         <Link className="nav-link" to="/add">Add Recipes</Link>
@@ -41,7 +41,7 @@ function NavComp() {
                         <Link className="nav-link" to="/login">Login</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link className="nav-link" to="#">Signup</Link>
+                        <Link className="nav-link" to="/signup">Signup</Link>
                     </Nav.Item>
                 </>
             )

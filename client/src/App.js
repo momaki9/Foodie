@@ -15,6 +15,7 @@ import AddRecipePage from "./pages/AddRecipe";
 import GroceryListPage from "./pages/GroceryList";
 import ExplorePage from "./pages/Explore";
 import HomePage from "./pages/Home";
+import SignupPage from "./pages/Signup";
 
 // React bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -45,6 +46,10 @@ function App() {
           <Route
             path="/"
             element={<HomePage />} 
+          />
+          <Route 
+            path="/signup"
+            element={<SignupPage />}
           />
           <Route
             path="/login"
