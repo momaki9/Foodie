@@ -7,7 +7,7 @@ const resolvers = {
         me: async (parent, args, context) => {
             // if (context.user) {
             const user = await User.findOne(
-                { _id: "69f29b2615f4bcd1d08137e7" }
+                { _id: context.user._id }
                 // excludes the password
             ).select('-__v -password').populate("createdRecipes");
             return user;

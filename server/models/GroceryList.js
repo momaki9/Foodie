@@ -4,8 +4,14 @@ const groceryListSchema = new Schema(
     {
         items: [
             {
-                type: String,
-                required: true
+                value: {
+                    type: String,
+                    required: true
+                },
+                checked: {
+                    type: Boolean,
+                    default: false
+                }
             }
         ],
         title: {

@@ -3,11 +3,72 @@
 }
 
 #remove-btn {
-   background-color: brown;
+    background-color: brown;
 }
 
 .form-el {
     width: 90%;
     align-items: center;
     margin-left: 3%;
+}
+
+.circle-wrapper {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle {
+    position: relative;
+    top: 9px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #999;
+    transition: all 0.2s ease;
+}
+
+.circle.checked {
+    background-color: rgb(13, 104, 13);
+    border-color: rgb(13, 104, 13);
+    position: relative;
+}
+
+.circle.checked::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#grocery-input {
+    border: none;
+    border-bottom: 1px solid #e5e5e5;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+}
+
+#grocery-input:focus {
+    border-bottom: 1px solid #0d6efd;
+    box-shadow: none;
+    outline: none;
+}
+
+.add-btn {
+    display: flex;
+}
+
+.add-btn > button {
+    padding: 1%;
+    margin-bottom: 1%;
 }

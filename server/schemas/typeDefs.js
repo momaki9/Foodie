@@ -24,9 +24,14 @@ const typeDefs = gql`
         rating: Int
     }
 
+    type GroceryItem {
+        value: String!
+        checked: Boolean
+    }
+
     type GroceryList {
         _id: ID
-        items: [String]!
+        items: [GroceryItem]!
         title: String
     }
     
@@ -59,8 +64,13 @@ const typeDefs = gql`
         rating: Int
     }
 
+    input GroceryItemInput {
+        value: String!
+        checked: Boolean
+    }
+
     input GroceryInput {
-        items: [String]!
+        items: [GroceryItemInput]!
         title: String
     }
 
