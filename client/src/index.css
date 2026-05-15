@@ -72,3 +72,12 @@
     padding: 1%;
     margin-bottom: 1%;
 }
+
+.form-control {
+    border-radius: 12px;
+    padding: 12px 14px;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}

@@ -1,6 +1,6 @@
 const ExplorePage = () => {
     return (
-        <h1>Explore</h1>
+        <h1 className="text-center mb-4">Coming soon...</h1>
     )
 }
 

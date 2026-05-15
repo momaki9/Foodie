@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
   ApolloClient,
@@ -19,6 +19,7 @@ import SignupPage from "./pages/Signup";
 
 // React bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Auth from "./utils/auth";
 
 const httpLink = createHttpLink({ uri: '/graphql' });
 
@@ -38,10 +39,13 @@ const client = new ApolloClient({
 });
 
 function App() {
+
+  const [loggedIn, setLoggedIn] = useState(Auth.loggedIn())
+
   return (
     <ApolloProvider client={client}>
       <Router>
-        <NavComp />
+        <NavComp loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
         <Routes>
           <Route
             path="/"
@@ -49,11 +53,11 @@ function App() {
           />
           <Route 
             path="/signup"
-            element={<SignupPage />}
+            element={<SignupPage setLoggedIn={setLoggedIn} />}
           />
           <Route
             path="/login"
-            element={<Login />}
+            element={<Login setLoggedIn={setLoggedIn} />}
           />
           <Route 
             path="/add"

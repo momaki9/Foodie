@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import "../../index.css";
+import { FaTrash } from "react-icons/fa";
 
 function IngredientRow({ row, updateRow, deleteRow }) {
   return (
@@ -46,11 +47,11 @@ function IngredientRow({ row, updateRow, deleteRow }) {
       </Form.Group>
 
       <Button
-        id="remove-btn"
-        type="button"
+        className="p-0 text-danger"
+        variant="link"
         onClick={() => deleteRow(row.id)}
       >
-        X
+        <FaTrash />
       </Button>
     </Form.Row>
   );

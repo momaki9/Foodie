@@ -4,7 +4,7 @@ import { QUERY_ME } from "../utils/queries";
 
 const HomePage = () => {
 
-    const { loading, data } = useQuery(QUERY_ME);
+    const { loading, data } = useQuery(QUERY_ME, { fetchPolicy: "cache-and-network"});
     const user = data?.me;
 
     if (loading) {
@@ -14,11 +14,11 @@ const HomePage = () => {
     return (
         <section>
             {user ? (
-                <h1>Welcome, {user.username}!</h1>
+                <h1 className="text-center mb-4">Welcome, {user.username}!</h1>
             ) : (
-                <h1>Welcome!</h1>
+                <h1 className="text-center mb-4">Welcome!</h1>
             )}
-
+            <h2 className="text-center mb-4">Something cool coming here soon!</h2>
         </section>
     )
 }

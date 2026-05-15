@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { SIGN_UP } from '../utils/mutations';
 import Auth from '../utils/auth';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -11,12 +11,12 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 
-const SignupPage = () => {
+const SignupPage = ({setLoggedIn}) => {
     const [validated, setValidated] = useState(false);
-    const [formState, setFormState] = useState({ username: "", email: "", password: ""});
+    const [formState, setFormState] = useState({ username: "", email: "", password: "" });
     const [signup, { error, data }] = useMutation(SIGN_UP);
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -25,7 +25,7 @@ const SignupPage = () => {
             [name]: value
         });
     };
-    
+
 
     const handleSubmit = async (event) => {
 
@@ -44,20 +44,24 @@ const SignupPage = () => {
 
         try {
             const { data } = await signup({
-                variables: {...formState}
+                variables: { ...formState }
             });
+
             Auth.login(data.signup.token);
+
+            setFormState({
+                username: "",
+                password: "",
+                email: ""
+            });
+
+            setValidated(false);
+            setLoggedIn(true);
+            navigate("/", { replace: true });
 
         } catch (err) {
             console.error(err)
         }
-
-        setFormState({
-            username: "",
-            password: "",
-            email: ""
-        });
-        setValidated(false);
     }
 
     return (

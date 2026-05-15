@@ -3,19 +3,28 @@ import Auth from "../../utils/auth";
 import Nav from 'react-bootstrap/Nav';
 import { Link } from "react-router-dom";
 import '../../index.css';
+import { useApolloClient } from '@apollo/client';
 
-function NavComp() {
+function NavComp( {loggedIn, setLoggedIn}) {
+
+    const client = useApolloClient();
+
+    const handleLogout = () => {
+        Auth.logout();
+        setLoggedIn(false);
+        client.resetStore();
+    }
 
     function showNavigation() {
-        console.log(Auth.loggedIn())
-        if (Auth.loggedIn()) {
+
+        if (loggedIn) {
             return (
                 <>
                     <Nav.Item>
                         <Link className="nav-link" to="/">Home</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link className="nav-link" to="#">Explore</Link>
+                        <Link className="nav-link" to="/explore">Explore</Link>
                     </Nav.Item>
                     <Nav.Item>
                         <Link className="nav-link" to="/add">Add Recipes</Link>
@@ -24,7 +33,7 @@ function NavComp() {
                         <Link className="nav-link" to="/list">Grocery List</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link className="nav-link" onClick={() => Auth.logout()}>Logout</Link>
+                        <Link className="nav-link" onClick={handleLogout}>Logout</Link>
                     </Nav.Item>
                 </>
             )
@@ -35,7 +44,7 @@ function NavComp() {
                         <Link className="nav-link" to="/">Home</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link className="nav-link" to="#">Explore</Link>
+                        <Link className="nav-link" to="/explore">Explore</Link>
                     </Nav.Item>
                     <Nav.Item>
                         <Link className="nav-link" to="/login">Login</Link>

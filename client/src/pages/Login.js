@@ -1,15 +1,18 @@
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
+import { useNavigate } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-function Login() {
+function Login({ setLoggedIn }) {
 
-    const [formState, setFormState ] = useState({ username: '', password: ''});
-    const [login, { error, data} ] = useMutation(LOGIN_USER);
+    const navigate = useNavigate();
+
+    const [formState, setFormState] = useState({ username: '', password: '' });
+    const [login, { error, data }] = useMutation(LOGIN_USER);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -21,18 +24,21 @@ function Login() {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        console.log(formState);
+
         try {
             const { data } = await login({
                 variables: { ...formState }
             });
             Auth.login(data.login.token);
+            setLoggedIn(true);
+            navigate('/');
         } catch (err) {
             console.error(err);
         }
-        
+
         setFormState({
-            email: '', password: ''
+            username: '',
+            password: ''
         });
     }
 
@@ -53,6 +59,11 @@ function Login() {
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
+                {error && (
+                    <p className='text-danger mt-2'>
+                        Login failed. Please try again.
+                    </p>
+                )}
             </Form>
         </div>
     );
