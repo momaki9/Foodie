@@ -12,7 +12,6 @@ function NavComp( {loggedIn, setLoggedIn}) {
     const handleLogout = () => {
         Auth.logout();
         setLoggedIn(false);
-        client.resetStore();
     }
 
     function showNavigation() {

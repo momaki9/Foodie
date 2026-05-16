@@ -17,7 +17,10 @@ export const ADD_RECIPE = gql`
         addRecipe(recipeData: $recipeData) {
             _id
             title
-            description
+            summary
+            instructions
+            image
+            link
         }
     }
 `;

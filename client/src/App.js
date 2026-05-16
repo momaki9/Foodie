@@ -49,7 +49,7 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<HomePage />} 
+            element={<HomePage loggedIn={loggedIn}/>} 
           />
           <Route 
             path="/signup"
