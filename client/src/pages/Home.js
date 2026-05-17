@@ -2,11 +2,10 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import { QUERY_ME } from "../utils/queries";
 
-const HomePage = ({loggedIn}) => {
+const HomePage = ({ loggedIn }) => {
 
     const { loading, data } = useQuery(QUERY_ME);
     const user = data?.me;
-    console.log(user)
     if (loading) {
         return <h1>Loading...</h1>
     }
