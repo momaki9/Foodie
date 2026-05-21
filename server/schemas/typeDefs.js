@@ -1,7 +1,5 @@
 const { gql } = require("apollo-server-express");
 
-// TODO: do I need input types?
-
 const typeDefs = gql`
     type User {
         _id: ID
@@ -9,7 +7,7 @@ const typeDefs = gql`
         email: String!
         password: String!
         recipeCount: Int
-        savedRecipes: [Recipe]
+        savedRecipes: [SavedRecipe]
         createdRecipes: [Recipe]
         groceryLists: [GroceryList]
     }
@@ -34,6 +32,21 @@ const typeDefs = gql`
         _id: ID
         items: [GroceryItem]!
         title: String
+    }
+
+    type SavedRecipe {
+        sourceId: String!
+        title: String!
+        image: String
+        source: String!
+        savedAt: String
+    }
+
+    input SavedRecipeInput {
+        sourceId: String!
+        title: String!
+        image: String
+        source: String!
     }
     
     type Ingredient {
@@ -91,6 +104,7 @@ const typeDefs = gql`
         login(username: String!, password: String!): Auth
         signup(username: String!, email: String!, password: String!): Auth
         addRecipe(recipeData: RecipeInput!): Recipe
+        saveRecipe(savedRecipeData: SavedRecipeInput!): User
         updateRecipe(_id: ID!, title: String, description: String, ingredients: [IngredientData], image: String, link: String, rating: Int): Recipe
         createGroceryList(listData: GroceryInput!): User
     }

@@ -26,13 +26,13 @@ function NavComp( {loggedIn, setLoggedIn}) {
                         <Link className="nav-link" to="/explore">Explore</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link className="nav-link" to="/add">Add Recipes</Link>
+                        <Link className="nav-link" to="/add">Add Recipe</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link className="nav-link" to="/list">Grocery List</Link>
+                        <Link className="nav-link" to="/list">Make Grocery List</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link className="nav-link" onClick={handleLogout}>Logout</Link>
+                        <Link className="nav-link" onClick={handleLogout}>LOGOUT</Link>
                     </Nav.Item>
                 </>
             )

@@ -5,7 +5,8 @@ const recipeSchema = new Schema(
     {
         title: {
             type: String,
-            required: true
+            required: true,
+            trim: true
         },
         summary: {
             type: String,
@@ -23,8 +24,17 @@ const recipeSchema = new Schema(
             type: String
         },
         rating: {
-            type: Number
+            type: Number,
+            default: 0
+        },
+        author: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true
         }
+    },
+    {
+        timestamps: true
     }
 );
 

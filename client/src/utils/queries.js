@@ -5,6 +5,12 @@ export const QUERY_ME = gql`
     me {
         _id
         username
+        savedRecipes {
+          sourceId
+          title
+          image
+          source
+        }
     }
   }  
 `;

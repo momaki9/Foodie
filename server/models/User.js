@@ -1,8 +1,8 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require("bcrypt");
 
-const Recipe = require('./Recipe');
 const groceryListSchema = require("./GroceryList");
+const SavedRecipeSchema = require("./SavedRecipe")
 
 const userSchema = new Schema(
     {
@@ -23,12 +23,7 @@ const userSchema = new Schema(
             required: true,
             minlength: 5
         },
-        savedRecipes: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Recipe'
-            }
-        ],
+        savedRecipes: [SavedRecipeSchema],
         createdRecipes: [
             {
                 type: Schema.Types.ObjectId,
@@ -40,7 +35,8 @@ const userSchema = new Schema(
     {
         toJSON: {
             virtuals: true
-        }
+        },
+        timestamps: true
     }
 );
 
@@ -49,11 +45,10 @@ userSchema.pre('save', async function (next) {
         if (this.isNew || this.isModified('password')) {
             const saltRounds = 10;
             this.password = await bcrypt.hash(this.password, saltRounds);
-            console.log(this)
         }
-        // next();
+        next();
     } catch (err) {
-        console.error(err)
+        next(err);
     }
 });
 

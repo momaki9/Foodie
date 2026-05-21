@@ -5,14 +5,12 @@ const { signToken } = require("../utils/auth");
 const resolvers = {
     Query: {
         me: async (parent, args, context) => {
-            // if (context.user) {
-            const user = await User.findOne(
-                { _id: context.user._id }
-                // excludes the password
-            ).select('-__v -password').populate("createdRecipes");
-            return user;
-            // }
-            // throw new AuthenticationError("You need to be logged in");
+            if (context.user) {
+                const user = await User.findById(context.user._id)
+                    .select('-__v -password').populate("createdRecipes");
+                return user;
+            }
+            throw new AuthenticationError("You need to be logged in");
         },
         users: async () => {
             return User.find();
@@ -48,7 +46,10 @@ const resolvers = {
         },
         addRecipe: async (parent, { recipeData }, context) => {
             if (context.user) {
-                const recipe = await Recipe.create(recipeData);
+                const recipe = await Recipe.create({
+                    ...recipeData,
+                    author: context.user._id
+                });
                 await User.findOneAndUpdate(
                     { _id: context.user._id },
                     { $addToSet: { createdRecipes: recipe._id } }
@@ -59,23 +60,47 @@ const resolvers = {
             throw new AuthenticationError("You must be logged in first");
         },
         updateRecipe: async (parent, args, context) => {
-            if (context.user) {
-                return await Recipe.findByIdAndUpdate(args._id, args, { new: true });
-            }
-            throw new AuthenticationError("Log in first!");
+            if (!context.user) {
+                throw new AuthenticationError("You must be logged in to update a recipe.")
+            };
+
+            const recipe = await Recipe.findById(args._id);
+
+            if (!recipe.author.equals(context.user._id)) {
+                throw new AuthenticationError("You can only edit your own recipes.")
+            };
+
+            return Recipe.findByIdAndUpdate(
+                args._id,
+                args,
+                { new: true, runValidators: true }
+            )
         },
-        // TODO: remove id and replace with context.user._id
+
         createGroceryList: async (parent, { listData }, context) => {
             if (context.user) {
                 const updatedUser = await User.findByIdAndUpdate(
-                    { _id: context.user._id },
+                    context.user._id,
                     { $push: { groceryLists: listData } },
                     { new: true }
                 );
-                console.log(updatedUser)
                 return updatedUser;
             }
-            throw new AuthenticationError("Log in first")
+            throw new AuthenticationError("Login first")
+        },
+        saveRecipe: async (parent, { savedRecipeData }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findByIdAndUpdate(
+                    context.user._id,
+                    { $addToSet: { savedRecipes: savedRecipeData } },
+                    {
+                        new: true,
+                        runValidators: true
+                    }
+                );
+                return updatedUser;
+            }
+            throw new AuthenticationError("Login first!");
         }
     }
 }

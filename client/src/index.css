@@ -93,6 +93,11 @@
     cursor: pointer;
 }
 
+.recipe-link {
+    text-decoration: none;
+    color: inherit;
+}
+
 .recipe-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 28px rgba(0,0,0,0.12);
@@ -128,4 +133,17 @@
 
 .leaf-icon {
     color: #52b788;
+}
+
+.recipe-details-card {
+    max-width: 800px;
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.recipe-page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
 }
