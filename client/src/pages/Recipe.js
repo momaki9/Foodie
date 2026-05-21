@@ -112,12 +112,9 @@ const RecipePage = () => {
                         </Button>
                         <Button
                             variant="outline-danger"
+                            disabled={!Auth.loggedIn()}
                             className="rounded-pill"
                             onClick={() => {
-                                if (!Auth.loggedIn()) {
-                                    navigate("/login");
-                                    return;
-                                }
                                 handleSaveRecipe();
                             }}
                         >
