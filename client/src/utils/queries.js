@@ -14,3 +14,17 @@ export const QUERY_ME = gql`
     }
   }  
 `;
+
+export const GET_RECIPES = gql`
+  query getRecipes {
+    getRecipes {
+      id
+      title
+      image
+      instructions
+      sourceName
+      spoonacularScore
+      aggregateLikes
+    }
+  }
+`;

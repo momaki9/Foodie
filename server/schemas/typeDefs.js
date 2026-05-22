@@ -94,9 +94,22 @@ const typeDefs = gql`
         user: User
     }
 
+    type SpoonacularRecipe {
+        id: ID
+        title: String
+        image: String
+        sourceName: String
+        instructions: String
+        spoonacularScore: Float
+        aggregateLikes: Int
+    }
+
     type Query {
         me: User
         users: [User]!
+        getRecipeById: SpoonacularRecipe
+        getRecipes: [SpoonacularRecipe]
+        searchRecipes: [SpoonacularRecipe]
         allRecipes: [Recipe]!
     }
 

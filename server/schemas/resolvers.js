@@ -1,6 +1,7 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Recipe } = require("../models");
 const { signToken } = require("../utils/auth");
+const fetch = require("node-fetch");
 
 const resolvers = {
     Query: {
@@ -14,6 +15,39 @@ const resolvers = {
         },
         users: async () => {
             return User.find();
+        },
+        getRecipeById: async (parent, { id }) => {
+            const url = `https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.SPOON_API_KEY}`;
+             try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data;
+            } catch (err) {
+                console.error(err);
+                throw new Error("Failed to find the recipe.")
+            }
+        },
+        getRecipes: async () => {
+            const url = `https://api.spoonacular.com/recipes/complexSearch?sort=healthiness&number=100&apiKey=${process.env.SPOON_API_KEY}&addRecipeInformation=true`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.results;
+            } catch (err) {
+                console.error(err);
+                throw new Error("Failed to find recipes!")
+            }
+        },
+        searchRecipes: async (parent, {term}) => {
+            const url = `https://api.spoonacular.com/recipes/complexSearch?query=${term}&apiKey=${process.env.SPOON_API_KEY}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.results;
+            } catch (err) {
+                console.error(err);
+                throw new Error("Failed to find recipes!")
+            }
         },
         allRecipes: async () => {
             return Recipe.find();

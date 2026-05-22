@@ -1,36 +1,31 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import RecipeCard from "../components/RecipeCard";
 import { useInView } from 'react-intersection-observer';
+import { useQuery } from "@apollo/client";
+import { GET_RECIPES } from "../utils/queries";
 
 const ExplorePage = () => {
 
-  const [ recipes, setRecipes ] = useState([]);
-
-  const getRecipes = async () => {
-    let recipesURL = `https://api.spoonacular.com/recipes/complexSearch?sort=healthiness&number=100&apiKey=${process.env.REACT_APP_SPOON_API_KEY}&addRecipeInformation=true`;
-    try {
-      const response = await fetch(recipesURL);
-      const data = await response.json();
-      setRecipes(data.results);
-    } catch (err) {
-      console.error(err)
-    }
-
-  };
-
-  useEffect(() => {
-    getRecipes();
-  }, [])
-
   const [visibleCount, setVisibleCount] = useState(25);
   const { ref, inView } = useInView();
+  const { loading, data, error } = useQuery(GET_RECIPES);
+  // const [recipes, setRecipes] = useState([]);
+
+  const recipes = data?.getRecipes || [];
 
   useEffect(() => {
     if (inView && visibleCount < recipes.length) {
       setVisibleCount((prev) => prev + 25)
     }
-  }, [inView, recipes.length, visibleCount]);
+  }, [inView, visibleCount, recipes.length]);
 
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (error) {
+    return <h1>Something went wrong!</h1>;
+  }
 
   return (
     <section>
