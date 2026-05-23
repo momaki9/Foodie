@@ -21,6 +21,7 @@ const typeDefs = gql`
         image: String
         link: String
         rating: Int
+        author: User
     }
 
     type GroceryItem {
@@ -52,6 +53,13 @@ const typeDefs = gql`
     type Ingredient {
         _id: ID
         name: String!
+        amount: Float
+        unit: String
+    }
+
+    type SpoonIngredient {
+        id: ID
+        name: String
         amount: Float
         unit: String
     }
@@ -102,15 +110,22 @@ const typeDefs = gql`
         instructions: String
         spoonacularScore: Float
         aggregateLikes: Int
+        servings: Int
+        readyInMinutes: Int
+        cookingMinutes: Int
+        summary: String
+        extendedIngredients: [SpoonIngredient]
+        spoonacularSourceUrl: String
     }
 
     type Query {
         me: User
         users: [User]!
-        getRecipeById: SpoonacularRecipe
+        getRecipeById(id: Int!): SpoonacularRecipe
         getRecipes: [SpoonacularRecipe]
-        searchRecipes: [SpoonacularRecipe]
+        searchRecipes(term: String!): [SpoonacularRecipe]
         allRecipes: [Recipe]!
+        myGroceryLists: [GroceryList]
     }
 
     type Mutation {

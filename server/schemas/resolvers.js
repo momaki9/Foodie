@@ -18,7 +18,7 @@ const resolvers = {
         },
         getRecipeById: async (parent, { id }) => {
             const url = `https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.SPOON_API_KEY}`;
-             try {
+            try {
                 const response = await fetch(url);
                 const data = await response.json();
                 return data;
@@ -27,6 +27,7 @@ const resolvers = {
                 throw new Error("Failed to find the recipe.")
             }
         },
+        // gets recipes from spoonacular
         getRecipes: async () => {
             const url = `https://api.spoonacular.com/recipes/complexSearch?sort=healthiness&number=100&apiKey=${process.env.SPOON_API_KEY}&addRecipeInformation=true`;
             try {
@@ -38,7 +39,7 @@ const resolvers = {
                 throw new Error("Failed to find recipes!")
             }
         },
-        searchRecipes: async (parent, {term}) => {
+        searchRecipes: async (parent, { term }) => {
             const url = `https://api.spoonacular.com/recipes/complexSearch?query=${term}&apiKey=${process.env.SPOON_API_KEY}`;
             try {
                 const response = await fetch(url);
@@ -51,6 +52,13 @@ const resolvers = {
         },
         allRecipes: async () => {
             return Recipe.find();
+        },
+        myGroceryLists: async (parent, args, context) => {
+            if (context.user) {
+                const user = await User.findById(context.user._id);
+                return user.groceryLists;
+            }
+            throw new AuthenticationError("You must be logged in first");
         }
     },
     Mutation: {

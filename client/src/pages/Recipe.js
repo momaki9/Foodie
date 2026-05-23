@@ -4,15 +4,18 @@ import RecipeDetails from "../components/Recipe";
 import Button from 'react-bootstrap/Button';
 import { FaArrowLeft, FaShoppingCart, FaHeart } from "react-icons/fa";
 import { useQuery, useMutation } from "@apollo/client";
+
 import { SAVE_RECIPE } from "../utils/mutations";
-import { QUERY_ME } from "../utils/queries";
+import { QUERY_ME, GET_RECIPE_BY_ID } from "../utils/queries";
 import Auth from "../utils/auth";
 import "../index.css";
 
 const RecipePage = () => {
+    const { id } = useParams();
+    const { loading, data: recipeData, error } = useQuery(GET_RECIPE_BY_ID, {
+        variables: { id: parseInt(id) }
+    });
 
-    const [recipe, setRecipe] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [saveRecipe] = useMutation(SAVE_RECIPE);
     const { data } = useQuery(QUERY_ME, {
         skip: !Auth.loggedIn()
@@ -20,30 +23,9 @@ const RecipePage = () => {
 
     const [saved, setSaved] = useState(false);
 
-    const { id } = useParams();
     const navigate = useNavigate();
     const user = data?.me;
-
-    console.log(user)
-
-    const getRecipe = async () => {
-        let recipeURL = `https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.REACT_APP_SPOON_API_KEY}`;
-
-        try {
-            const response = await fetch(recipeURL);
-            const data = await response.json();
-
-            setRecipe(data);
-        } catch (err) {
-            console.error(err)
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    useEffect(() => {
-        getRecipe();
-    }, [id]);
+    const recipe = recipeData?.getRecipeById;
 
     useEffect(() => {
         if (!user || !Auth.loggedIn()) return;

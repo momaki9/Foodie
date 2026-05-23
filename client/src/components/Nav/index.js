@@ -139,8 +139,8 @@ function NavComp({ loggedIn, setLoggedIn }) {
                                 id="profile-dropdown"
                                 alignRight
                             >
-                                <NavDropdown.Item as={Link} to="/profile">
-                                    My Profile
+                                <NavDropdown.Item as={Link} to="/my-list">
+                                    My Grocery Lists
                                 </NavDropdown.Item>
 
                                 <NavDropdown.Item as={Link} to="/saved">
