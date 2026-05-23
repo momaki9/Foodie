@@ -51,3 +51,12 @@ export const SAVE_RECIPE = gql`
         }
     }
 `;
+
+export const CREATE_GROCERY_LIST = gql`
+   mutation createGroceryList($listData: GroceryInput!) {
+    createGroceryList(listData: $listData) {
+        _id
+        username
+    }
+   } 
+`;

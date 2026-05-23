@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { CREATE_GROCERY_LIST } from "../utils/mutations";
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -21,6 +24,8 @@ const GroceryListPage = () => {
             ]
         }
     );
+    const [successMessage, setSuccessMessage] = useState("");
+    const [createGroceryList, { error }] = useMutation(CREATE_GROCERY_LIST);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -71,15 +76,29 @@ const GroceryListPage = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const groceryListData = {
             title: groceryList.title,
-            items: groceryList.items.map((item) => item.value.trim()).filter(Boolean)
+            items: groceryList.items
+                .filter((item) => item.value.trim())
+                .map((item) => ({
+                    value: item.value.trim(),
+                    checked: item.checked ?? false
+                }))
         };
 
         console.log(groceryListData);
+
+        try {
+            const { data } = await createGroceryList({
+                variables: { listData: groceryListData }
+            });
+            setSuccessMessage("Saved!");
+        } catch (err) {
+            console.error(err)
+        }
     };
 
     return (
@@ -136,6 +155,9 @@ const GroceryListPage = () => {
                         <Button type="submit" block>Save</Button>
                     </div>
                 </Form>
+                {successMessage && (
+                    <h4>{successMessage}</h4>
+                )}
             </Card>
         </Container>
     )
