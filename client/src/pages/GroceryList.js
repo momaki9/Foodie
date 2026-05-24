@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
+import { MY_GROCERY_LISTS, MY_ACTIVE_GROCERY_LIST } from "../utils/queries";
 import { CREATE_GROCERY_LIST } from "../utils/mutations";
 
 import Form from 'react-bootstrap/Form';
@@ -25,7 +26,10 @@ const GroceryListPage = () => {
         }
     );
     const [successMessage, setSuccessMessage] = useState("");
+    const { loading, data } = useQuery(MY_ACTIVE_GROCERY_LIST);
     const [createGroceryList, { error }] = useMutation(CREATE_GROCERY_LIST);
+
+    console.log(data)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -88,8 +92,6 @@ const GroceryListPage = () => {
                     checked: item.checked ?? false
                 }))
         };
-
-        console.log(groceryListData);
 
         try {
             const { data } = await createGroceryList({

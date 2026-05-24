@@ -56,7 +56,12 @@ export const CREATE_GROCERY_LIST = gql`
    mutation CreateGroceryList($listData: GroceryInput!) {
     createGroceryList(listData: $listData) {
         _id
-        username
+        title
+        items {
+            value
+            checked
+        }
+        status
     }
    } 
 `;

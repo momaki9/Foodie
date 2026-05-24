@@ -97,7 +97,6 @@ const typeDefs = gql`
     input GroceryInput {
         title: String
         items: [GroceryItemInput]!
-        status: String!
     }
 
     type Auth {

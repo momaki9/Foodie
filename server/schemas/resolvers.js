@@ -53,6 +53,7 @@ const resolvers = {
         allRecipes: async () => {
             return Recipe.find();
         },
+        // might need to add .populate("user") to the data if needed
         myGroceryLists: async (parent, args, context) => {
             if (context.user) {
                 const myGroceryLists = await GroceryList.find({
