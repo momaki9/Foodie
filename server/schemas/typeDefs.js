@@ -9,7 +9,6 @@ const typeDefs = gql`
         recipeCount: Int
         savedRecipes: [SavedRecipe]
         createdRecipes: [Recipe]
-        groceryLists: [GroceryList]
     }
     
     type Recipe {
@@ -31,8 +30,11 @@ const typeDefs = gql`
 
     type GroceryList {
         _id: ID
-        items: [GroceryItem]!
         title: String
+        items: [GroceryItem]!
+        status: String!
+        createdAt: String
+        user: User
     }
 
     type SavedRecipe {
@@ -93,8 +95,9 @@ const typeDefs = gql`
     }
 
     input GroceryInput {
-        items: [GroceryItemInput]!
         title: String
+        items: [GroceryItemInput]!
+        status: String!
     }
 
     type Auth {
@@ -125,7 +128,8 @@ const typeDefs = gql`
         getRecipes: [SpoonacularRecipe]
         searchRecipes(term: String!): [SpoonacularRecipe]
         allRecipes: [Recipe]!
-        myGroceryLists: [GroceryList]
+        myGroceryLists: [GroceryList]!
+        myActiveGroceryList: GroceryList
     }
 
     type Mutation {
@@ -134,7 +138,7 @@ const typeDefs = gql`
         addRecipe(recipeData: RecipeInput!): Recipe
         saveRecipe(savedRecipeData: SavedRecipeInput!): User
         updateRecipe(_id: ID!, title: String, description: String, ingredients: [IngredientData], image: String, link: String, rating: Int): Recipe
-        createGroceryList(listData: GroceryInput!): User
+        createGroceryList(listData: GroceryInput!): GroceryList
     }
 `;
 

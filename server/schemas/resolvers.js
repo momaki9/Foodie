@@ -1,5 +1,5 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { User, Recipe } = require("../models");
+const { User, Recipe, GroceryList } = require("../models");
 const { signToken } = require("../utils/auth");
 const fetch = require("node-fetch");
 
@@ -55,10 +55,21 @@ const resolvers = {
         },
         myGroceryLists: async (parent, args, context) => {
             if (context.user) {
-                const user = await User.findById(context.user._id);
-                return user.groceryLists;
+                const myGroceryLists = await GroceryList.find({
+                    user: context.user._id
+                }).sort({ createdAt: -1 });
+                return myGroceryLists;
             }
             throw new AuthenticationError("You must be logged in first");
+        },
+        myActiveGroceryList: async (parent, args, context) => {
+            if (context.user) {
+                return GroceryList.findOne({
+                    user: context.user._id,
+                    status: "active"
+                })
+            }
+            throw new AuthenticationError("Authentication error.");
         }
     },
     Mutation: {
@@ -118,15 +129,24 @@ const resolvers = {
                 { new: true, runValidators: true }
             )
         },
-
         createGroceryList: async (parent, { listData }, context) => {
             if (context.user) {
-                const updatedUser = await User.findByIdAndUpdate(
-                    context.user._id,
-                    { $push: { groceryLists: listData } },
-                    { new: true }
-                );
-                return updatedUser;
+                await GroceryList.updateMany(
+                    {
+                        user: context.user._id,
+                        status: "active"
+                    },
+                    {
+                        status: "inactive"
+                    }
+                )
+
+                const newGroceryList = await GroceryList.create({
+                    ...listData,
+                    status: "active",
+                    user: context.user._id
+                });
+                return newGroceryList;
             }
             throw new AuthenticationError("Login first")
         },

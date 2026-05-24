@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_ME = gql`
-  query me {
+  query Me {
     me {
         _id
         username
@@ -17,7 +17,7 @@ export const QUERY_ME = gql`
 
 // returns all user-created recipes
 export const ALL_RECIPES = gql`
-  query allRecipes {
+  query AllRecipes {
     allRecipes {
       _id
       title
@@ -42,7 +42,7 @@ export const ALL_RECIPES = gql`
 `;
 
 export const GET_RECIPE_BY_ID = gql`
-  query getRecipeById($id: Int!) {
+  query GetRecipeById($id: Int!) {
     getRecipeById(id: $id) {
       id
       title
@@ -66,7 +66,7 @@ export const GET_RECIPE_BY_ID = gql`
 `;
 // gets recipes from spoonacular
 export const GET_RECIPES = gql`
-  query getRecipes {
+  query GetRecipes {
     getRecipes {
       id
       title
@@ -80,7 +80,7 @@ export const GET_RECIPES = gql`
 `;
 // search for spoonacular recipes
 export const SEARCH_RECIPES = gql`
-  query searchRecipes($term: String!) {
+  query SearchRecipes($term: String!) {
     searchRecipes(term: $term) {
       id
       title
@@ -93,13 +93,31 @@ export const SEARCH_RECIPES = gql`
 `;
 
 export const MY_GROCERY_LISTS = gql`
-  query myGroceryLists {
+  query MyGroceryLists {
     myGroceryLists {
+      _id
       title
       items {
         value
         checked
       }
+      status
+      createdAt
+    }
+  }
+`;
+
+export const MY_ACTIVE_GROCERY_LIST = gql`
+  query MyActiveGroceryList {
+    myActiveGroceryList {
+      _id
+      title
+      items {
+        value
+        checked
+      }
+      status
+      createdAt  
     }
   }
 `;

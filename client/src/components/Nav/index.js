@@ -73,9 +73,9 @@ function NavComp({ loggedIn, setLoggedIn }) {
 
                         {loggedIn && (
                             <>
-                                <Nav.Link as={Link} to="/add">
+                                {/* <Nav.Link as={Link} to="/add">
                                     Add Recipe
-                                </Nav.Link>
+                                </Nav.Link> */}
 
                                 <Nav.Link as={Link} to="/list">
                                     Grocery List

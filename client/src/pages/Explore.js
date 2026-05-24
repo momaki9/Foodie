@@ -29,7 +29,7 @@ const ExplorePage = () => {
 
   return (
     <section>
-      <h1 className="text-center mb-4">Explore Page</h1>
+      <h1 className="text-center mb-4">Discover new Foodies</h1>
       {recipes.slice(0, visibleCount).map((recipe) => (
         <RecipeCard
           id={recipe.id}

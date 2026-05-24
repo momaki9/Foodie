@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const LOGIN_USER = gql`
-    mutation login($username: String!, $password: String!) {
+    mutation Login($username: String!, $password: String!) {
         login(username: $username, password: $password) {
             token
             user {
@@ -13,7 +13,7 @@ export const LOGIN_USER = gql`
 `;
 
 export const ADD_RECIPE = gql`
-    mutation addRecipe($recipeData: RecipeInput!) {
+    mutation AddRecipe($recipeData: RecipeInput!) {
         addRecipe(recipeData: $recipeData) {
             _id
             title
@@ -26,7 +26,7 @@ export const ADD_RECIPE = gql`
 `;
 
 export const SIGN_UP = gql`
-    mutation signup($username: String!, $email: String!, $password: String!) {
+    mutation Signup($username: String!, $email: String!, $password: String!) {
         signup(username: $username, email: $email, password: $password) {
             token
             user {
@@ -38,7 +38,7 @@ export const SIGN_UP = gql`
 `;
 
 export const SAVE_RECIPE = gql`
-    mutation saveRecipe($savedRecipeData: SavedRecipeInput!) {
+    mutation SaveRecipe($savedRecipeData: SavedRecipeInput!) {
         saveRecipe(savedRecipeData: $savedRecipeData) {
             username
             _id
@@ -53,7 +53,7 @@ export const SAVE_RECIPE = gql`
 `;
 
 export const CREATE_GROCERY_LIST = gql`
-   mutation createGroceryList($listData: GroceryInput!) {
+   mutation CreateGroceryList($listData: GroceryInput!) {
     createGroceryList(listData: $listData) {
         _id
         username

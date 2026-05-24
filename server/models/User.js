@@ -1,7 +1,6 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require("bcrypt");
 
-const groceryListSchema = require("./GroceryList");
 const SavedRecipeSchema = require("./SavedRecipe")
 
 const userSchema = new Schema(
@@ -29,8 +28,7 @@ const userSchema = new Schema(
                 type: Schema.Types.ObjectId,
                 ref: 'Recipe'
             }
-        ],
-        groceryLists: [groceryListSchema]
+        ]
     },
     {
         toJSON: {
