@@ -16,7 +16,6 @@ const SearchResults = () => {
     });
 
     const results = data?.searchRecipes;
-    console.log(results)
 
     if (loading) {
     return (

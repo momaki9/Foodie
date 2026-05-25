@@ -24,6 +24,7 @@ const typeDefs = gql`
     }
 
     type GroceryItem {
+        _id: ID
         value: String!
         checked: Boolean
     }
@@ -128,6 +129,7 @@ const typeDefs = gql`
         searchRecipes(term: String!): [SpoonacularRecipe]
         allRecipes: [Recipe]!
         myGroceryLists: [GroceryList]!
+        getGroceryList(id: ID!): GroceryList
         myActiveGroceryList: GroceryList
     }
 
@@ -138,6 +140,9 @@ const typeDefs = gql`
         saveRecipe(savedRecipeData: SavedRecipeInput!): User
         updateRecipe(_id: ID!, title: String, description: String, ingredients: [IngredientData], image: String, link: String, rating: Int): Recipe
         createGroceryList(listData: GroceryInput!): GroceryList
+        toggleGroceryItem(listId: ID!, itemId: ID!): GroceryList
+        addGroceryItem(listId: ID!, item: GroceryItemInput!): GroceryList
+        setActiveGroceryList(listId: ID!): GroceryList
     }
 `;
 
