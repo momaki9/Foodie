@@ -72,8 +72,6 @@ function AddRecipePage() {
       ingredients: ingredientForm.map(({ id, ...rest }) => rest)
     }
 
-    console.log(recipeData);
-
     try {
       const { data } = await addRecipe({
         variables: { recipeData }

@@ -71,6 +71,15 @@ const resolvers = {
                 })
             }
             throw new AuthenticationError("Authentication error.");
+        },
+        getGroceryList: async (parent, { id }, context) => {
+            if (context.user) {
+                return GroceryList.findOne({
+                    _id: id,
+                    user: context.user._id
+                });
+            }
+            throw new AuthenticationError("Log-in first!")
         }
     },
     Mutation: {
@@ -164,6 +173,79 @@ const resolvers = {
                 return updatedUser;
             }
             throw new AuthenticationError("Login first!");
+        },
+        toggleGroceryItem: async (parent, { listId, itemId }, context) => {
+            if (context.user) {
+                const groceryList = await GroceryList.findOne({
+                    _id: listId,
+                    user: context.user._id
+                });
+
+                if (!groceryList) {
+                    throw new Error("Grocery list not found!")
+                }
+
+                const item = groceryList.items.id(itemId);
+
+                if (!item) {
+                    throw new Error("Item not found!")
+                }
+
+                item.checked = !item.checked;
+
+                await groceryList.save();
+                return groceryList;
+            }
+            throw new AuthenticationError("Login first!")
+        },
+        addGroceryItem: async (parent, { listId, item }, context) => {
+            if (context.user) {
+                const groceryList = await GroceryList.findOne({
+                    _id: listId,
+                    user: context.user._id
+                });
+
+                if (!groceryList) {
+                    throw new Error("Couldn't find a grocery list.")
+                }
+
+                groceryList.items.push(item);
+
+                await groceryList.save();
+                return groceryList;
+            }
+            throw new AuthenticationError("Login first!")
+        },
+        setActiveGroceryList: async (parent, { listId }, context) => {
+            if (context.user) {
+                await GroceryList.updateMany(
+                    {
+                        user: context.user._id,
+                        status: "active"
+                    },
+                    {
+                        status: "inactive"
+                    }
+                );
+
+                const groceryList = await GroceryList.findOneAndUpdate(
+                    {
+                        _id: listId,
+                        user: context.user._id
+                    },
+                    {
+                        status: "active"
+                    },
+                    {
+                        new: true
+                    }
+                );
+                if (!groceryList) {
+                    throw new Error("Grocery list not found.")
+                }
+                return groceryList;
+            }
+            throw new AuthenticationError("You must be logged in to do this!")
         }
     }
 }

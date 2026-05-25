@@ -29,8 +29,6 @@ const GroceryListPage = () => {
     const { loading, data } = useQuery(MY_ACTIVE_GROCERY_LIST);
     const [createGroceryList, { error }] = useMutation(CREATE_GROCERY_LIST);
 
-    console.log(data)
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setGroceryList((prev) => ({

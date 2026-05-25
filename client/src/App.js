@@ -12,13 +12,17 @@ import { setContext } from '@apollo/client/link/context';
 import NavComp from "./components/Nav";
 import Login from "./pages/Login";
 import AddRecipePage from "./pages/AddRecipe";
-import GroceryListPage from "./pages/GroceryList";
+// import GroceryListPage from "./pages/GroceryList";
 import ExplorePage from "./pages/Explore";
 import HomePage from "./pages/Home";
 import SignupPage from "./pages/Signup";
 import RecipePage from "./pages/Recipe";
 import SearchResults from "./pages/Search";
 import MyGroceryListPage from "./pages/MyGroceryList";
+
+import GroceryListsRedirect from "./pages/GroceryListRedirect";
+import NewGroceryList from "./pages/NewGroceryList";
+import GroceryListPage from "./pages/GroceryListPage";
 
 // React bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -66,10 +70,10 @@ function App() {
             path="/add"
             element={<AddRecipePage />}
           />
-          <Route 
+          {/* <Route 
             path="/list"
             element={<GroceryListPage />}
-          />
+          /> */}
           <Route 
             path="/explore"
             element={<ExplorePage />}
@@ -83,8 +87,20 @@ function App() {
             element={<SearchResults />}
           />
           <Route 
-            path="/my-list"
+            path="/myList"
             element={<MyGroceryListPage />}
+          />
+          <Route 
+            path="/groceryList"
+            element={<GroceryListsRedirect />}
+          />
+          <Route 
+            path="/groceryList/new"
+            element={<NewGroceryList />}
+          />
+          <Route 
+            path="/groceryList/:id"
+            element={<GroceryListPage />}
           />
         </Routes>
       </Router>

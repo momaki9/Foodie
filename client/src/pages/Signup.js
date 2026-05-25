@@ -30,7 +30,6 @@ const SignupPage = ({setLoggedIn}) => {
     const handleSubmit = async (event) => {
 
         event.preventDefault();
-        console.log(formState);
 
         const form = event.currentTarget;
 

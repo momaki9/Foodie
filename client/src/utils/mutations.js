@@ -65,3 +65,39 @@ export const CREATE_GROCERY_LIST = gql`
     }
    } 
 `;
+
+export const TOGGLE_GROCERY_ITEM = gql`
+    mutation ToggleGroceryItem ($listId: ID!, $itemId: ID!) {
+        toggleGroceryItem (listId: $listId, itemId: $itemId) {
+            _id
+            items {
+                _id
+                value
+                checked
+            }
+        }
+    }
+`;
+
+export const ADD_GROCERY_ITEM = gql`
+    mutation AddGroceryItem($listId: ID!, $item: GroceryItemInput!) {
+        addGroceryItem(listId: $listId, item: $item) {
+            _id
+            items {
+                _id
+                value
+                checked
+            }
+        }
+    }
+`;
+
+export const SET_ACTIVE_GROCERY_LIST = gql`
+    mutation SetActiveGroceryList($listId: ID!) {
+        setActiveGroceryList(listId: $listId) {
+            _id
+            title
+            status
+        }
+    }
+`;

@@ -107,6 +107,22 @@ export const MY_GROCERY_LISTS = gql`
   }
 `;
 
+// getGroceryList
+export const GET_GROCERY_LIST = gql`
+  query GetGroceryList($id: ID!) {
+    getGroceryList(id: $id) {
+      _id
+      title
+      status
+      items {
+        _id
+        value
+        checked
+      }
+    }
+  }
+`;
+
 export const MY_ACTIVE_GROCERY_LIST = gql`
   query MyActiveGroceryList {
     myActiveGroceryList {
