@@ -246,6 +246,40 @@ const resolvers = {
                 return groceryList;
             }
             throw new AuthenticationError("You must be logged in to do this!")
+        },
+        deleteGroceryList: async (parent, { listId }, context) => {
+            if (context.user) {
+                // finds the grocery list with the given id (listId) of user
+                const groceryList = await GroceryList.findOne({
+                    _id: listId,
+                    user: context.user._id
+                });
+
+                if (!groceryList) {
+                    throw new Error("Not found!")
+                }
+                // returns true if the list is the active list
+                const wasActive = groceryList.status === "active";
+                // delete the same list
+                await GroceryList.findOneAndDelete({
+                    _id: listId,
+                    user: context.user._id
+                });
+                // if the deleted list was the active list:
+                if (wasActive) {
+                    // find the most recent list
+                    const nextActiveList = await GroceryList.findOne({
+                        user: context.user._id
+                    }).sort({ createdAt: -1 });
+                    // if there is a recent list, make it the active list
+                    if (nextActiveList) {
+                        nextActiveList.status = "active";
+                        await nextActiveList.save();
+                    }
+                }
+                return groceryList;
+            }
+            throw new AuthenticationError("Login needed!");
         }
     }
 }

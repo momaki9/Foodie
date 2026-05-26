@@ -101,3 +101,11 @@ export const SET_ACTIVE_GROCERY_LIST = gql`
         }
     }
 `;
+
+export const DELETE_GROCERY_LIST = gql`
+    mutation DeleteGroceryList($listId: ID!) {
+        deleteGroceryList(listId: $listId) {
+            title
+        }
+    }
+`;

@@ -143,6 +143,7 @@ const typeDefs = gql`
         toggleGroceryItem(listId: ID!, itemId: ID!): GroceryList
         addGroceryItem(listId: ID!, item: GroceryItemInput!): GroceryList
         setActiveGroceryList(listId: ID!): GroceryList
+        deleteGroceryList(listId: ID!): GroceryList
     }
 `;
 

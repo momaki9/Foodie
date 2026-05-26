@@ -2,8 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useMutation, useQuery } from "@apollo/client";
 import { MY_GROCERY_LISTS, GET_GROCERY_LIST } from "../utils/queries";
-import { TOGGLE_GROCERY_ITEM, ADD_GROCERY_ITEM, SET_ACTIVE_GROCERY_LIST } from "../utils/mutations";
-import { useParams } from "react-router-dom";
+import {
+    TOGGLE_GROCERY_ITEM,
+    ADD_GROCERY_ITEM,
+    SET_ACTIVE_GROCERY_LIST,
+    DELETE_GROCERY_LIST
+} from "../utils/mutations";
+import { useParams, useNavigate } from "react-router-dom";
 
 import GroceryListHeader from "../components/GroceryListHeader";
 import GroceryListEditor from "../components/GroceryListEditor";
@@ -27,9 +32,12 @@ const GroceryListPage = () => {
         }
     });
 
+    const navigate = useNavigate();
+
     const [toggleGroceryItem, { error: toggleError }] = useMutation(TOGGLE_GROCERY_ITEM);
     const [addGroceryItem, { error: addItemError }] = useMutation(ADD_GROCERY_ITEM);
     const [setActiveGroceryList] = useMutation(SET_ACTIVE_GROCERY_LIST);
+    const [deleteGroceryList] = useMutation(DELETE_GROCERY_LIST);
 
     const groceryLists = data?.myGroceryLists;
     const groceryList = groceryListData?.getGroceryList;
@@ -64,13 +72,8 @@ const GroceryListPage = () => {
                 checked: !item.checked
             }
         });
-        // updatedItems[index] = {
-        //     ...updatedItems[index],
-        //     checked: !updatedItems[index].checked
-        // }
 
         setItems(updatedItems);
-
         // apollo cache mutation
         try {
             await toggleGroceryItem({
@@ -109,7 +112,24 @@ const GroceryListPage = () => {
 
     const handleDeleteList = async (listId) => {
         console.log('delete', listId);
-        // TODO: use delete mutation that removes a grocery list from DM and add here
+        // TODO: use delete mutation that removes a grocery list from DB and add here
+        try {
+            await deleteGroceryList({
+                variables: {
+                    listId: listId
+                },
+                refetchQueries: [
+                    {
+                        query: MY_GROCERY_LISTS
+                    }
+                ]
+            });
+            
+            navigate("/groceryList")
+
+        } catch (err) {
+            console.error(err)
+        }
     };
 
     if (loading || groceryListLoading) {

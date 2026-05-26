@@ -12,20 +12,23 @@ import "../../index.css";
 const GroceryListHeader = ({
     title,
     setTitle,
-    onOpenSidebar
+    onOpenSidebar,
+    isNew
 }) => {
     return (
         <Row className="align-items-center mb-4">
-            <Col xs="auto">
-                <Button
-                    variant="light"
-                    className="border"
-                    onClick={onOpenSidebar}
-                >
-                    <ArrowLeft size={18} /> 
-                    All grocery lists
-                </Button>
-            </Col>
+            {!isNew && (
+                <Col xs="auto">
+                    <Button
+                        variant="light"
+                        className="border"
+                        onClick={onOpenSidebar}
+                    >
+                        <ArrowLeft size={18} />
+                        All grocery lists
+                    </Button>
+                </Col>
+            )}
             <Col>
                 <Form.Control
                     value={title}
@@ -40,7 +43,9 @@ const GroceryListHeader = ({
                     }}
                 />
             </Col>
-            <Col xs='auto'>
+
+            {!isNew && (
+                <Col xs='auto'>
                     <Button
                         as={Link}
                         to='/groceryList/new'
@@ -53,7 +58,9 @@ const GroceryListHeader = ({
                     >
                         <Plus size={22} />
                     </Button>
-            </Col>
+                </Col>
+            )}
+
         </Row>
     )
 };

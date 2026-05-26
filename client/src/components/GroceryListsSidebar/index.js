@@ -30,7 +30,14 @@ const GroceryListsSidebar = ({
                 </Modal.Title>
             </Modal.Header>
 
-            <Modal.Body className="p-0">
+            <Modal.Body 
+                className="p-0"
+                style={{
+                    maxHeight:'60vh',
+                    overflowY: 'auto',
+                    scrollBehavior: 'smooth'
+                }}
+            >
 
                 <ListGroup variant="flush">
                     {groceryLists?.map((list) => (
@@ -63,6 +70,7 @@ const GroceryListsSidebar = ({
                                     <Dropdown.Item
                                         as={Link}
                                         to={`/groceryList/${list._id}`}
+                                        onClick={handleClose}
                                     >
                                         View
                                     </Dropdown.Item>
