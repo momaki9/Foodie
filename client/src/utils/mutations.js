@@ -109,3 +109,17 @@ export const DELETE_GROCERY_LIST = gql`
         }
     }
 `;
+
+export const ADD_ITEMS_TO_GROCERY_LIST = gql`
+    mutation AddItemsToGroceryList($listId: ID!, $items: [GroceryItemInput]!) {
+        addItemsToGroceryList(listId: $listId, items: $items) {
+            _id
+            title
+            status
+            items {
+                value
+                checked
+            }
+        }
+    }
+`;

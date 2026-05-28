@@ -280,6 +280,37 @@ const resolvers = {
                 return groceryList;
             }
             throw new AuthenticationError("Login needed!");
+        },
+        addItemsToGroceryList: async (parent, { listId, items }, context) => {
+            if (context.user) {
+                const groceryList = await GroceryList.findOne({
+                    _id: listId,
+                    user: context.user._id
+                });
+
+                if (!groceryList) {
+                    throw new Error("List not found!")
+                };
+
+                const currentItems = groceryList.items.map((item) => item.value.trim().toLocaleLowerCase());
+                const newItems = items.map(item => ({
+                    value: item.value.trim(),
+                    checked: false
+                }))
+                    .filter(item => {
+                        const normalized = item.value.toLowerCase();
+                        return (
+                            normalized && !currentItems.includes(normalized)
+                        )
+                    });
+                groceryList.items.push(...newItems);
+
+                await groceryList.save();
+
+                return groceryList;
+
+            }
+            throw new AuthenticationError("Login to add items to your grocery list!")
         }
     }
 }
