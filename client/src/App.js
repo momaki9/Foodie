@@ -19,7 +19,7 @@ import SignupPage from "./pages/Signup";
 import RecipePage from "./pages/Recipe";
 import SearchResults from "./pages/Search";
 import MyGroceryListPage from "./pages/MyGroceryList";
-
+import SavedRecipesPage from "./pages/SavedRecipes";
 import GroceryListsRedirect from "./pages/GroceryListRedirect";
 import NewGroceryList from "./pages/NewGroceryList";
 import GroceryListPage from "./pages/GroceryListPage";
@@ -86,10 +86,10 @@ function App() {
             path="/search"
             element={<SearchResults />}
           />
-          <Route 
+          {/* <Route 
             path="/myList"
             element={<MyGroceryListPage />}
-          />
+          /> */}
           <Route 
             path="/groceryList"
             element={<GroceryListsRedirect />}
@@ -101,6 +101,10 @@ function App() {
           <Route 
             path="/groceryList/:id"
             element={<GroceryListPage />}
+          />
+          <Route 
+            path="/savedRecipes"
+            element={<SavedRecipesPage />}
           />
         </Routes>
       </Router>

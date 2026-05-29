@@ -139,11 +139,11 @@ function NavComp({ loggedIn, setLoggedIn }) {
                                 id="profile-dropdown"
                                 alignRight
                             >
-                                <NavDropdown.Item as={Link} to="/myList">
-                                    My Grocery Lists
+                                <NavDropdown.Item as={Link} to="#">
+                                    Create a Recipe
                                 </NavDropdown.Item>
 
-                                <NavDropdown.Item as={Link} to="/saved">
+                                <NavDropdown.Item as={Link} to="/savedRecipes">
                                     Saved Recipes
                                 </NavDropdown.Item>
 

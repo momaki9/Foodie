@@ -114,7 +114,7 @@
     margin-bottom: 0.25rem;
 }
 
-.recipe-author {
+.recipe-author, .recipe-source {
     color: #777;
     margin-bottom: 1rem;
 }
