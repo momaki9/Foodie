@@ -76,7 +76,7 @@ const typeDefs = gql`
 
     input IngredientData {
         name: String!
-        amount: Int
+        amount: Float
         unit: String
     }
 
@@ -138,6 +138,7 @@ const typeDefs = gql`
         signup(username: String!, email: String!, password: String!): Auth
         addRecipe(recipeData: RecipeInput!): Recipe
         saveRecipe(savedRecipeData: SavedRecipeInput!): User
+        removedSavedRecipe(sourceId: ID!): User
         updateRecipe(_id: ID!, title: String, description: String, ingredients: [IngredientData], image: String, link: String, rating: Int): Recipe
         createGroceryList(listData: GroceryInput!): GroceryList
         toggleGroceryItem(listId: ID!, itemId: ID!): GroceryList

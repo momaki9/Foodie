@@ -38,11 +38,15 @@ function IngredientRow({ row, updateRow, deleteRow }) {
             updateRow(row.id, "unit", e.target.value)
           }
         >
-          <option value="">Choose...</option>
+          <option>Choose...</option>
           <option>Cup</option>
-          <option>Tsp</option>
-          <option>Tbs</option>
-          <option>Oz</option>
+          <option>teaspoon (tsp)</option>
+          <option>tablespoon (tbsp)</option>
+          <option>ounce (oz)</option>
+          <option>gram (g)</option>
+          <option>pound (lb)</option>
+          <option>fluid ounce (fl oz)</option>
+          <option>milliliter (mL)</option>
         </Form.Control>
       </Form.Group>
 

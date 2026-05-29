@@ -20,19 +20,17 @@ const RecipeCard = ({ id, imgLink, title, name, score, likes, source }) => {
                     <Card.Text className='recipe-author'>By {name}</Card.Text>
                     {showStats && (
                         <div className='recipe-stats'>
-                            <span>
+                            <div className='recipe-stat'>
                                 <FaHeart className='heart-icon' />
-                                {" "}
-                                {likes}
-                            </span>
-                            <span>
+                                <span>{likes} likes</span>
+                            </div>
+                            <div className='recipe-stat'>
                                 <FaLeaf className='leaf-icon' />
-                                {" "}
-                                Spoonacular Score: {Math.ceil(score || 0)}%
-                            </span>
+                                <span>{Math.ceil(score || 0)}% score</span>
+                            </div>
                         </div>
                     )}
-                    {score && (
+                    {source && (
                         <Card.Text className="recipe-source">
                             From {source}
                         </Card.Text>

@@ -311,6 +311,20 @@ const resolvers = {
 
             }
             throw new AuthenticationError("Login to add items to your grocery list!")
+        },
+        removedSavedRecipe: async (parent, { sourceId }, context) => {
+            if (context.user) {
+                return User.findByIdAndUpdate(context.user._id, {
+                    $pull: {
+                        savedRecipes: { sourceId }
+                    }
+                },
+                    {
+                        new: true
+                    }
+                );
+            }
+            throw new AuthenticationError("You must be logged in first!")
         }
     }
 }

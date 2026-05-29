@@ -72,15 +72,9 @@ function NavComp({ loggedIn, setLoggedIn }) {
                         </Nav.Link>
 
                         {loggedIn && (
-                            <>
-                                {/* <Nav.Link as={Link} to="/add">
-                                    Add Recipe
-                                </Nav.Link> */}
-
-                                <Nav.Link as={Link} to="/groceryList">
-                                    Grocery List
-                                </Nav.Link>
-                            </>
+                            <Nav.Link as={Link} to="/groceryList">
+                                Grocery List
+                            </Nav.Link>
                         )}
                     </Nav>
 
@@ -139,7 +133,7 @@ function NavComp({ loggedIn, setLoggedIn }) {
                                 id="profile-dropdown"
                                 alignRight
                             >
-                                <NavDropdown.Item as={Link} to="#">
+                                <NavDropdown.Item as={Link} to="/add">
                                     Create a Recipe
                                 </NavDropdown.Item>
 

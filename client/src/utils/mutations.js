@@ -52,6 +52,17 @@ export const SAVE_RECIPE = gql`
     }
 `;
 
+export const REMOVE_SAVED_RECIPE = gql`
+    mutation RemovedSavedRecipe($sourceId: ID!) {
+        removedSavedRecipe(sourceId: $sourceId) {
+            username
+            savedRecipes {
+                title
+            }
+        }
+    }
+`;
+
 export const CREATE_GROCERY_LIST = gql`
    mutation CreateGroceryList($listData: GroceryInput!) {
     createGroceryList(listData: $listData) {
