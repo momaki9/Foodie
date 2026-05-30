@@ -124,6 +124,7 @@ const typeDefs = gql`
     type Query {
         me: User
         users: [User]!
+        getMyRecipeById(id: ID!): Recipe
         getRecipeById(id: Int!): SpoonacularRecipe
         getRecipes: [SpoonacularRecipe]
         searchRecipes(term: String!): [SpoonacularRecipe]
@@ -137,9 +138,10 @@ const typeDefs = gql`
         login(username: String!, password: String!): Auth
         signup(username: String!, email: String!, password: String!): Auth
         addRecipe(recipeData: RecipeInput!): Recipe
+        updateRecipe(recipeId: ID!, recipeData: RecipeInput!): Recipe
+        deleteRecipe(recipeId: ID!): Recipe
         saveRecipe(savedRecipeData: SavedRecipeInput!): User
         removedSavedRecipe(sourceId: ID!): User
-        updateRecipe(_id: ID!, title: String, description: String, ingredients: [IngredientData], image: String, link: String, rating: Int): Recipe
         createGroceryList(listData: GroceryInput!): GroceryList
         toggleGroceryItem(listId: ID!, itemId: ID!): GroceryList
         addGroceryItem(listId: ID!, item: GroceryItemInput!): GroceryList

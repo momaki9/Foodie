@@ -4,10 +4,12 @@ import {
     Button
 } from 'react-bootstrap';
 
-const DeleteSavedRecipeModal = ({
+const SimpleDeleteModal = ({
     show,
     handleClose,
-    handleDelete
+    handleDelete,
+    title,
+    bodyMessage
 }) => {
 
     return (
@@ -19,12 +21,12 @@ const DeleteSavedRecipeModal = ({
         >
             <Modal.Header closeButton>
                 <Modal.Title>
-                    Remove a Saved Recipe
+                    {title}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <p className="mb-0 text-muted">
-                    Are you sure you want to remove this recipe?
+                    {bodyMessage}
                 </p>
             </Modal.Body>
             <Modal.Footer>
@@ -46,4 +48,4 @@ const DeleteSavedRecipeModal = ({
     )
 }
 
-export default DeleteSavedRecipeModal;
+export default SimpleDeleteModal;

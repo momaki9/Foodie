@@ -23,6 +23,8 @@ import SavedRecipesPage from "./pages/SavedRecipes";
 import GroceryListsRedirect from "./pages/GroceryListRedirect";
 import NewGroceryList from "./pages/NewGroceryList";
 import GroceryListPage from "./pages/GroceryListPage";
+import MyRecipesPage from "./pages/MyRecipes";
+import MyRecipePage from "./pages/MyRecipePage";
 
 // React bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -105,6 +107,14 @@ function App() {
           <Route 
             path="/savedRecipes"
             element={<SavedRecipesPage />}
+          />
+          <Route 
+            path="/myRecipes"
+            element={<MyRecipesPage />}
+          />
+          <Route 
+            path="/myRecipes/:id"
+            element={<MyRecipePage />}
           />
         </Routes>
       </Router>

@@ -141,7 +141,7 @@ function NavComp({ loggedIn, setLoggedIn }) {
                                     Saved Recipes
                                 </NavDropdown.Item>
 
-                                <NavDropdown.Item as={Link} to="/my-recipes">
+                                <NavDropdown.Item as={Link} to="/myRecipes">
                                     My Recipes
                                 </NavDropdown.Item>
 

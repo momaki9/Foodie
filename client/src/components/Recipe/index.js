@@ -28,9 +28,14 @@ const RecipeDetails = ({
                         {actions}
                     </div>
                     <Card.Title>By {sourceName}</Card.Title>
+
                     <ListGroup className="mb-4">
-                        <ListGroup.Item>Cooking time: {cookingMinutes || readyInMinutes} minutes</ListGroup.Item>
-                        <ListGroup.Item>{servings} servings</ListGroup.Item>
+                        {(cookingMinutes || readyInMinutes) && (
+                            <ListGroup.Item>Cooking time: {cookingMinutes || readyInMinutes} minutes</ListGroup.Item>
+                        )}
+                        {servings && (
+                            <ListGroup.Item>{servings} servings</ListGroup.Item>
+                        )}
                     </ListGroup>
                     <div dangerouslySetInnerHTML={{ __html: summary || "" }} />
                     <h4 className="mt-4 mb-3">Ingredients:</h4>
@@ -57,11 +62,13 @@ const RecipeDetails = ({
                     <h4 className="mt-4 mb-3">Instructions</h4>
                     <div dangerouslySetInnerHTML={{ __html: instructions || "" }} />
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-end">
-                    <a href={spoonacularSourceUrl} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary">
-                        Spoonacular Link →
-                    </a>
-                </Card.Footer>
+                {spoonacularSourceUrl && (
+                    <Card.Footer className="d-flex justify-content-end">
+                        <a href={spoonacularSourceUrl} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary">
+                            Spoonacular Link →
+                        </a>
+                    </Card.Footer>
+                )}
             </Card>
         </>
     )

@@ -134,3 +134,12 @@ export const ADD_ITEMS_TO_GROCERY_LIST = gql`
         }
     }
 `;
+
+export const DELETE_RECIPE = gql`
+    mutation DeleteRecipe($recipeId: ID!) {
+        deleteRecipe(recipeId: $recipeId) {
+            _id
+            title
+        }
+    }
+`;

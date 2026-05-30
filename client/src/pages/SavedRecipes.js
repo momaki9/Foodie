@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 
 import RecipeCard from "../components/RecipeCard";
-import DeleteSavedRecipeModal from "../components/DeleteSavedRecipeModal";
+import SimpleDeleteModal from "../components/SimpleDeleteModal";
 
 import { FaTimes } from "react-icons/fa";
 
@@ -98,6 +98,7 @@ const SavedRecipesPage = () => {
                                         title={savedRecipe.title}
                                         name={savedRecipe.source}
                                         source={savedRecipe.source}
+                                        to={`/explore/${savedRecipe.sourceId}`}
                                     />
                                 </div>
                             </Col>
@@ -105,10 +106,12 @@ const SavedRecipesPage = () => {
                     </Row>
                 )}
             </Container>
-            <DeleteSavedRecipeModal
+            <SimpleDeleteModal
                 show={showModal}
                 handleClose={() => setShowModal(false)}
                 handleDelete={handleDeleteSavedRecipe}
+                title={"Remove a Saved Recipe"}
+                bodyMessage={"Are you sure you want to remove this recipe?"}
             />
         </>
     )

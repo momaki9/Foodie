@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import { FaHeart, FaLeaf } from 'react-icons/fa';
 import "../../index.css";
 
-const RecipeCard = ({ id, imgLink, title, name, score, likes, source }) => {
+const RecipeCard = ({ id, imgLink, title, name, score, likes, source, to }) => {
 
     const showStats = score != null && likes != null;
 
     return (
-        <Link to={`/explore/${id}`} className='recipe-link'>
+        <Link to={to} className='recipe-link'>
             <Card className='recipe-card mb-4' key={id}>
                 <Card.Img
                     variant="top"

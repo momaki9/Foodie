@@ -27,6 +27,16 @@ const resolvers = {
                 throw new Error("Failed to find the recipe.")
             }
         },
+        getMyRecipeById: async (parent, { id }, context) => {
+            if (context.user) {
+                const myRecipe = await Recipe.findOne({
+                    _id: id,
+                    author: context.user._id
+                });
+                return myRecipe;
+            }
+            throw new AuthenticationError("Not logged in!")
+        },
         // gets recipes from spoonacular
         getRecipes: async () => {
             const url = `https://api.spoonacular.com/recipes/complexSearch?sort=healthiness&number=100&apiKey=${process.env.SPOON_API_KEY}&addRecipeInformation=true`;
@@ -122,22 +132,51 @@ const resolvers = {
             }
             throw new AuthenticationError("You must be logged in first");
         },
-        updateRecipe: async (parent, args, context) => {
+        updateRecipe: async (parent, { recipeId, recipeData }, context) => {
             if (!context.user) {
                 throw new AuthenticationError("You must be logged in to update a recipe.")
             };
 
-            const recipe = await Recipe.findById(args._id);
+            const updatedRecipe = await Recipe.findOneAndUpdate(
+                {
+                    _id: recipeId,
+                    author: context.user._id
+                },
+                { $set: recipeData },
+                {
+                    new: true,
+                    runValidators: true
+                }
+            );
 
-            if (!recipe.author.equals(context.user._id)) {
-                throw new AuthenticationError("You can only edit your own recipes.")
-            };
+            if (!updatedRecipe) {
+                throw new AuthenticationError("Recipe or user not found")
+            }
 
-            return Recipe.findByIdAndUpdate(
-                args._id,
-                args,
-                { new: true, runValidators: true }
-            )
+            return updatedRecipe;
+
+        },
+        deleteRecipe: async (parent, { recipeId }, context) => {
+            if (context.user) {
+                const deletedRecipe = await Recipe.findOneAndDelete({
+                    _id: recipeId,
+                    author: context.user._id
+                });
+
+                if (!deletedRecipe) {
+                    throw new Error("Recipe not found");
+                };
+
+                await User.findByIdAndUpdate(context.user._id,
+                    {
+                        $pull: { createdRecipes: deletedRecipe._id }
+                    }
+                );
+
+                return deletedRecipe;
+            }
+            throw new AuthenticationError("Not logged in!")
+
         },
         createGroceryList: async (parent, { listData }, context) => {
             if (context.user) {

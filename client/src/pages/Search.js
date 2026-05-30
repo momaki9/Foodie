@@ -42,6 +42,7 @@ const SearchResults = () => {
                     name={recipe.sourceName}
                     score={recipe.spoonacularScore}
                     likes={recipe.aggregateLikes}
+                    to={`/explore/${recipe.id}`}
                 />
             ))}
         </section>

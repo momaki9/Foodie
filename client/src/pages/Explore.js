@@ -49,6 +49,7 @@ const ExplorePage = () => {
                 name={recipe.sourceName}
                 score={recipe.spoonacularScore}
                 likes={recipe.aggregateLikes}
+                to={`/explore/${recipe.id}`}
               />
             </Col>
           ))}

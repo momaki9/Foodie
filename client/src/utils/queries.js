@@ -11,6 +11,11 @@ export const QUERY_ME = gql`
           image
           source
         }
+        createdRecipes {
+          _id
+          title
+          image
+        }
     }
   }  
 `;
@@ -40,7 +45,7 @@ export const ALL_RECIPES = gql`
     }
   }    
 `;
-
+// Spoonacular recipe
 export const GET_RECIPE_BY_ID = gql`
   query GetRecipeById($id: Int!) {
     getRecipeById(id: $id) {
@@ -64,6 +69,27 @@ export const GET_RECIPE_BY_ID = gql`
     }
   }
 `;
+
+// local or user created recipe
+export const GET_MY_RECIPE_BY_ID = gql`
+  query GetMyRecipeById($id: ID!) {
+    getMyRecipeById(id: $id) {
+      _id
+      title
+      summary
+      instructions
+      ingredients {
+        name
+        amount
+        unit
+      }
+      image
+      link
+      rating
+    }
+  }
+`;
+
 // gets recipes from spoonacular
 export const GET_RECIPES = gql`
   query GetRecipes {
