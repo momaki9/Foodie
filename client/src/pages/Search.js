@@ -6,18 +6,19 @@ import { SEARCH_RECIPES } from "../utils/queries";
 import { Spinner } from "react-bootstrap";
 
 const SearchResults = () => {
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const searchTerm = queryParams.get("q");
-    const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchTerm = queryParams.get("q");
+  const navigate = useNavigate();
 
-    const { loading, data, error } = useQuery(SEARCH_RECIPES, {
-        variables: {term: searchTerm}
-    });
+  const { loading, data, error } = useQuery(SEARCH_RECIPES, {
+    variables: { term: searchTerm }
+  });
 
-    const results = data?.searchRecipes;
+  const results = data?.searchRecipes;
+  console.log(results)
 
-    if (loading) {
+  if (loading) {
     return (
       <div
         className="d-flex justify-content-center align-items-center"
@@ -31,22 +32,24 @@ const SearchResults = () => {
     );
   };
 
-    return (
-        <section>
-            <h1 className="text-center mb-4">Results:</h1>
-            {results.map((recipe) => (
-                <RecipeCard
-                    id={recipe.id} 
-                    imgLink={recipe.image}
-                    title={recipe.title}
-                    name={recipe.sourceName}
-                    score={recipe.spoonacularScore}
-                    likes={recipe.aggregateLikes}
-                    to={`/explore/${recipe.id}`}
-                />
-            ))}
-        </section>
-    )
+  return (
+    <section>
+      <h1 className="text-center mb-4">Results:</h1>
+      <div className="recipe-grid">
+        {results.map((recipe) => (
+          <RecipeCard
+            id={recipe.id}
+            imgLink={recipe.image}
+            title={recipe.title}
+            name={recipe.sourceName}
+            score={recipe.spoonacularScore}
+            likes={recipe.aggregateLikes}
+            to={`/explore/${recipe.id}`}
+          />
+        ))}
+      </div>
+    </section>
+  )
 };
 
 export default SearchResults;

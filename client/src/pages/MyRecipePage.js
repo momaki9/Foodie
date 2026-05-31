@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_MY_RECIPE_BY_ID, QUERY_ME } from "../utils/queries";
@@ -15,7 +15,7 @@ const MyRecipePage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
-    
+
     const { loading, data, error } = useQuery(GET_MY_RECIPE_BY_ID, {
         variables: {
             id: id
@@ -48,7 +48,7 @@ const MyRecipePage = () => {
             console.error(err)
         }
     }
-    
+
     if (loading) {
         return (
             <div
@@ -73,14 +73,14 @@ const MyRecipePage = () => {
                 <FaArrowLeft />
             </Button>
             <RecipeDetails
-               id={myRecipe._id}
-               title={myRecipe.title}
-               image={myRecipe.image}
-               instructions={myRecipe.instructions}
-               summary={myRecipe.summary} 
-               extendedIngredients={myRecipe.ingredients}
-               sourceName={username}
-               actions={
+                id={myRecipe._id}
+                title={myRecipe.title}
+                image={myRecipe.image}
+                instructions={myRecipe.instructions}
+                summary={myRecipe.summary}
+                extendedIngredients={myRecipe.ingredients}
+                sourceName={username}
+                actions={
                     <div className="d-flex gap-2">
                         <Button
                             variant="outline-primary"
@@ -99,9 +99,9 @@ const MyRecipePage = () => {
                             Delete Recipe
                         </Button>
                     </div>
-               }
+                }
             />
-            <SimpleDeleteModal 
+            <SimpleDeleteModal
                 show={showModal}
                 handleClose={() => setShowModal(false)}
                 handleDelete={handleDeleteRecipe}

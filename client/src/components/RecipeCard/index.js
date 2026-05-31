@@ -17,7 +17,10 @@ const RecipeCard = ({ id, imgLink, title, name, score, likes, source, to }) => {
                 />
                 <Card.Body>
                     <Card.Title className='recipe-title'>{title}</Card.Title>
-                    <Card.Text className='recipe-author'>By {name}</Card.Text>
+                    {name && (
+                        <Card.Text className='recipe-author'>By {name}</Card.Text>
+                    )}
+
                     {showStats && (
                         <div className='recipe-stats'>
                             <div className='recipe-stat'>

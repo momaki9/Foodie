@@ -9,6 +9,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { SAVE_RECIPE, ADD_ITEMS_TO_GROCERY_LIST, CREATE_GROCERY_LIST } from "../utils/mutations";
 import { QUERY_ME, GET_RECIPE_BY_ID, MY_GROCERY_LISTS } from "../utils/queries";
 import Auth from "../utils/auth";
+import { ingredientHelper } from "../utils/helpers";
 import "../index.css";
 
 const RecipePage = () => {
@@ -56,10 +57,10 @@ const RecipePage = () => {
 
     const handleAddIngredientsToGroceryList = async (listId) => {
         // listId comes from modal
-        // one of the modal options is to create a new list, in that case where does the listId come from?
-        const ingredientNames = recipe.extendedIngredients.map(ingredient => (
-            { value: ingredient.name.trim().toLowerCase() }
-        ));
+        // const ingredientNames = recipe.extendedIngredients.map(ingredient => (
+        //     { value: ingredient.name.trim().toLowerCase() }
+        // ));
+        const ingredientNames = ingredientHelper(recipe.extendedIngredients, "spoonacular");
         try {
             await addItemsToGroceryList({
                 variables: {

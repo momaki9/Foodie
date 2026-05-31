@@ -25,6 +25,7 @@ import NewGroceryList from "./pages/NewGroceryList";
 import GroceryListPage from "./pages/GroceryListPage";
 import MyRecipesPage from "./pages/MyRecipes";
 import MyRecipePage from "./pages/MyRecipePage";
+import EditRecipe from "./pages/EditRecipe";
 
 // React bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -115,6 +116,10 @@ function App() {
           <Route 
             path="/myRecipes/:id"
             element={<MyRecipePage />}
+          />
+          <Route
+            path="/myRecipes/edit/:id"
+            element={<EditRecipe />} 
           />
         </Routes>
       </Router>

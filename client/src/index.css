@@ -82,6 +82,12 @@
     box-shadow: none;
 }
 
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
 .recipe-card {
     width: 100%;
     border: none;
@@ -106,7 +112,7 @@
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
 }
 
-.recipe-card img {
+.recipe-card .card-img-top {
     height: 220px;
     object-fit: cover;
 }
