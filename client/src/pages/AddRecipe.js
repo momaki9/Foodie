@@ -28,7 +28,6 @@ function AddRecipePage() {
     }));
   };
 
-
   // addRow
   const addRow = () => {
     setIngredientForm((prev) => [
@@ -95,7 +94,7 @@ function AddRecipePage() {
   }
 
   return (
-    <MyRecipeForm 
+    <MyRecipeForm
       handleChange={handleChange}
       handleSubmit={handleSubmit}
       recipeForm={recipeForm}
@@ -104,6 +103,7 @@ function AddRecipePage() {
       deleteRow={deleteRow}
       ingredientForm={ingredientForm}
       handleInstructionsChange={handleInstructionsChange}
+      setSuccessMessage={setSuccessMessage}
       successMessage={successMessage}
       submitText={"Submit"}
     />

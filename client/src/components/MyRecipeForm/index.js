@@ -1,7 +1,8 @@
 import {
     Form,
     Button,
-    Col
+    Col,
+    Alert
 } from "react-bootstrap";
 
 import IngredientRow from '../IngredientForm';
@@ -19,6 +20,7 @@ const MyRecipeForm = ({
     deleteRow,
     ingredientForm,
     handleInstructionsChange,
+    setSuccessMessage,
     successMessage,
     submitText
 }) => {
@@ -32,9 +34,19 @@ const MyRecipeForm = ({
             ['clean']
         ]
     }
-    
+
     return (
         <Form onSubmit={handleSubmit} className='form-el'>
+            {successMessage && (
+                <Alert
+                    variant="success"
+                    dismissible
+                    onClose={() => setSuccessMessage}
+                    className="mt-3"
+                >
+                    <strong>Success!</strong> {successMessage}
+                </Alert>
+            )}
             <Form.Row>
                 <Form.Group as={Col} className="mb-4">
                     <Form.Label>Title</Form.Label>
@@ -79,9 +91,6 @@ const MyRecipeForm = ({
                     {submitText}
                 </Button>
             </div>
-            {successMessage && (
-                <h4>{successMessage}</h4>
-            )}
         </Form>
     )
 }

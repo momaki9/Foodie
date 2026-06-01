@@ -143,3 +143,22 @@ export const DELETE_RECIPE = gql`
         }
     }
 `;
+
+export const UPDATE_RECIPE = gql`
+    mutation UpdateRecipe($recipeId: ID!, $recipeData: RecipeInput!) {
+        updateRecipe(recipeId: $recipeId, recipeData: $recipeData) {
+            _id
+            title
+            summary
+            rating
+            link
+            instructions
+            image
+            ingredients {
+                name
+                amount
+                unit
+            }
+        }
+    }
+`;
