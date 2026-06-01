@@ -33,7 +33,6 @@ function NavComp({ loggedIn, setLoggedIn }) {
 
         setSearchInput("");
     }
-    console.log("logged In?", Auth.loggedIn())
 
     return (
         <Navbar
