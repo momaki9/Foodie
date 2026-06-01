@@ -8,6 +8,7 @@ import MyRecipeForm from "../components/MyRecipeForm";
 const EditRecipe = () => {
     const { id } = useParams();
     const [successMessage, setSuccessMessage] = useState("");
+    const [showToast, setShowToast] = useState(false);
     const [recipeForm, setRecipeForm] = useState({
         title: "",
         summary: "",
@@ -16,8 +17,9 @@ const EditRecipe = () => {
         link: ""
     });
     const [ingredientForm, setIngredientForm] = useState([{
+        id: crypto.randomUUID(),
         name: "",
-        amount: "",
+        amount: 0,
         unit: ""
     }]);
 
@@ -29,7 +31,7 @@ const EditRecipe = () => {
 
     const myRecipe = data?.getMyRecipeById;
 
-    const [updateRecipe, { error }] = useMutation(UPDATE_RECIPE);
+    const [updateRecipe, { loading: updating }] = useMutation(UPDATE_RECIPE);
 
     useEffect(() => {
         if (myRecipe) {
@@ -106,13 +108,15 @@ const EditRecipe = () => {
         }
 
         try {
-            const { data } = await updateRecipe({
+            await updateRecipe({
                 variables: {
                     recipeId: id,
-                    recipeData: recipeData
+                    recipeData
                 }
             });
-            setSuccessMessage("Recipe updated!")
+
+            setSuccessMessage("Recipe updated!");
+            setShowToast(true);
 
         } catch (error) {
             console.error(error)
@@ -136,9 +140,11 @@ const EditRecipe = () => {
             deleteRow={deleteRow}
             ingredientForm={ingredientForm}
             handleInstructionsChange={handleInstructionsChange}
-            setSuccessMessage={setSuccessMessage}
+            showToast={showToast}
+            setShowToast={setShowToast}
             successMessage={successMessage}
             submitText={"Save changes"}
+            updating={updating}
         />
     )
 }

@@ -255,6 +255,25 @@ const resolvers = {
             }
             throw new AuthenticationError("Login first!")
         },
+        deleteGroceryItem: async (parent, {listId, itemId}, context) => {
+            if (context.user) {
+                return await GroceryList.findOneAndUpdate(
+                    {
+                        _id: listId,
+                        user: context.user._id
+                    },
+                    {
+                        $pull: {
+                            items: { _id: itemId}
+                        }
+                    },
+                    {
+                        new: true
+                    }
+                )
+            }
+            throw new AuthenticationError("Not logged in")
+        },
         setActiveGroceryList: async (parent, { listId }, context) => {
             if (context.user) {
                 await GroceryList.updateMany(

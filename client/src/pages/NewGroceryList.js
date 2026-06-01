@@ -5,6 +5,7 @@ import { CREATE_GROCERY_LIST } from "../utils/mutations";
 import GroceryListHeader from "../components/GroceryListHeader";
 import GroceryListEditor from "../components/GroceryListEditor";
 import { Container, Button } from "react-bootstrap";
+import { MY_GROCERY_LISTS } from "../utils/queries";
 
 const NewGroceryList = () => {
     const [title, setTitle] = useState("");
@@ -15,7 +16,7 @@ const NewGroceryList = () => {
 
     const handleAddItem = (item) => {
         const newItem = {
-            _id: `temp-${Date.now()}`,
+            _id: crypto.randomUUID(),
             value: item.value || item,
             checked: false
         };
@@ -25,24 +26,23 @@ const NewGroceryList = () => {
         ]);
     };
 
+    const handleDeleteItem = async (itemId) => {
+        setItems(prev => prev.filter(item => item._id !== itemId))
+    };
+
     const handleToggleItem = (itemId) => {
-        const updatedItems = items.map(item => {
-            if (item._id !== itemId) {
-                return item;
-            }
-            return {
-                ...item,
-                checked: !item.checked
-            };
-        });
-        setItems(updatedItems);
-    }
+        setItems(prev => prev.map(item =>
+            item._id === itemId
+                ? {...item, checked: !item.checked}
+                : item
+        ));
+    };
 
     const handleCreateList = async () => {
 
         if (!title.trim()) return;
 
-        const cleanItems = items.map(({value, checked}) => (
+        const cleanItems = items.map(({ value, checked }) => (
             {
                 value,
                 checked
@@ -56,7 +56,12 @@ const NewGroceryList = () => {
                         title,
                         items: cleanItems
                     }
-                }
+                },
+                refetchQueries: [
+                    {
+                        query: MY_GROCERY_LISTS
+                    }
+                ]
             });
 
             navigate(`/groceryList/${data.createGroceryList._id}`);
@@ -67,7 +72,7 @@ const NewGroceryList = () => {
 
     return (
         <Container fluid="md">
-            <GroceryListHeader 
+            <GroceryListHeader
                 title={title}
                 setTitle={setTitle}
                 isNew
@@ -77,11 +82,12 @@ const NewGroceryList = () => {
                 setItems={setItems}
                 onToggleItem={handleToggleItem}
                 onAddItem={handleAddItem}
+                onDeleteItem={handleDeleteItem}
             />
             <div className="text-right mt-4">
-                <Button 
+                <Button
                     onClick={handleCreateList}
-                    disabled={!title.trim()}
+                    disabled={!title.trim() || items.length === 0}
                 >
                     Create list
                 </Button>

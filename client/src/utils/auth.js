@@ -1,4 +1,4 @@
-import { jwtDecode } from 'jwt-decode';
+import jwtDecode from "jwt-decode";
 
 class AuthService {
 
@@ -18,7 +18,7 @@ class AuthService {
                 return true;
             } else return false;
         } catch (err) {
-            return false;
+            return true;
         }
     }
 
@@ -28,7 +28,6 @@ class AuthService {
 
     login(idToken) {
         localStorage.setItem('id_token', idToken);
-        // window.location.assign('/');
     }
 
     logout() {

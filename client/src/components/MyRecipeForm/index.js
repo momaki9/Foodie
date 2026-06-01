@@ -1,10 +1,12 @@
+import React, { useState } from "react";
 import {
     Form,
     Button,
     Col,
-    Alert
+    Toast
 } from "react-bootstrap";
 
+import { FaCheckCircle } from "react-icons/fa";
 import IngredientRow from '../IngredientForm';
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
@@ -20,9 +22,11 @@ const MyRecipeForm = ({
     deleteRow,
     ingredientForm,
     handleInstructionsChange,
-    setSuccessMessage,
+    showToast,
+    setShowToast,
     successMessage,
-    submitText
+    submitText,
+    updating
 }) => {
 
     const modules = {
@@ -37,16 +41,6 @@ const MyRecipeForm = ({
 
     return (
         <Form onSubmit={handleSubmit} className='form-el'>
-            {successMessage && (
-                <Alert
-                    variant="success"
-                    dismissible
-                    onClose={() => setSuccessMessage}
-                    className="mt-3"
-                >
-                    <strong>Success!</strong> {successMessage}
-                </Alert>
-            )}
             <Form.Row>
                 <Form.Group as={Col} className="mb-4">
                     <Form.Label>Title</Form.Label>
@@ -87,9 +81,32 @@ const MyRecipeForm = ({
                 <Form.Control name='link' value={recipeForm.link} onChange={handleChange} placeholder='video or site link' />
             </Form.Group>
             <div className='d-flex justify-content-end mt-4'>
-                <Button variant="primary" type="submit" size='lg'>
-                    {submitText}
+                <Button variant="primary" type="submit" size='lg' disabled={updating}>
+                    {updating ? "Saving..." : submitText}
                 </Button>
+            </div>
+            <div
+                className="position-fixed"
+                style={{
+                    bottom: "90px",
+                    right: "150px",
+                    zIndex: 1050
+                }}
+            >
+                <Toast
+                    show={showToast}
+                    delay={3000}
+                    onClose={() => setShowToast(false)}
+                    autohide
+                >
+                    <Toast.Header>
+                        <strong className="mr-auto">FOODIE</strong>
+                    </Toast.Header>
+                    <Toast.Body>
+                        <FaCheckCircle className="me-2 text-success" />
+                        {"  " + successMessage}
+                    </Toast.Body>
+                </Toast>
             </div>
         </Form>
     )

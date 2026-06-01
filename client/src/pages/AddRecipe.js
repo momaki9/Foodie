@@ -9,8 +9,9 @@ function AddRecipePage() {
   const [recipeForm, setRecipeForm] = useState({ title: "", summary: "", instructions: "", image: "", link: "" });
   const [ingredientForm, setIngredientForm] = useState([{ id: crypto.randomUUID(), name: "", amount: 0, unit: "" }]);
   const [successMessage, setSuccessMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
-  const [addRecipe, { error }] = useMutation(ADD_RECIPE);
+  const [addRecipe, { loading: updating }] = useMutation(ADD_RECIPE);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -86,7 +87,9 @@ function AddRecipePage() {
           unit: ""
         }
       ]);
-      setSuccessMessage("Recipe added!")
+
+      setSuccessMessage("Recipe added!");
+      setShowToast(true);
 
     } catch (error) {
       console.error(error)
@@ -102,10 +105,12 @@ function AddRecipePage() {
       updateRow={updateRow}
       deleteRow={deleteRow}
       ingredientForm={ingredientForm}
-      handleInstructionsChange={handleInstructionsChange}
-      setSuccessMessage={setSuccessMessage}
+      handleInstructionsChange={handleInstructionsChange}  
       successMessage={successMessage}
       submitText={"Submit"}
+      showToast={showToast}
+      setShowToast={setShowToast}
+      updating={updating}
     />
   );
 };

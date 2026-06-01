@@ -6,7 +6,8 @@ import {
     TOGGLE_GROCERY_ITEM,
     ADD_GROCERY_ITEM,
     SET_ACTIVE_GROCERY_LIST,
-    DELETE_GROCERY_LIST
+    DELETE_GROCERY_LIST,
+    DELETE_GROCERY_ITEM
 } from "../utils/mutations";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -38,6 +39,7 @@ const GroceryListPage = () => {
     const [addGroceryItem, { error: addItemError }] = useMutation(ADD_GROCERY_ITEM);
     const [setActiveGroceryList] = useMutation(SET_ACTIVE_GROCERY_LIST);
     const [deleteGroceryList] = useMutation(DELETE_GROCERY_LIST);
+    const [deleteGroceryItem] = useMutation(DELETE_GROCERY_ITEM);
 
     const groceryLists = data?.myGroceryLists;
     const groceryList = groceryListData?.getGroceryList;
@@ -102,7 +104,26 @@ const GroceryListPage = () => {
                     listId: groceryList._id,
                     item
                 }
-            })
+            });
+
+        } catch (err) {
+            console.error(err);
+            setItems(previousItems);
+        }
+    };
+
+    const handleDeleteItem = async (itemId) => {
+        const previousItems = [...items];
+        const updatedItems = items.filter(item => item._id !== itemId);
+        setItems(updatedItems);
+
+        try {
+            await deleteGroceryItem({
+                variables: {
+                    listId: groceryList._id,
+                    itemId
+                }
+            });
 
         } catch (err) {
             console.error(err);
@@ -124,7 +145,7 @@ const GroceryListPage = () => {
                     }
                 ]
             });
-            
+
             navigate("/groceryList")
 
         } catch (err) {
@@ -162,6 +183,7 @@ const GroceryListPage = () => {
                     setItems={setItems}
                     onToggleItem={handleToggleItem}
                     onAddItem={handleAddItem}
+                    onDeleteItem={handleDeleteItem}
                 />
             </Container>
 

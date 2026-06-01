@@ -33,6 +33,7 @@ function NavComp({ loggedIn, setLoggedIn }) {
 
         setSearchInput("");
     }
+    console.log("logged In?", Auth.loggedIn())
 
     return (
         <Navbar
@@ -133,16 +134,16 @@ function NavComp({ loggedIn, setLoggedIn }) {
                                 id="profile-dropdown"
                                 alignRight
                             >
-                                <NavDropdown.Item as={Link} to="/add">
-                                    Create a Recipe
+                                <NavDropdown.Item as={Link} to="/myRecipes">
+                                    My Recipes
                                 </NavDropdown.Item>
 
                                 <NavDropdown.Item as={Link} to="/savedRecipes">
                                     Saved Recipes
                                 </NavDropdown.Item>
 
-                                <NavDropdown.Item as={Link} to="/myRecipes">
-                                    My Recipes
+                                <NavDropdown.Item as={Link} to="/add">
+                                    Create a Recipe
                                 </NavDropdown.Item>
 
                                 <NavDropdown.Divider />

@@ -162,3 +162,17 @@ export const UPDATE_RECIPE = gql`
         }
     }
 `;
+
+export const DELETE_GROCERY_ITEM =gql`
+    mutation DeleteGroceryItem($listId: ID!, $itemId: ID!) {
+        deleteGroceryItem(listId: $listId, itemId: $itemId) {
+            _id
+            title
+            items {
+                _id
+                value
+                checked
+            }
+        }
+    }
+`;

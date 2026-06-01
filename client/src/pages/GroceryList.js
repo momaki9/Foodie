@@ -11,6 +11,8 @@ import Card from "react-bootstrap/Card";
 import { FaTrash } from "react-icons/fa";
 import "../index.css";
 
+console.log("TRASH PAGE??")
+
 const GroceryListPage = () => {
 
     const [groceryList, setGroceryList] = useState(

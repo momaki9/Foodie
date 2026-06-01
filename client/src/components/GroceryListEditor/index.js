@@ -6,12 +6,14 @@ import {
     InputGroup,
     ListGroup
 } from 'react-bootstrap';
+import { FaTrash } from "react-icons/fa";
 
 const GroceryListEditor = ({
     items,
     setItems,
     onToggleItem,
     onAddItem,
+    onDeleteItem,
     editable = true
 }) => {
     const [newItem, setNewItem] = useState("");
@@ -42,12 +44,12 @@ const GroceryListEditor = ({
                 <ListGroup variant="flush">
                     {items.map((item, index) => (
                         <ListGroup.Item
-                            key={index}
-                            className="py-3 px-4"
+                            key={item._id}
+                            className="d-flex align-items-center justify-content-between py-3 px-4"
                         >
                             <Form.Check
                                 type="checkbox"
-                                id={`item-${index}`}
+                                id={item._id}
                                 checked={item.checked}
                                 onChange={() => onToggleItem(item._id)}
                                 label={
@@ -64,7 +66,13 @@ const GroceryListEditor = ({
                                     </span>
                                 }
                             />
-
+                        <Button
+                            variant="link"
+                            className="p-0 text-danger"
+                            onClick={() => onDeleteItem(item._id)}
+                        >
+                            <FaTrash />
+                        </Button>
                         </ListGroup.Item>
                     ))}
 
