@@ -11,10 +11,10 @@ import { setContext } from '@apollo/client/link/context';
 // React pages and components
 import NavComp from "./components/Nav";
 import Login from "./pages/Login";
-import AddRecipePage from "./pages/AddRecipe";
+import AddRecipe from "./pages/AddRecipe";
 // import GroceryListPage from "./pages/GroceryList";
-import ExplorePage from "./pages/Explore";
-import HomePage from "./pages/Home";
+import Explore from "./pages/Explore";
+import Home from "./pages/Home";
 import SignupPage from "./pages/Signup";
 import RecipePage from "./pages/Recipe";
 import SearchResults from "./pages/Search";
@@ -26,6 +26,7 @@ import GroceryListPage from "./pages/GroceryListPage";
 import MyRecipesPage from "./pages/MyRecipes";
 import MyRecipePage from "./pages/MyRecipePage";
 import EditRecipe from "./pages/EditRecipe";
+import CommunityRecipe from "./pages/CommunityRecipe";
 
 // React bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -59,7 +60,7 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<HomePage loggedIn={loggedIn}/>} 
+            element={<Home loggedIn={loggedIn}/>} 
           />
           <Route 
             path="/signup"
@@ -71,7 +72,7 @@ function App() {
           />
           <Route 
             path="/add"
-            element={<AddRecipePage />}
+            element={<AddRecipe />}
           />
           {/* <Route 
             path="/list"
@@ -79,7 +80,7 @@ function App() {
           /> */}
           <Route 
             path="/explore"
-            element={<ExplorePage />}
+            element={<Explore />}
           />
           <Route
             path="/explore/:id"
@@ -120,6 +121,10 @@ function App() {
           <Route
             path="/myRecipes/edit/:id"
             element={<EditRecipe />} 
+          />
+          <Route 
+            path="/community-recipes/:id"
+            element={<CommunityRecipe />}
           />
         </Routes>
       </Router>

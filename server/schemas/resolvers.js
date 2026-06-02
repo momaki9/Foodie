@@ -27,6 +27,11 @@ const resolvers = {
                 throw new Error("Failed to find the recipe.")
             }
         },
+        getARecipeById: async (parent, { id}) => {
+            return await Recipe.findOne({
+                _id: id
+            }).populate("author");
+        },
         getMyRecipeById: async (parent, { id }, context) => {
             if (context.user) {
                 const myRecipe = await Recipe.findOne({
@@ -61,7 +66,7 @@ const resolvers = {
             }
         },
         allRecipes: async () => {
-            return Recipe.find();
+            return Recipe.find().populate("author");
         },
         // might need to add .populate("user") to the data if needed
         myGroceryLists: async (parent, args, context) => {

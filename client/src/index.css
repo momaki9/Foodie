@@ -254,3 +254,11 @@ button:hover {
 .list-group-item:hover button {
     opacity: 1;
 }
+
+.card {
+    transition: all 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}

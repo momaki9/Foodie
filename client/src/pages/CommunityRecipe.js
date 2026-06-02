@@ -1,62 +1,86 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useQuery, useMutation } from "@apollo/client";
+import { Button } from "react-bootstrap";
+
+import {
+    GET_A_RECIPE_BY_ID,
+    QUERY_ME,
+    MY_GROCERY_LISTS
+} from "../utils/queries";
+
+import {
+    ADD_ITEMS_TO_GROCERY_LIST,
+    SAVE_RECIPE,
+    CREATE_GROCERY_LIST
+} from '../utils/mutations';
+
 import RecipeDetails from "../components/Recipe";
 import AddToGroceryListModal from "../components/AddToGroceryListModal";
-import Button from 'react-bootstrap/Button';
 import { FaArrowLeft, FaShoppingCart, FaHeart } from "react-icons/fa";
-import { useQuery, useMutation } from "@apollo/client";
-
-import { SAVE_RECIPE, ADD_ITEMS_TO_GROCERY_LIST, CREATE_GROCERY_LIST } from "../utils/mutations";
-import { QUERY_ME, GET_RECIPE_BY_ID, MY_GROCERY_LISTS } from "../utils/queries";
 import Auth from "../utils/auth";
 import { ingredientHelper } from "../utils/helpers";
-import "../index.css";
 
-const RecipePage = () => {
+const CommunityRecipe = () => {
     const { id } = useParams();
     const [showAddToListModal, setShowAddToListModal] = useState(false);
-    const { loading, data: recipeData, error } = useQuery(GET_RECIPE_BY_ID, {
-        variables: { id: parseInt(id) }
+    const [saved, setSaved] = useState(false);
+    const { loading, data } = useQuery(GET_A_RECIPE_BY_ID, {
+        variables: {
+            id: id
+        }
     });
-    const [saveRecipe] = useMutation(SAVE_RECIPE);
+    const { loading: meLoading, data: meData } = useQuery(QUERY_ME);
+    const { loading: listLoading, data: listData } = useQuery(MY_GROCERY_LISTS);
     const [addItemsToGroceryList] = useMutation(ADD_ITEMS_TO_GROCERY_LIST);
     const [createGroceryList] = useMutation(CREATE_GROCERY_LIST);
-    const { data } = useQuery(QUERY_ME, {
-        skip: !Auth.loggedIn()
-    });
+    const [saveRecipe] = useMutation(SAVE_RECIPE);
 
-    const {
-        loading: myListsLoading,
-        data: myListsData,
-        error: myListsError
-    } = useQuery(MY_GROCERY_LISTS);
-
-    const [saved, setSaved] = useState(false);
-
+    const me = meData?.me;
+    const recipeData = data?.getARecipeById || {};
     const navigate = useNavigate();
-    const user = data?.me;
-    const recipe = recipeData?.getRecipeById;
 
     useEffect(() => {
-        if (!user || !Auth.loggedIn()) return;
+        if (!me || !Auth.loggedIn()) return;
 
-        const alreadySaved = user.savedRecipes.some(
-            (savedRecipe) => savedRecipe.sourceId === id
+        const alreadySaved = me.savedRecipes?.some(
+            (savedRecipe) => savedRecipe._id === id
         );
 
         setSaved(alreadySaved);
-    }, [user, id])
+    }, [me, id])
 
-    if (loading) {
-        return <h1>Loading...</h1>
-    };
+    const handleSaveRecipe = async () => {
 
-    if (!recipe) {
-        return <h1>Recipe not found!</h1>
-    };
+        if (saved) return;
+        if (!recipeData._id) return;
+
+        try {
+            const { data } = await saveRecipe({
+                variables: {
+                    savedRecipeData: {
+                        sourceId: recipeData._id.toString(),
+                        title: recipeData.title,
+                        image: recipeData.image,
+                        source: "local"
+                    }
+                },
+                refetchQueries: [{
+                    query: QUERY_ME
+                }]
+            });
+
+            setSaved(true);
+
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
     const handleAddIngredientsToGroceryList = async (listId) => {
-        const ingredientNames = ingredientHelper(recipe.extendedIngredients, "spoonacular");
+
+        const ingredientNames = ingredientHelper(recipeData.ingredients, "local");
+        
         try {
             await addItemsToGroceryList({
                 variables: {
@@ -70,8 +94,8 @@ const RecipePage = () => {
         }
     };
 
-    const handleCreatingNewGroceryList = async ({title, items}) => {
-        const groceryItems = recipe.extendedIngredients.map(
+    const handleCreatingNewGroceryList = async () => {
+        const groceryItems = recipeData.ingredients.map(
             ingredient => ({
                 value: ingredient.name,
                 checked: false
@@ -81,7 +105,7 @@ const RecipePage = () => {
             const { data } = await createGroceryList({
                 variables: {
                     listData: {
-                        title: recipe.title,
+                        title: recipeData.title,
                         items: groceryItems
                     }
                 },
@@ -97,44 +121,21 @@ const RecipePage = () => {
         }
     }
 
-    const handleSaveRecipe = async () => {
-
-        if (saved) return;
-
-        try {
-            const { data } = await saveRecipe({
-                variables: {
-                    savedRecipeData: {
-                        sourceId: recipe.id.toString(),
-                        title: recipe.title,
-                        image: recipe.image,
-                        source: "spoonacular"
-                    }
-                }
-            });
-
-            setSaved(true);
-
-        } catch (err) {
-            console.error(err)
-        }
-    }
+    if (loading) {
+        return <h1>Loading...</h1>
+    };
 
     return (
         <div className="recipe-page-container">
             <Button variant="light" className="rounded-circle mb-3 shadow-sm" onClick={() => navigate(-1)}> <FaArrowLeft /> </Button>
             <RecipeDetails
-                id={id}
-                title={recipe.title}
-                image={recipe.image}
-                servings={recipe.servings}
-                readyInMinutes={recipe.readyInMinutes}
-                cookingMinutes={recipe.cookingMinutes}
-                sourceName={recipe.sourceName}
-                summary={recipe.summary}
-                extendedIngredients={recipe.extendedIngredients}
-                instructions={recipe.instructions}
-                spoonacularSourceUrl={recipe.spoonacularSourceUrl}
+                id={recipeData._id}
+                title={recipeData.title}
+                image={recipeData.image}
+                sourceName={recipeData.author?.username}
+                summary={recipeData.summary}
+                extendedIngredients={recipeData.ingredients}
+                instructions={recipeData.instructions}
                 actions={
                     <div className="d-flex align-items-center gap-2 flex-wrap">
                         <Button
@@ -143,7 +144,7 @@ const RecipePage = () => {
                             className="rounded-pill"
                             onClick={() => setShowAddToListModal(true)}
                         >
-                            <FaShoppingCart className="me-2"/>
+                            <FaShoppingCart className="me-2" />
                             Grocery List
                         </Button>
                         <Button
@@ -154,16 +155,17 @@ const RecipePage = () => {
                                 handleSaveRecipe();
                             }}
                         >
-                            <FaHeart className="me-2"/>
+                            <FaHeart className="me-2" />
                             {saved ? " Saved!" : " Save"}
                         </Button>
                     </div>
                 }
             />
+            {/* only if logged in */}
             <AddToGroceryListModal
                 show={showAddToListModal}
                 handleClose={() => setShowAddToListModal(false)}
-                groceryLists={myListsData?.myGroceryLists || []}
+                groceryLists={listData?.myGroceryLists || []}
                 onSelectList={handleAddIngredientsToGroceryList}
                 onCreateNewList={handleCreatingNewGroceryList}
             />
@@ -171,4 +173,4 @@ const RecipePage = () => {
     )
 }
 
-export default RecipePage;
+export default CommunityRecipe;

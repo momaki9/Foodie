@@ -98,7 +98,11 @@ const SavedRecipesPage = () => {
                                         title={savedRecipe.title}
                                         name={savedRecipe.source}
                                         source={savedRecipe.source}
-                                        to={`/explore/${savedRecipe.sourceId}`}
+                                        to={
+                                            savedRecipe.source == "spoonacular"
+                                                ? `/explore/${savedRecipe.sourceId}`
+                                                : `/community-recipes/${savedRecipe.sourceId}`
+                                        }
                                     />
                                 </div>
                             </Col>

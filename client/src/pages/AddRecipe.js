@@ -4,7 +4,7 @@ import { ADD_RECIPE } from '../utils/mutations';
 import MyRecipeForm from '../components/MyRecipeForm';
 import "../index.css";
 
-function AddRecipePage() {
+function AddRecipe() {
 
   const [recipeForm, setRecipeForm] = useState({ title: "", summary: "", instructions: "", image: "", link: "" });
   const [ingredientForm, setIngredientForm] = useState([{ id: crypto.randomUUID(), name: "", amount: 0, unit: "" }]);
@@ -115,4 +115,4 @@ function AddRecipePage() {
   );
 };
 
-export default AddRecipePage;
+export default AddRecipe;

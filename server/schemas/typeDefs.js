@@ -124,6 +124,7 @@ const typeDefs = gql`
     type Query {
         me: User
         users: [User]!
+        getARecipeById(id: ID!): Recipe
         getMyRecipeById(id: ID!): Recipe
         getRecipeById(id: Int!): SpoonacularRecipe
         getRecipes: [SpoonacularRecipe]

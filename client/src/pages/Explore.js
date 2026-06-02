@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client";
 import { GET_RECIPES } from "../utils/queries";
 import { Container, Row, Col } from "react-bootstrap";
 
-const ExplorePage = () => {
+const Explore = () => {
 
   const [visibleCount, setVisibleCount] = useState(25);
   const { ref, inView } = useInView();
@@ -64,4 +64,4 @@ const ExplorePage = () => {
   )
 }
 
-export default ExplorePage;
+export default Explore;
