@@ -11,7 +11,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import RecipeDetails from "../components/Recipe";
 import SimpleDeleteModal from "../components/SimpleDeleteModal";
 
-const MyRecipePage = () => {
+const MyRecipe = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
@@ -112,4 +112,4 @@ const MyRecipePage = () => {
     )
 }
 
-export default MyRecipePage;
+export default MyRecipe;

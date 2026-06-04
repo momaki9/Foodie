@@ -1,168 +1,193 @@
-import React, { useState } from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { MY_GROCERY_LISTS, MY_ACTIVE_GROCERY_LIST } from "../utils/queries";
-import { CREATE_GROCERY_LIST } from "../utils/mutations";
+import React, { useState, useEffect } from "react";
+import { Container } from "react-bootstrap";
+import { useMutation, useQuery } from "@apollo/client";
+import { MY_GROCERY_LISTS, GET_GROCERY_LIST } from "../utils/queries";
+import {
+    TOGGLE_GROCERY_ITEM,
+    ADD_GROCERY_ITEM,
+    SET_ACTIVE_GROCERY_LIST,
+    DELETE_GROCERY_LIST,
+    DELETE_GROCERY_ITEM
+} from "../utils/mutations";
+import { useParams, useNavigate } from "react-router-dom";
 
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import Card from "react-bootstrap/Card";
-import { FaTrash } from "react-icons/fa";
-import "../index.css";
+import GroceryListHeader from "../components/GroceryListHeader";
+import GroceryListEditor from "../components/GroceryListEditor";
+import GroceryListsSidebar from "../components/GroceryListsSidebar";
 
-console.log("TRASH PAGE??")
+const GroceryList = () => {
+    const [showSidebar, setShowSidebar] = useState(false);
+    const [items, setItems] = useState([]);
+    const [title, setTitle] = useState("");
 
-const GroceryListPage = () => {
+    const { id } = useParams();
 
-    const [groceryList, setGroceryList] = useState(
-        {
-            title: "",
-            items: [
-                {
-                    id: crypto.randomUUID(),
-                    value: "",
-                    checked: false
-                }
-            ]
+    const { loading, data, error } = useQuery(MY_GROCERY_LISTS);
+    const {
+        loading: groceryListLoading,
+        data: groceryListData,
+        error: groceryListError
+    } = useQuery(GET_GROCERY_LIST, {
+        variables: {
+            id
         }
-    );
-    const [successMessage, setSuccessMessage] = useState("");
-    const { loading, data } = useQuery(MY_ACTIVE_GROCERY_LIST);
-    const [createGroceryList, { error }] = useMutation(CREATE_GROCERY_LIST);
+    });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setGroceryList((prev) => ({
-            ...prev,
-            [name]: value
+    const navigate = useNavigate();
+
+    const [toggleGroceryItem, { error: toggleError }] = useMutation(TOGGLE_GROCERY_ITEM);
+    const [addGroceryItem, { error: addItemError }] = useMutation(ADD_GROCERY_ITEM);
+    const [setActiveGroceryList] = useMutation(SET_ACTIVE_GROCERY_LIST);
+    const [deleteGroceryList] = useMutation(DELETE_GROCERY_LIST);
+    const [deleteGroceryItem] = useMutation(DELETE_GROCERY_ITEM);
+
+    const groceryLists = data?.myGroceryLists;
+    const groceryList = groceryListData?.getGroceryList;
+
+    useEffect(() => {
+        if (groceryList) {
+            setItems([...groceryList.items]);
+            setTitle(groceryList.title);
+        }
+    }, [groceryList]);
+
+    useEffect(() => {
+        if (!id) return;
+        setActiveGroceryList({
+            variables: {
+                listId: id
+            }
+        })
+    }, [id, setActiveGroceryList]);
+
+    const handleToggleItem = async (itemId) => {
+        const previousItems = items.map(item => ({
+            ...item
         }));
-    };
 
-    const addItem = () => {
-        setGroceryList((prev) => ({
-            ...prev,
-            items: [
-                ...prev.items,
-                {
-                    id: crypto.randomUUID(),
-                    value: "",
-                    checked: false
+        const updatedItems = items.map((item) => {
+            if (item._id !== itemId) {
+                return item;
+            }
+            return {
+                ...item,
+                checked: !item.checked
+            }
+        });
+
+        setItems(updatedItems);
+        // apollo cache mutation
+        try {
+            await toggleGroceryItem({
+                variables: {
+                    listId: groceryList._id,
+                    itemId
                 }
-            ]
-        }));
+            });
+        } catch (err) {
+            console.error(err);
+            setItems(previousItems);
+        }
     };
 
-    const deleteItem = (id) => {
-        setGroceryList((prev) => ({
-            ...prev,
-            items: prev.items.filter((item) => item.id !== id)
+    const handleAddItem = async (item) => {
+        const previousItems = items.map(item => ({
+            ...item
         }));
-    };
 
-    const updateItem = (id, value) => {
-        setGroceryList((prev) => ({
-            ...prev,
-            items: prev.items.map((item) =>
-                item.id === id ? { ...item, value } : item
-            )
-        }));
-    };
-
-    const toggleChecked = (id) => {
-        setGroceryList((prev) => ({
-            ...prev,
-            items: prev.items.map((item) =>
-                item.id === id
-                    ? { ...item, checked: !item.checked }
-                    : item
-            )
-        }));
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const groceryListData = {
-            title: groceryList.title,
-            items: groceryList.items
-                .filter((item) => item.value.trim())
-                .map((item) => ({
-                    value: item.value.trim(),
-                    checked: item.checked ?? false
-                }))
-        };
+        const updatedItems = [...items, item];
+        setItems(updatedItems);
 
         try {
-            const { data } = await createGroceryList({
-                variables: { listData: groceryListData }
+            await addGroceryItem({
+                variables: {
+                    listId: groceryList._id,
+                    item
+                }
             });
-            setSuccessMessage("Saved!");
+
+        } catch (err) {
+            console.error(err);
+            setItems(previousItems);
+        }
+    };
+
+    const handleDeleteItem = async (itemId) => {
+        const previousItems = [...items];
+        const updatedItems = items.filter(item => item._id !== itemId);
+        setItems(updatedItems);
+
+        try {
+            await deleteGroceryItem({
+                variables: {
+                    listId: groceryList._id,
+                    itemId
+                }
+            });
+
+        } catch (err) {
+            console.error(err);
+            setItems(previousItems);
+        }
+    };
+
+    const handleDeleteList = async (listId) => {
+
+        try {
+            await deleteGroceryList({
+                variables: {
+                    listId: listId
+                },
+                refetchQueries: [
+                    {
+                        query: MY_GROCERY_LISTS
+                    }
+                ]
+            });
+
+            navigate("/groceryList")
+
         } catch (err) {
             console.error(err)
         }
     };
 
-    return (
-        <Container className="d-flex justify-content-center mt-4">
-            <Card style={{ width: "100%", maxWidth: "550px"}} className="p-3 shadow-sm">
-                <h3 className="text-center mb-3">Grocery List</h3>
-                <Form onSubmit={handleSubmit}>
-                    <Form.Row>
-                        <Form.Group as={Col}>
-                            <Form.Control
-                                name='title'
-                                type="text"
-                                placeholder="Give your grocery list a title"
-                                value={groceryList.title}
-                                onChange={handleChange}
-                            />
-                        </Form.Group>
-                    </Form.Row>
-                    {groceryList.items.map((item) => (
-                        <Form.Row key={item.id}>
-                            <Col xs="auto">
-                                <div className="circle-wrapper" onClick={() => toggleChecked(item.id)}>
-                                    <div className={item.checked ? "circle checked" : "circle"}/>
-                                </div>
-                                {/* <Form.Check
-                                    type="checkbox"
-                                    checked={item.checked}
-                                    onChange={() => toggleChecked(item.id)}
-                                /> */}
-                            </Col>
-                            <Form.Group as={Col}>
-                                <Form.Control
-                                    id="grocery-input"
-                                    value={item.value}
-                                    onChange={(e) => updateItem(item.id, e.target.value)}
-                                    style={{ textDecoration: item.checked ? "line-through" : "none" }}
-                                />
-                            </Form.Group>
-                            <Col xs="auto">
-                                <Button
-                                    variant="link"
-                                    className="p-0 text-danger"
-                                    onClick={() => deleteItem(item.id)}
-                                >
-                                    <FaTrash />
-                                </Button>
-                            </Col>
-                        </Form.Row>
-                    ))}
-                    <div className="add-btn">
-                        <Button type='button' onClick={addItem} variant="dark">Add</Button>
-                    </div>
-                    <div>
-                        <Button type="submit" block>Save</Button>
-                    </div>
-                </Form>
-                {successMessage && (
-                    <h4>{successMessage}</h4>
-                )}
-            </Card>
-        </Container>
-    )
-}
+    if (loading || groceryListLoading) {
+        return <p>Loading...</p>
+    };
 
-export default GroceryListPage;
+    if (error || groceryListError) {
+        return <p>Something went wrong...</p>
+    };
+
+    return (
+        <>
+            <GroceryListsSidebar
+                show={showSidebar}
+                handleClose={() => setShowSidebar(false)}
+                groceryLists={groceryLists}
+                // should the id be stored in a state variable??
+                activeListId={groceryList?._id}
+                onDeleteList={handleDeleteList}
+
+            />
+            <Container fluid="md" className="">
+                <GroceryListHeader
+                    title={title}
+                    setTitle={setTitle}
+                    onOpenSidebar={() => setShowSidebar(true)}
+                />
+                <GroceryListEditor
+                    items={items}
+                    setItems={setItems}
+                    onToggleItem={handleToggleItem}
+                    onAddItem={handleAddItem}
+                    onDeleteItem={handleDeleteItem}
+                />
+            </Container>
+
+        </>
+    )
+};
+
+export default GroceryList;
