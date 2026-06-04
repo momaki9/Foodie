@@ -12,7 +12,7 @@ import Auth from "../utils/auth";
 import { ingredientHelper } from "../utils/helpers";
 import "../index.css";
 
-const RecipePage = () => {
+const Recipe = () => {
     const { id } = useParams();
     const [showAddToListModal, setShowAddToListModal] = useState(false);
     const { loading, data: recipeData, error } = useQuery(GET_RECIPE_BY_ID, {
@@ -171,4 +171,4 @@ const RecipePage = () => {
     )
 }
 
-export default RecipePage;
+export default Recipe;

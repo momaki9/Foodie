@@ -11,7 +11,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 
-const SignupPage = ({setLoggedIn}) => {
+const Signup = ({setLoggedIn}) => {
     const [validated, setValidated] = useState(false);
     const [formState, setFormState] = useState({ username: "", email: "", password: "" });
     const [signup, { error, data }] = useMutation(SIGN_UP);
@@ -135,4 +135,4 @@ const SignupPage = ({setLoggedIn}) => {
     )
 };
 
-export default SignupPage;
+export default Signup;

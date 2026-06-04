@@ -145,7 +145,7 @@ const Home = () => {
                 key={recipe._id}
                 className="mb-4"
               >
-                <Link to={`/community-recipes/${recipe._id}`} className='recipe-link'>
+                <Link to={`/communityRecipes/${recipe._id}`} className='recipe-link'>
                   <Card className="h-100 border-0 shadow-sm">
                     <Card.Body>
                       <h5>{recipe.title}</h5>

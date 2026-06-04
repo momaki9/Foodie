@@ -96,7 +96,7 @@ function NavComp({ loggedIn, setLoggedIn }) {
 
                             <FormControl
                                 type="text"
-                                placeholder="Search recipes..."
+                                placeholder="Search for a recipe..."
                                 className="border-0 bg-transparent shadow-none"
                                 value={searchInput}
                                 onChange={(e) => setSearchInput(e.target.value)}

@@ -12,19 +12,17 @@ import { setContext } from '@apollo/client/link/context';
 import NavComp from "./components/Nav";
 import Login from "./pages/Login";
 import AddRecipe from "./pages/AddRecipe";
-// import GroceryListPage from "./pages/GroceryList";
 import Explore from "./pages/Explore";
 import Home from "./pages/Home";
-import SignupPage from "./pages/Signup";
-import RecipePage from "./pages/Recipe";
+import Signup from "./pages/Signup";
+import Recipe from "./pages/Recipe";
 import SearchResults from "./pages/Search";
-import MyGroceryListPage from "./pages/MyGroceryList";
-import SavedRecipesPage from "./pages/SavedRecipes";
+import SavedRecipes from "./pages/SavedRecipes";
 import GroceryListsRedirect from "./pages/GroceryListRedirect";
 import NewGroceryList from "./pages/NewGroceryList";
-import GroceryListPage from "./pages/GroceryListPage";
+import GroceryList from "./pages/GroceryList";
 import MyRecipesPage from "./pages/MyRecipes";
-import MyRecipePage from "./pages/MyRecipePage";
+import MyRecipe from "./pages/MyRecipe";
 import EditRecipe from "./pages/EditRecipe";
 import CommunityRecipe from "./pages/CommunityRecipe";
 
@@ -64,7 +62,7 @@ function App() {
           />
           <Route 
             path="/signup"
-            element={<SignupPage setLoggedIn={setLoggedIn} />}
+            element={<Signup setLoggedIn={setLoggedIn} />}
           />
           <Route
             path="/login"
@@ -74,26 +72,18 @@ function App() {
             path="/add"
             element={<AddRecipe />}
           />
-          {/* <Route 
-            path="/list"
-            element={<GroceryListPage />}
-          /> */}
           <Route 
             path="/explore"
             element={<Explore />}
           />
           <Route
             path="/explore/:id"
-            element={<RecipePage />} 
+            element={<Recipe />} 
           />
           <Route 
             path="/search"
             element={<SearchResults />}
           />
-          {/* <Route 
-            path="/myList"
-            element={<MyGroceryListPage />}
-          /> */}
           <Route 
             path="/groceryList"
             element={<GroceryListsRedirect />}
@@ -104,11 +94,11 @@ function App() {
           />
           <Route 
             path="/groceryList/:id"
-            element={<GroceryListPage />}
+            element={<GroceryList />}
           />
           <Route 
             path="/savedRecipes"
-            element={<SavedRecipesPage />}
+            element={<SavedRecipes />}
           />
           <Route 
             path="/myRecipes"
@@ -116,14 +106,14 @@ function App() {
           />
           <Route 
             path="/myRecipes/:id"
-            element={<MyRecipePage />}
+            element={<MyRecipe />}
           />
           <Route
             path="/myRecipes/edit/:id"
             element={<EditRecipe />} 
           />
           <Route 
-            path="/community-recipes/:id"
+            path="/communityRecipes/:id"
             element={<CommunityRecipe />}
           />
         </Routes>

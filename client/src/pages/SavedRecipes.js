@@ -15,7 +15,7 @@ import SimpleDeleteModal from "../components/SimpleDeleteModal";
 
 import { FaTimes } from "react-icons/fa";
 
-const SavedRecipesPage = () => {
+const SavedRecipes = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedRecipeId, setSelectedRecipeId] = useState(null);
     const { loading, data } = useQuery(QUERY_ME);
@@ -101,7 +101,7 @@ const SavedRecipesPage = () => {
                                         to={
                                             savedRecipe.source == "spoonacular"
                                                 ? `/explore/${savedRecipe.sourceId}`
-                                                : `/community-recipes/${savedRecipe.sourceId}`
+                                                : `/communityRecipes/${savedRecipe.sourceId}`
                                         }
                                     />
                                 </div>
@@ -121,4 +121,4 @@ const SavedRecipesPage = () => {
     )
 };
 
-export default SavedRecipesPage;
+export default SavedRecipes;
