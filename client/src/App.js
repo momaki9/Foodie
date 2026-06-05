@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
   ApolloClient,
@@ -30,7 +30,9 @@ import CommunityRecipe from "./pages/CommunityRecipe";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Auth from "./utils/auth";
 
-const httpLink = createHttpLink({ uri: '/graphql' });
+const httpLink = createHttpLink({
+  uri: process.env.REACT_APP_API_URL || "http://localhost:3001/graphql"
+});
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("id_token");
@@ -54,13 +56,13 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <NavComp loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
+        <NavComp loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
         <Routes>
           <Route
             path="/"
-            element={<Home loggedIn={loggedIn}/>} 
+            element={<Home loggedIn={loggedIn} />}
           />
-          <Route 
+          <Route
             path="/signup"
             element={<Signup setLoggedIn={setLoggedIn} />}
           />
@@ -68,51 +70,51 @@ function App() {
             path="/login"
             element={<Login setLoggedIn={setLoggedIn} />}
           />
-          <Route 
+          <Route
             path="/add"
             element={<AddRecipe />}
           />
-          <Route 
+          <Route
             path="/explore"
             element={<Explore />}
           />
           <Route
             path="/explore/:id"
-            element={<Recipe />} 
+            element={<Recipe />}
           />
-          <Route 
+          <Route
             path="/search"
             element={<SearchResults />}
           />
-          <Route 
+          <Route
             path="/groceryList"
             element={<GroceryListsRedirect />}
           />
-          <Route 
+          <Route
             path="/groceryList/new"
             element={<NewGroceryList />}
           />
-          <Route 
+          <Route
             path="/groceryList/:id"
             element={<GroceryList />}
           />
-          <Route 
+          <Route
             path="/savedRecipes"
             element={<SavedRecipes />}
           />
-          <Route 
+          <Route
             path="/myRecipes"
             element={<MyRecipesPage />}
           />
-          <Route 
+          <Route
             path="/myRecipes/:id"
             element={<MyRecipe />}
           />
           <Route
             path="/myRecipes/edit/:id"
-            element={<EditRecipe />} 
+            element={<EditRecipe />}
           />
-          <Route 
+          <Route
             path="/communityRecipes/:id"
             element={<CommunityRecipe />}
           />
