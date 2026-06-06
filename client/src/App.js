@@ -31,7 +31,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Auth from "./utils/auth";
 
 const httpLink = createHttpLink({
-  uri: process.env.REACT_APP_API_URL || "http://localhost:3001/graphql"
+  uri: process.env.REACT_APP_API_URL || "https://foodie-50of.onrender.com/graphql"
 });
 
 const authLink = setContext((_, { headers }) => {

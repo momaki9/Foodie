@@ -7,9 +7,10 @@
 }
 
 .form-el {
-    width: 90%;
+    max-width: 900px;
     align-items: center;
-    margin-left: 3%;
+    margin: 0;
+    padding: 1rem;
 }
 
 .circle-wrapper {
@@ -76,6 +77,11 @@
 .form-control {
     border-radius: 12px;
     padding: 12px 14px;
+}
+
+.form-check-input {
+    transform: scale(1.3);
+    margin-top: 0.25rem;
 }
 
 .form-control:focus {
@@ -177,6 +183,14 @@
     padding: 20px;
 }
 
+.recipe-editor .ql-editor {
+    min-height: 300px;
+}
+
+.recipe-editor {
+    margin-bottom: 1rem;
+}
+
 .navbar .nav-link {
     font-weight: 500;
     transition: all 0.2s ease;
@@ -247,11 +261,11 @@ button:hover {
 }
 
 .list-group-item button {
-    opacity: 0;
+    opacity: 0.5;
     transition: opacity 0.2s ease;
 }
 
-.list-group-item:hover button {
+.list-group-item button:hover {
     opacity: 1;
 }
 

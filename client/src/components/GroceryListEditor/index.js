@@ -59,7 +59,7 @@ const GroceryListEditor = ({
                                             textDecoration: item.checked
                                                 ? 'line-through'
                                                 : 'none',
-                                            fontSize: '1.05rem'
+                                            fontSize: '1.15rem'
                                         }}
                                     >
                                         {item.value}

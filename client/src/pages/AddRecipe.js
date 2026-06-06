@@ -7,7 +7,7 @@ import "../index.css";
 function AddRecipe() {
 
   const [recipeForm, setRecipeForm] = useState({ title: "", summary: "", instructions: "", image: "", link: "" });
-  const [ingredientForm, setIngredientForm] = useState([{ id: crypto.randomUUID(), name: "", amount: 0, unit: "" }]);
+  const [ingredientForm, setIngredientForm] = useState([{ id: crypto.randomUUID(), name: "", amount: "", unit: "" }]);
   const [successMessage, setSuccessMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
 
@@ -36,7 +36,7 @@ function AddRecipe() {
       {
         id: crypto.randomUUID(),
         name: "",
-        amount: 0,
+        amount: "",
         unit: ""
       }
     ]);
@@ -63,7 +63,10 @@ function AddRecipe() {
 
     const recipeData = {
       ...recipeForm,
-      ingredients: ingredientForm.map(({ id, ...rest }) => rest)
+      ingredients: ingredientForm.map(({ id, amount, ...rest }) => ({
+        ...rest,
+        amount: amount === "" ? null : Number(amount)
+      }))
     }
 
     try {
@@ -83,7 +86,7 @@ function AddRecipe() {
         {
           id: crypto.randomUUID(),
           name: "",
-          amount: 0,
+          amount: "",
           unit: ""
         }
       ]);

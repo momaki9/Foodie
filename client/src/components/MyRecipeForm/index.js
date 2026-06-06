@@ -55,6 +55,7 @@ const MyRecipeForm = ({
             <Form.Group className='mb-4'>
                 <Form.Label>Instructions</Form.Label>
                 <ReactQuill
+                    className="recipe-editor"
                     theme='snow'
                     value={recipeForm.instructions}
                     onChange={handleInstructionsChange}
@@ -86,10 +87,10 @@ const MyRecipeForm = ({
                 </Button>
             </div>
             <div
-                className="position-fixed"
+                className="position-fixed p-3"
                 style={{
-                    bottom: "90px",
-                    right: "150px",
+                    bottom: "20px",
+                    right: "20px",
                     zIndex: 1050
                 }}
             >

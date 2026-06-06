@@ -7,8 +7,8 @@ import { FaTrash } from "react-icons/fa";
 
 function IngredientRow({ row, updateRow, deleteRow }) {
   return (
-    <Form.Row>
-      <Form.Group as={Col}>
+    <Form.Row className="align-items-end">
+      <Form.Group as={Col} xs={12} md={5}>
         <Form.Label>Ingredient Name</Form.Label>
         <Form.Control
           value={row.name}
@@ -18,18 +18,18 @@ function IngredientRow({ row, updateRow, deleteRow }) {
         />
       </Form.Group>
 
-      <Form.Group as={Col}>
+      <Form.Group as={Col} xs={6} md={3}>
         <Form.Label>Amount</Form.Label>
         <Form.Control
           type="number"
           value={row.amount}
           onChange={(e) =>
-            updateRow(row.id, "amount", Number(e.target.value))
+            updateRow(row.id, "amount", e.target.value)
           }
         />
       </Form.Group>
 
-      <Form.Group as={Col}>
+      <Form.Group as={Col} xs={6} md={3}>
         <Form.Label>Unit</Form.Label>
         <Form.Control
           as="select"
@@ -49,14 +49,15 @@ function IngredientRow({ row, updateRow, deleteRow }) {
           <option>milliliter (mL)</option>
         </Form.Control>
       </Form.Group>
-
-      <Button
-        className="p-0 text-danger"
-        variant="link"
-        onClick={() => deleteRow(row.id)}
-      >
-        <FaTrash />
-      </Button>
+      <Form.Group as={Col} xs="auto" className="d-flex align-items-center">
+        <Button
+          className="p-0 text-danger"
+          variant="link"
+          onClick={() => deleteRow(row.id)}
+        >
+          <FaTrash />
+        </Button>
+      </Form.Group>
     </Form.Row>
   );
 }
