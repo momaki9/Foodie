@@ -36,6 +36,10 @@
     position: relative;
 }
 
+.ingredient-row {
+    padding: 0.25rem 0;
+}
+
 .circle.checked::after {
     content: "";
     position: absolute;

@@ -17,11 +17,14 @@ import { useApolloClient } from '@apollo/client';
 function NavComp({ loggedIn, setLoggedIn }) {
 
     const [searchInput, setSearchInput] = useState("");
+    const [expanded, setExpanded] = useState(false);
+
     const navigate = useNavigate();
 
     const handleLogout = () => {
         Auth.logout();
         setLoggedIn(false);
+        setExpanded(false)
     };
 
     const handleSearch = (e) => {
@@ -38,6 +41,7 @@ function NavComp({ loggedIn, setLoggedIn }) {
         <Navbar
             bg="white"
             expand="lg"
+            expanded={expanded}
             className="shadow-sm py-3 border-bottom mb-5"
             sticky="top"
         >
@@ -56,23 +60,23 @@ function NavComp({ loggedIn, setLoggedIn }) {
                     Foodie
                 </Navbar.Brand>
 
-                <Navbar.Toggle aria-controls="main-navbar" />
+                <Navbar.Toggle aria-controls="main-navbar" onClick={() => setExpanded(!expanded)} />
 
                 <Navbar.Collapse id="main-navbar" className="text-center">
 
                     {/* LEFT NAV LINKS */}
                     <Nav className="mr-auto ml-lg-4 align-items-center">
 
-                        <Nav.Link as={Link} to="/">
+                        <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>
                             Home
                         </Nav.Link>
 
-                        <Nav.Link as={Link} to="/explore">
+                        <Nav.Link as={Link} to="/explore" onClick={() => setExpanded(false)}>
                             Explore
                         </Nav.Link>
 
                         {loggedIn && (
-                            <Nav.Link as={Link} to="/groceryList">
+                            <Nav.Link as={Link} to="/groceryList" onClick={() => setExpanded(false)}>
                                 Grocery List
                             </Nav.Link>
                         )}
@@ -112,7 +116,7 @@ function NavComp({ loggedIn, setLoggedIn }) {
 
                         {!loggedIn ? (
                             <>
-                                <Nav.Link as={Link} to="/login">
+                                <Nav.Link as={Link} to="/login" onClick={() => setExpanded(false)}>
                                     Login
                                 </Nav.Link>
 
@@ -136,15 +140,15 @@ function NavComp({ loggedIn, setLoggedIn }) {
                                 id="profile-dropdown"
                                 alignRight
                             >
-                                <NavDropdown.Item as={Link} to="/myRecipes">
+                                <NavDropdown.Item as={Link} to="/myRecipes" onClick={() => setExpanded(false)}>
                                     My Recipes
                                 </NavDropdown.Item>
 
-                                <NavDropdown.Item as={Link} to="/savedRecipes">
+                                <NavDropdown.Item as={Link} to="/savedRecipes" onClick={() => setExpanded(false)}>
                                     Saved Recipes
                                 </NavDropdown.Item>
 
-                                <NavDropdown.Item as={Link} to="/add">
+                                <NavDropdown.Item as={Link} to="/add" onClick={() => setExpanded(false)}>
                                     Create a Recipe
                                 </NavDropdown.Item>
 

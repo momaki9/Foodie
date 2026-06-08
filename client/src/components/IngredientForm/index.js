@@ -1,36 +1,36 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Row from 'react-bootstrap/Row';
 import Col from "react-bootstrap/Col";
 import "../../index.css";
 import { FaTrash } from "react-icons/fa";
 
 function IngredientRow({ row, updateRow, deleteRow }) {
   return (
-    <Form.Row className="align-items-end">
-      <Form.Group as={Col} xs={12} md={5}>
-        <Form.Label>Ingredient Name</Form.Label>
+    <Row className="align-items-center ingredient-row">
+      <Col md={5}>
         <Form.Control
+          placeholder="ingredient"
           value={row.name}
           onChange={(e) =>
             updateRow(row.id, "name", e.target.value)
           }
         />
-      </Form.Group>
+      </Col>
 
-      <Form.Group as={Col} xs={6} md={3}>
-        <Form.Label>Amount</Form.Label>
+      <Col md={3}>
         <Form.Control
           type="number"
+          placeholder="Amount"
           value={row.amount}
           onChange={(e) =>
             updateRow(row.id, "amount", e.target.value)
           }
         />
-      </Form.Group>
+      </Col>
 
-      <Form.Group as={Col} xs={6} md={3}>
-        <Form.Label>Unit</Form.Label>
+      <Col md={3}>
         <Form.Control
           as="select"
           value={row.unit}
@@ -48,8 +48,9 @@ function IngredientRow({ row, updateRow, deleteRow }) {
           <option>fluid ounce (fl oz)</option>
           <option>milliliter (mL)</option>
         </Form.Control>
-      </Form.Group>
-      <Form.Group as={Col} xs="auto" className="d-flex align-items-center">
+      </Col>
+
+      <Col md={1}>
         <Button
           className="p-0 text-danger"
           variant="link"
@@ -57,8 +58,8 @@ function IngredientRow({ row, updateRow, deleteRow }) {
         >
           <FaTrash />
         </Button>
-      </Form.Group>
-    </Form.Row>
+      </Col>
+    </Row>
   );
 }
 

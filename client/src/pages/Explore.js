@@ -30,7 +30,7 @@ const Explore = () => {
 
   return (
     <section>
-      <h1 className="text-center mb-4">Discover new Foodies</h1>
+      <h1 className="text-center mb-4">Discover new Recipes</h1>
       <Container>
         <Row>
           {recipes.slice(0, visibleCount).map((recipe) => (
