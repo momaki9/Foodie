@@ -3,7 +3,8 @@ import {
     Form,
     Button,
     Col,
-    Toast
+    Toast,
+    Row
 } from "react-bootstrap";
 
 import { FaCheckCircle } from "react-icons/fa";
@@ -55,6 +56,7 @@ const MyRecipeForm = ({
             <Form.Group className='mb-4'>
                 <Form.Label>Instructions</Form.Label>
                 <ReactQuill
+                    className="recipe-editor"
                     theme='snow'
                     value={recipeForm.instructions}
                     onChange={handleInstructionsChange}
@@ -62,6 +64,13 @@ const MyRecipeForm = ({
                     modules={modules}
                 />
             </Form.Group>
+            <h5 className="mt-4 mb-3">Ingredients</h5>
+            <Row className="font-weight-bold d-none d-md-flex mb-2">
+                <Col md={5}>Ingredient</Col>
+                <Col md={3}>Amount</Col>
+                <Col md={3}>Unit</Col>
+                <Col md={1}></Col>
+            </Row>
             {ingredientForm.map((row) => (
                 <IngredientRow
                     key={row.id}
@@ -86,10 +95,10 @@ const MyRecipeForm = ({
                 </Button>
             </div>
             <div
-                className="position-fixed"
+                className="position-fixed p-3"
                 style={{
-                    bottom: "90px",
-                    right: "150px",
+                    bottom: "20px",
+                    right: "20px",
                     zIndex: 1050
                 }}
             >

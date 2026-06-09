@@ -19,7 +19,7 @@ const EditRecipe = () => {
     const [ingredientForm, setIngredientForm] = useState([{
         id: crypto.randomUUID(),
         name: "",
-        amount: 0,
+        amount: "",
         unit: ""
     }]);
 
@@ -61,7 +61,7 @@ const EditRecipe = () => {
             {
                 id: crypto.randomUUID(),
                 name: "",
-                amount: 0,
+                amount: "",
                 unit: ""
             }
         ]);
@@ -104,7 +104,10 @@ const EditRecipe = () => {
 
         const recipeData = {
             ...recipeForm,
-            ingredients: ingredientForm.map(({ id, ...rest }) => rest)
+            ingredients: ingredientForm.map(({ id, amount, ...rest }) => ({
+                ...rest,
+                amount: amount === "" ? null : Number(amount)
+            }))
         }
 
         try {

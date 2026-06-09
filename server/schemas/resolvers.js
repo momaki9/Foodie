@@ -1,5 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Recipe, GroceryList } = require("../models");
+const { getFeaturedCategory } = require("../utils/helper")
 const { signToken } = require("../utils/auth");
 const fetch = require("node-fetch");
 
@@ -27,7 +28,7 @@ const resolvers = {
                 throw new Error("Failed to find the recipe.")
             }
         },
-        getARecipeById: async (parent, { id}) => {
+        getARecipeById: async (parent, { id }) => {
             return await Recipe.findOne({
                 _id: id
             }).populate("author");
@@ -44,9 +45,19 @@ const resolvers = {
         },
         // gets recipes from spoonacular
         getRecipes: async () => {
-            const url = `https://api.spoonacular.com/recipes/complexSearch?sort=healthiness&number=100&apiKey=${process.env.SPOON_API_KEY}&addRecipeInformation=true`;
+            const featured = getFeaturedCategory();
+            // previous end point for /explore page
+            // const url = `https://api.spoonacular.com/recipes/complexSearch?sort=healthiness&number=100&apiKey=${process.env.SPOON_API_KEY}&addRecipeInformation=true`;
+
+            const url = `https://api.spoonacular.com/recipes/complexSearch?${featured.params}&number=100&addRecipeInformation=true&apiKey=${process.env.SPOON_API_KEY}`;
+
             try {
                 const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error(`Spoonacular API error: ${response.status}`)
+                }
+
                 const data = await response.json();
                 return data.results;
             } catch (err) {
@@ -260,7 +271,7 @@ const resolvers = {
             }
             throw new AuthenticationError("Login first!")
         },
-        deleteGroceryItem: async (parent, {listId, itemId}, context) => {
+        deleteGroceryItem: async (parent, { listId, itemId }, context) => {
             if (context.user) {
                 return await GroceryList.findOneAndUpdate(
                     {
@@ -269,7 +280,7 @@ const resolvers = {
                     },
                     {
                         $pull: {
-                            items: { _id: itemId}
+                            items: { _id: itemId }
                         }
                     },
                     {
