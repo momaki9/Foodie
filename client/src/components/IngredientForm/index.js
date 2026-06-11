@@ -33,21 +33,21 @@ function IngredientRow({ row, updateRow, deleteRow }) {
       <Col md={3}>
         <Form.Control
           as="select"
+          className="unit-select"
           value={row.unit}
           onChange={(e) =>
             updateRow(row.id, "unit", e.target.value)
           }
         >
-          <option>Choose one...</option>
-          <option>Cup</option>
-          <option>teaspoon (tsp)</option>
-          <option>tablespoon (tbsp)</option>
-          <option>ounce (oz)</option>
-          <option>gram (g)</option>
-          <option>pound (lb)</option>
-          <option>fluid ounce (fl oz)</option>
-          <option>milliliter (mL)</option>
-          <option>None</option>
+          <option value="">No unit</option>
+          <option value="cup">Cup</option>
+          <option value="teaspoon">Teaspoon</option>
+          <option value="tablespoon">Tablespoon</option>
+          <option value="ounce">Ounce</option>
+          <option value="gram">Gram</option>
+          <option value="pound">Pound</option>
+          <option value="fluid ounce">Fluid Ounce</option>
+          <option value="milliliter">Milliliter</option>
         </Form.Control>
       </Col>
 
