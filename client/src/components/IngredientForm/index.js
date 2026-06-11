@@ -38,7 +38,7 @@ function IngredientRow({ row, updateRow, deleteRow }) {
             updateRow(row.id, "unit", e.target.value)
           }
         >
-          <option>Choose...</option>
+          <option>Choose one...</option>
           <option>Cup</option>
           <option>teaspoon (tsp)</option>
           <option>tablespoon (tbsp)</option>
@@ -47,6 +47,7 @@ function IngredientRow({ row, updateRow, deleteRow }) {
           <option>pound (lb)</option>
           <option>fluid ounce (fl oz)</option>
           <option>milliliter (mL)</option>
+          <option>None</option>
         </Form.Control>
       </Col>
 
