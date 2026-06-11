@@ -142,15 +142,17 @@ const CommunityRecipe = () => {
                             variant="outline-dark"
                             disabled={!Auth.loggedIn()}
                             className="rounded-pill"
+                            style={{margin: "4px"}}
                             onClick={() => setShowAddToListModal(true)}
                         >
-                            <FaShoppingCart className="me-2" />
+                            <FaShoppingCart className="me-2" style={{marginRight: "6px"}}/>
                             Grocery List
                         </Button>
                         <Button
                             variant="outline-danger"
                             disabled={!Auth.loggedIn()}
                             className="rounded-pill"
+                            style={{margin: "4px"}}
                             onClick={() => {
                                 handleSaveRecipe();
                             }}

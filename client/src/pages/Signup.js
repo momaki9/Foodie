@@ -11,15 +11,19 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 
-const Signup = ({setLoggedIn}) => {
+const Signup = ({ setLoggedIn }) => {
     const [validated, setValidated] = useState(false);
     const [formState, setFormState] = useState({ username: "", email: "", password: "" });
+    const [signupError, setSignupError] = useState("");
     const [signup, { error, data }] = useMutation(SIGN_UP);
 
     const navigate = useNavigate();
 
     const handleChange = (event) => {
         const { name, value } = event.target;
+
+        setSignupError("");
+
         setFormState({
             ...formState,
             [name]: value
@@ -30,6 +34,7 @@ const Signup = ({setLoggedIn}) => {
     const handleSubmit = async (event) => {
 
         event.preventDefault();
+        setSignupError("");
 
         const form = event.currentTarget;
 
@@ -59,7 +64,18 @@ const Signup = ({setLoggedIn}) => {
             navigate("/", { replace: true });
 
         } catch (err) {
-            console.error(err)
+            console.error(err);
+            if (
+                err.message.includes("duplicate") ||
+                err.message.includes("E11000") ||
+                err.message.includes("username")
+            ) {
+                setSignupError("Username already exists.")
+            } else if (err.message.includes("email")) {
+                setSignupError("Email already exists.")
+            } else {
+                setSignupError("Something went wrong.")
+            }
         }
     }
 
@@ -128,6 +144,11 @@ const Signup = ({setLoggedIn}) => {
                             Must be 8-20 characters long.
                         </Form.Text>
                     </Form.Group>
+                    {signupError && (
+                        <div className="text-danger mt-2">
+                            {signupError}
+                        </div>
+                    )}
                     <Button type='submit' className='w-100'>Submit</Button>
                 </Form>
             </Card>

@@ -140,16 +140,18 @@ const Recipe = () => {
                         <Button
                             variant="outline-dark"
                             disabled={!Auth.loggedIn()}
+                            style={{margin: "4px"}}
                             className="rounded-pill"
                             onClick={() => setShowAddToListModal(true)}
                         >
-                            <FaShoppingCart className="me-2"/>
-                            Grocery List
+                            <FaShoppingCart className="me-2" style={{marginRight: "6px"}}/>
+                            Add to Grocery List
                         </Button>
                         <Button
                             variant="outline-danger"
                             disabled={!Auth.loggedIn()}
                             className="rounded-pill"
+                            style={{margin: "4px"}}
                             onClick={() => {
                                 handleSaveRecipe();
                             }}
