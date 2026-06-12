@@ -77,7 +77,7 @@ const resolvers = {
             }
         },
         allRecipes: async () => {
-            return Recipe.find().populate("author");
+            return Recipe.find().sort({ createdAt: -1 }).populate("author");
         },
         // might need to add .populate("user") to the data if needed
         myGroceryLists: async (parent, args, context) => {
@@ -214,6 +214,57 @@ const resolvers = {
                 return newGroceryList;
             }
             throw new AuthenticationError("Login first")
+        },
+        updateGroceryItem: async (parent, { listId, itemId, updatedItem }, context) => {
+            if (context.user) {
+                const updatedList = await GroceryList.findOneAndUpdate(
+                    {
+                        _id: listId,
+                        "items._id": itemId,
+                        user: context.user._id
+                    },
+                    {
+                        $set: {
+                            "items.$.value": updatedItem.trim()
+                        }
+                    },
+                    {
+                        new: true
+                    }
+                );
+
+                if (!updatedList) {
+                    throw new Error("Grocery list not found");
+                }
+
+                return updatedList;
+            }
+            throw new AuthenticationError("Login first!");
+        },
+        updateGroceryTitle: async (parent, { listId, newTitle }, context) => {
+            if (context.user) {
+                const updatedList = await GroceryList.findOneAndUpdate(
+                    {
+                        _id: listId,
+                        user: context.user._id
+                    },
+                    {
+                        $set: {
+                            title: newTitle.trim()
+                        }
+                    },
+                    {
+                        new: true
+                    }
+                );
+
+                if (!updatedList) {
+                    throw new Error("Grocery list not found");
+                }
+
+                return updatedList;
+            }
+            throw new AuthenticationError("Login first!");
         },
         saveRecipe: async (parent, { savedRecipeData }, context) => {
             if (context.user) {

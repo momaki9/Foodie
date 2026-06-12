@@ -146,7 +146,7 @@ const CommunityRecipe = () => {
                             onClick={() => setShowAddToListModal(true)}
                         >
                             <FaShoppingCart className="me-2" style={{marginRight: "6px"}}/>
-                            Grocery List
+                            Add to Grocery List
                         </Button>
                         <Button
                             variant="outline-danger"

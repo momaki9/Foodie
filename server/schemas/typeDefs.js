@@ -146,6 +146,8 @@ const typeDefs = gql`
         createGroceryList(listData: GroceryInput!): GroceryList
         toggleGroceryItem(listId: ID!, itemId: ID!): GroceryList
         addGroceryItem(listId: ID!, item: GroceryItemInput!): GroceryList
+        updateGroceryItem(listId: ID!, itemId: ID!, updatedItem: String!): GroceryList
+        updateGroceryTitle(listId: ID!, newTitle: String!): GroceryList
         deleteGroceryItem(listId: ID!, itemId: ID!): GroceryList
         setActiveGroceryList(listId: ID!): GroceryList
         deleteGroceryList(listId: ID!): GroceryList
