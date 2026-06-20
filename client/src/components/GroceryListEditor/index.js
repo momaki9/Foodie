@@ -14,6 +14,7 @@ const GroceryListEditor = ({
     onToggleItem,
     onAddItem,
     onDeleteItem,
+    onUpdateItem,
     editable = true
 }) => {
     const [newItem, setNewItem] = useState("");
@@ -37,6 +38,19 @@ const GroceryListEditor = ({
         }
     };
 
+    const handleItemChange = (itemId, value) => {
+        setItems(prev =>
+            prev.map(item =>
+                item._id === itemId
+                    ? {
+                        ...item,
+                        value
+                    }
+                    : item
+            )
+        );
+    };
+
     return (
         <Card className="shadow-sm border-0 rounded-lg">
             <Card.Body className="p-0">
@@ -53,26 +67,40 @@ const GroceryListEditor = ({
                                 checked={item.checked}
                                 onChange={() => onToggleItem(item._id)}
                                 label={
-                                    <span
+                                    // <span
+                                    //     className={`ml-2 ${item.checked ? 'text-muted' : ''}`}
+                                    //     style={{
+                                    //         textDecoration: item.checked
+                                    //             ? 'line-through'
+                                    //             : 'none',
+                                    //         fontSize: '1.15rem'
+                                    //     }}
+                                    // >
+                                    //     {item.value}
+                                    // </span>
+                                    <Form.Control
+                                        plaintext={!editable}
+                                        value={item.value}
+                                        onChange={(e) => handleItemChange(item._id, e.target.value)}
+                                        onBlur={() => onUpdateItem?.(item._id, item.value)}
                                         className={`ml-2 ${item.checked ? 'text-muted' : ''}`}
+                                        id="grocery-item"
                                         style={{
                                             textDecoration: item.checked
                                                 ? 'line-through'
                                                 : 'none',
                                             fontSize: '1.15rem'
                                         }}
-                                    >
-                                        {item.value}
-                                    </span>
+                                    />
                                 }
                             />
-                        <Button
-                            variant="link"
-                            className="p-0 text-danger"
-                            onClick={() => onDeleteItem(item._id)}
-                        >
-                            <FaTrash />
-                        </Button>
+                            <Button
+                                variant="link"
+                                className="p-0 text-danger"
+                                onClick={() => onDeleteItem(item._id)}
+                            >
+                                <FaTrash />
+                            </Button>
                         </ListGroup.Item>
                     ))}
 

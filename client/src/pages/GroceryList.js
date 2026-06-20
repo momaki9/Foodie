@@ -7,7 +7,9 @@ import {
     ADD_GROCERY_ITEM,
     SET_ACTIVE_GROCERY_LIST,
     DELETE_GROCERY_LIST,
-    DELETE_GROCERY_ITEM
+    DELETE_GROCERY_ITEM,
+    UPDATE_GROCERY_ITEM,
+    UPDATE_GROCERY_TITLE,
 } from "../utils/mutations";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -40,6 +42,8 @@ const GroceryList = () => {
     const [setActiveGroceryList] = useMutation(SET_ACTIVE_GROCERY_LIST);
     const [deleteGroceryList] = useMutation(DELETE_GROCERY_LIST);
     const [deleteGroceryItem] = useMutation(DELETE_GROCERY_ITEM);
+    const [updateGroceryTitle] = useMutation(UPDATE_GROCERY_TITLE);
+    const [updateGroceryItem] = useMutation(UPDATE_GROCERY_ITEM);
 
     const groceryLists = data?.myGroceryLists;
     const groceryList = groceryListData?.getGroceryList;
@@ -112,6 +116,21 @@ const GroceryList = () => {
         }
     };
 
+    const handleUpdateItem = async (itemId, updatedValue) => {
+        try {
+            await updateGroceryItem({
+                variables: {
+                    listId: groceryList._id,
+                    itemId,
+                    updatedItem: updatedValue
+                }
+            })
+
+        } catch (err) {
+            console.error(err)
+        }
+    };
+
     const handleDeleteItem = async (itemId) => {
         const previousItems = [...items];
         const updatedItems = items.filter(item => item._id !== itemId);
@@ -152,6 +171,23 @@ const GroceryList = () => {
         }
     };
 
+    const handleTitleBlur = async () => {
+        if (!groceryList) return;
+        if (title === groceryList.title) return;
+
+        try {
+            await updateGroceryTitle({
+                variables: {
+                    listId: groceryList._id,
+                    newTitle: title
+                }
+            });
+
+        } catch (err) {
+            console.error(err)
+        }
+    };
+
     if (loading || groceryListLoading) {
         return <p>Loading...</p>
     };
@@ -166,7 +202,6 @@ const GroceryList = () => {
                 show={showSidebar}
                 handleClose={() => setShowSidebar(false)}
                 groceryLists={groceryLists}
-                // should the id be stored in a state variable??
                 activeListId={groceryList?._id}
                 onDeleteList={handleDeleteList}
 
@@ -176,12 +211,14 @@ const GroceryList = () => {
                     title={title}
                     setTitle={setTitle}
                     onOpenSidebar={() => setShowSidebar(true)}
+                    onTitleBlur={handleTitleBlur}
                 />
                 <GroceryListEditor
                     items={items}
                     setItems={setItems}
                     onToggleItem={handleToggleItem}
                     onAddItem={handleAddItem}
+                    onUpdateItem={handleUpdateItem}
                     onDeleteItem={handleDeleteItem}
                 />
             </Container>

@@ -12,6 +12,7 @@ import "../../index.css";
 const GroceryListHeader = ({
     title,
     setTitle,
+    onTitleBlur,
     onOpenSidebar,
     isNew
 }) => {
@@ -33,6 +34,7 @@ const GroceryListHeader = ({
                 <Form.Control
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    onBlur={onTitleBlur}
                     placeholder="Grocery List"
                     className="text-center font-weight-bold"
                     style={{

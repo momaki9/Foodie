@@ -176,3 +176,29 @@ export const DELETE_GROCERY_ITEM =gql`
         }
     }
 `;
+
+export const UPDATE_GROCERY_ITEM = gql`
+    mutation UpdateGroceryItem($listId: ID!, $itemId: ID!, $updatedItem: String!) {
+        updateGroceryItem(listId: $listId, itemId: $itemId, updatedItem: $updatedItem) {
+            _id
+            items {
+                _id
+                value
+                checked
+            }
+        }
+    }
+`;
+
+export const UPDATE_GROCERY_TITLE = gql`
+    mutation UpdateGroceryTitle($listId: ID!, $newTitle: String!) {
+        updateGroceryTitle(listId: $listId, newTitle: $newTitle) {
+            _id
+            items {
+                _id
+                value
+                checked
+            }
+        }
+    }
+`;
