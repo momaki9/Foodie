@@ -16,6 +16,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import GroceryListHeader from "../components/GroceryListHeader";
 import GroceryListEditor from "../components/GroceryListEditor";
 import GroceryListsSidebar from "../components/GroceryListsSidebar";
+import { sortGroceryItems } from "../utils/helpers";
 
 const GroceryList = () => {
     const [showSidebar, setShowSidebar] = useState(false);
@@ -50,7 +51,8 @@ const GroceryList = () => {
 
     useEffect(() => {
         if (groceryList) {
-            setItems([...groceryList.items]);
+            const sortedItems = sortGroceryItems([...groceryList.items])
+            setItems(sortedItems);
             setTitle(groceryList.title);
         }
     }, [groceryList]);
@@ -79,7 +81,7 @@ const GroceryList = () => {
             }
         });
 
-        setItems(updatedItems);
+        setItems(sortGroceryItems(updatedItems));
         // apollo cache mutation
         try {
             await toggleGroceryItem({

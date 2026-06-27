@@ -12,3 +12,9 @@ export function ingredientHelper(obj, source) {
     });
     return output;
 };
+
+export function sortGroceryItems(items) {
+    return [...items].sort(
+        (a, b) => Number(a.checked) - Number(b.checked)
+    );
+};
