@@ -27,7 +27,7 @@ const resolvers = {
                 throw new Error("Failed to find the recipe.")
             }
         },
-        getARecipeById: async (parent, { id}) => {
+        getARecipeById: async (parent, { id }) => {
             return await Recipe.findOne({
                 _id: id
             }).populate("author");
@@ -72,7 +72,8 @@ const resolvers = {
         myGroceryLists: async (parent, args, context) => {
             if (context.user) {
                 const myGroceryLists = await GroceryList.find({
-                    user: context.user._id
+                    // feature change
+                    owners: context.user._id
                 }).sort({ createdAt: -1 });
                 return myGroceryLists;
             }
@@ -81,7 +82,8 @@ const resolvers = {
         myActiveGroceryList: async (parent, args, context) => {
             if (context.user) {
                 return GroceryList.findOne({
-                    user: context.user._id,
+                    // feature change
+                    owners: context.user._id,
                     status: "active"
                 })
             }
@@ -91,7 +93,8 @@ const resolvers = {
             if (context.user) {
                 return GroceryList.findOne({
                     _id: id,
-                    user: context.user._id
+                    // feature change
+                    owners: context.user._id
                 });
             }
             throw new AuthenticationError("Log-in first!")
@@ -187,7 +190,7 @@ const resolvers = {
             if (context.user) {
                 await GroceryList.updateMany(
                     {
-                        user: context.user._id,
+                        owners: context.user._id,
                         status: "active"
                     },
                     {
@@ -198,7 +201,7 @@ const resolvers = {
                 const newGroceryList = await GroceryList.create({
                     ...listData,
                     status: "active",
-                    user: context.user._id
+                    owners: context.user._id
                 });
                 return newGroceryList;
             }
@@ -222,7 +225,8 @@ const resolvers = {
             if (context.user) {
                 const groceryList = await GroceryList.findOne({
                     _id: listId,
-                    user: context.user._id
+                    // feature change
+                    owners: context.user._id
                 });
 
                 if (!groceryList) {
@@ -246,7 +250,8 @@ const resolvers = {
             if (context.user) {
                 const groceryList = await GroceryList.findOne({
                     _id: listId,
-                    user: context.user._id
+                    // feature change
+                    owners: context.user._id
                 });
 
                 if (!groceryList) {
@@ -260,16 +265,17 @@ const resolvers = {
             }
             throw new AuthenticationError("Login first!")
         },
-        deleteGroceryItem: async (parent, {listId, itemId}, context) => {
+        deleteGroceryItem: async (parent, { listId, itemId }, context) => {
             if (context.user) {
                 return await GroceryList.findOneAndUpdate(
                     {
                         _id: listId,
-                        user: context.user._id
+                        // feature change
+                        owners: context.user._id
                     },
                     {
                         $pull: {
-                            items: { _id: itemId}
+                            items: { _id: itemId }
                         }
                     },
                     {
@@ -294,7 +300,8 @@ const resolvers = {
                 const groceryList = await GroceryList.findOneAndUpdate(
                     {
                         _id: listId,
-                        user: context.user._id
+                        // feature change
+                        owners: context.user._id
                     },
                     {
                         status: "active"
@@ -315,7 +322,8 @@ const resolvers = {
                 // finds the grocery list with the given id (listId) of user
                 const groceryList = await GroceryList.findOne({
                     _id: listId,
-                    user: context.user._id
+                    // feature change
+                    owners: context.user._id
                 });
 
                 if (!groceryList) {
@@ -326,13 +334,15 @@ const resolvers = {
                 // delete the same list
                 await GroceryList.findOneAndDelete({
                     _id: listId,
-                    user: context.user._id
+                    // feature change
+                    owners: context.user._id
                 });
                 // if the deleted list was the active list:
                 if (wasActive) {
                     // find the most recent list
                     const nextActiveList = await GroceryList.findOne({
-                        user: context.user._id
+                        // feature change
+                        owners: context.user._id
                     }).sort({ createdAt: -1 });
                     // if there is a recent list, make it the active list
                     if (nextActiveList) {
@@ -348,7 +358,8 @@ const resolvers = {
             if (context.user) {
                 const groceryList = await GroceryList.findOne({
                     _id: listId,
-                    user: context.user._id
+                    // feature change
+                    owners: context.user._id
                 });
 
                 if (!groceryList) {
@@ -387,7 +398,29 @@ const resolvers = {
                     }
                 );
             }
-            throw new AuthenticationError("You must be logged in first!")
+            throw new AuthenticationError("You must be logged in first!");
+        },
+        shareGroceryList: async (parent, { listId, username }, context) => {
+            if (context.user) {
+                const user = await User.findOne({
+                    username
+                });
+
+                if (!user) {
+                    throw new Error("Cannot find user with given username")
+                }
+
+                const updatedGroceryList = await GroceryList.findByIdAndUpdate(
+                    listId,
+                    {
+                        $addToSet: {
+                            owners: user._id
+                        }
+                    }
+                )
+                return updatedGroceryList;
+            }
+            throw new AuthenticationError("You must be logged in first!");
         }
     }
 }

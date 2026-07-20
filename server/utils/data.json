@@ -1,0 +1,101 @@
+[
+    {
+        "title": "Hawaiian Mac Salad",
+        "summary": "L&L Hawaiian style macaroni salad. Simple comfort food, and pairs well with Chicken Katsu.",
+        "instructions": "<ol> <li><strong>Boil the macaroni: </strong> <p>Bring a large pot of water to a boil. Once boiling, generously salt the water. Add in the pasta and cook to al dente, according to package directions. Drain the pasta, rinsing with cold water, and set aside</p></li> <li><strong>Assemble the macaroni salad:</strong><p>Add cooled elbows to a large mixing bowl with the rest of the ingredients. Season with kosher salt and ground black pepper, as desired. Stir to combine, seasoning with additional spices and/or salt as needed.</p></li> <li><strong>Serve immediately or refrigerate then serve.</strong></li></ol>",
+        "ingredients": [
+            {
+                "name": "Elbow Macaroni",
+                "amount": 8,
+                "unit": "ounces"
+            },
+            {
+                "name": "Best Foods Mayonnaise",
+                "amount": 1,
+                "unit": "cup"
+            },
+            {
+                "name": "Granulated Sugar",
+                "amount": 1,
+                "unit": "teaspoon"
+            },
+            {
+                "name": "Garlic Powder",
+                "amount": 0.5,
+                "unit": "teaspoon"
+            },
+            {
+                "name": "Kosher Salt",
+                "amount": 0.5,
+                "unit": "teaspoon"
+            },
+            {
+                "name": "Grated Carrot (optional)",
+                "amount": 0.25,
+                "unit": "Cup"
+            },
+            {
+                "name": "Paprika (optional)",
+                "amount": 0.5,
+                "unit": "teaspoon"
+            },
+            {
+                "name": "Cayenne Pepper (optional)",
+                "amount": 0.25,
+                "unit": "teaspoon"
+            },
+            {
+                "name": "Black Pepper (optional)",
+                "amount": 0.5,
+                "unit": "teaspoon"
+            },
+            {
+                "name": "Vinegar (optional)",
+                "amount": 0.25,
+                "unit": "teaspoon"
+            }
+        ],
+        "image": "https://bigoven-res.cloudinary.com/image/upload/f_auto,q_auto/h_320,w_320,c_fill/authentic-hawaiian-macaroni-sa-e43c96.jpg",
+        "link": "https://www.youtube.com/watch?v=6EUk3oyOdKo",
+        "rating": 0,
+        "author": {
+            "$oid": "6a224a47b83d775e49c3d8c9"
+        }
+    },
+    {
+        "title": "",
+        "summary": "",
+        "instructions": "",
+        "ingredients": [
+            {
+                "name": "Boneless skinless chicken thighs ",
+                "amount": 4,
+                "unit": "pound (lb)",
+                "_id": {
+                    "$oid": "6a224bedb83d775e49c3d8ce"
+                }
+            },
+            {
+                "name": "Canned chipotle sauce",
+                "amount": 1,
+                "unit": "Cup",
+                "_id": {
+                    "$oid": "6a224bedb83d775e49c3d8cf"
+                }
+            }
+        ],
+        "image": "",
+        "link": "",
+        "rating": 0,
+        "author": {
+            "$oid": "6a224a47b83d775e49c3d8c9"
+        },
+        "createdAt": {
+            "$date": "2026-06-05T04:09:17.204Z"
+        },
+        "updatedAt": {
+            "$date": "2026-06-05T04:09:17.204Z"
+        },
+        "__v": 0
+    }
+]
