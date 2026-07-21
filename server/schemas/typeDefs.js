@@ -35,7 +35,7 @@ const typeDefs = gql`
         items: [GroceryItem]!
         status: String!
         createdAt: String
-        user: User
+        owners: [User]
     }
 
     type SavedRecipe {
@@ -152,6 +152,7 @@ const typeDefs = gql`
         setActiveGroceryList(listId: ID!): GroceryList
         deleteGroceryList(listId: ID!): GroceryList
         addItemsToGroceryList(listId: ID!, items: [GroceryItemInput]!): GroceryList
+        shareGroceryList(listId: ID!, username: String!): GroceryList
     }
 `;
 

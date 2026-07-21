@@ -7,6 +7,7 @@ import {
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Plus } from 'react-bootstrap-icons';
+import { FaShare } from "react-icons/fa"
 import "../../index.css";
 
 const GroceryListHeader = ({
@@ -14,7 +15,9 @@ const GroceryListHeader = ({
     setTitle,
     onTitleBlur,
     onOpenSidebar,
-    isNew
+    isNew,
+    isShared,
+    shareList
 }) => {
     return (
         <Row className="align-items-center mb-4">
@@ -47,7 +50,16 @@ const GroceryListHeader = ({
             </Col>
 
             {!isNew && (
-                <Col xs='auto'>
+                <Col xs='auto' className="d-flex align-items-center gap-2">
+                    {!isShared && (
+                        <Button
+                            variant="light"
+                            style={{marginRight: "1.8rem"}}
+                            onClick={shareList}
+                        >
+                            <FaShare />
+                        </Button>
+                    )}
                     <Button
                         as={Link}
                         to='/groceryList/new'

@@ -170,6 +170,9 @@ export const GET_GROCERY_LIST = gql`
         value
         checked
       }
+      owners {
+        _id
+      }
     }
   }
 `;

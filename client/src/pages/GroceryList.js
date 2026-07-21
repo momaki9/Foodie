@@ -10,16 +10,20 @@ import {
     DELETE_GROCERY_ITEM,
     UPDATE_GROCERY_ITEM,
     UPDATE_GROCERY_TITLE,
+    SHARE_GROCERY_LIST
 } from "../utils/mutations";
 import { useParams, useNavigate } from "react-router-dom";
 
 import GroceryListHeader from "../components/GroceryListHeader";
+import ShareListModal from "../components/ShareListModal";
 import GroceryListEditor from "../components/GroceryListEditor";
 import GroceryListsSidebar from "../components/GroceryListsSidebar";
 import { sortGroceryItems } from "../utils/helpers";
 
+
 const GroceryList = () => {
     const [showSidebar, setShowSidebar] = useState(false);
+    const [showShareModal, setShowShareModal] = useState(false);
     const [items, setItems] = useState([]);
     const [title, setTitle] = useState("");
 
@@ -45,12 +49,15 @@ const GroceryList = () => {
     const [deleteGroceryItem] = useMutation(DELETE_GROCERY_ITEM);
     const [updateGroceryTitle] = useMutation(UPDATE_GROCERY_TITLE);
     const [updateGroceryItem] = useMutation(UPDATE_GROCERY_ITEM);
+    const [shareGroceryList] = useMutation(SHARE_GROCERY_LIST);
 
     const groceryLists = data?.myGroceryLists;
     const groceryList = groceryListData?.getGroceryList;
+    const isShared = (groceryList?.owners?.length ?? 0) > 1;
 
     useEffect(() => {
         if (groceryList) {
+            console.log(groceryList)
             const sortedItems = sortGroceryItems([...groceryList.items])
             setItems(sortedItems);
             setTitle(groceryList.title);
@@ -195,8 +202,34 @@ const GroceryList = () => {
     };
 
     if (error || groceryListError) {
+        console.error(error, groceryListError)
         return <p>Something went wrong...</p>
     };
+
+    const openShareModal = () => {
+        setShowShareModal(true);
+    };
+
+    const handleShareList = async (username) => {
+        // open modal
+        // user types username to share list to
+        // run the mutation
+        // close the modal
+        try {
+            const data = await shareGroceryList({
+                variables: {
+                    listId: groceryList._id,
+                    username
+                }
+            });
+
+            setShowShareModal(false);
+
+        } catch (err) {
+            console.error(err);
+        }
+
+    }
 
     return (
         <>
@@ -208,12 +241,19 @@ const GroceryList = () => {
                 onDeleteList={handleDeleteList}
 
             />
+            <ShareListModal
+                show={showShareModal}
+                onShare={handleShareList}
+                handleClose={() => setShowShareModal(false)}
+            />
             <Container fluid="md" className="">
                 <GroceryListHeader
                     title={title}
                     setTitle={setTitle}
                     onOpenSidebar={() => setShowSidebar(true)}
                     onTitleBlur={handleTitleBlur}
+                    isShared={isShared}
+                    shareList={openShareModal}
                 />
                 <GroceryListEditor
                     items={items}
