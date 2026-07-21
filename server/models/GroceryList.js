@@ -27,7 +27,7 @@ const groceryListSchema = new Schema(
             type: Date,
             default: Date.now
         },
-        user:
+        owners:
             [
                 {
                     type: Schema.Types.ObjectId,

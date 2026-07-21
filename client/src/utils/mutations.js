@@ -208,6 +208,10 @@ export const SHARE_GROCERY_LIST = gql`
         shareGroceryList(listId: $listId, username: $username) {
             _id
             title
+            owners {
+                _id
+                username
+            }
         }
     }
 `;

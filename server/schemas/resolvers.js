@@ -103,7 +103,7 @@ const resolvers = {
                 return GroceryList.findOne({
                     _id: id,
                     owners: context.user._id
-                });
+                }).populate("owners");
             }
             throw new AuthenticationError("Log-in first!")
         }
@@ -198,7 +198,7 @@ const resolvers = {
             if (context.user) {
                 await GroceryList.updateMany(
                     {
-                        user: context.user._id,
+                        owners: context.user._id,
                         status: "active"
                     },
                     {
@@ -209,7 +209,7 @@ const resolvers = {
                 const newGroceryList = await GroceryList.create({
                     ...listData,
                     status: "active",
-                    user: context.user._id
+                    owners: context.user._id
                 });
                 return newGroceryList;
             }
@@ -221,7 +221,7 @@ const resolvers = {
                     {
                         _id: listId,
                         "items._id": itemId,
-                        user: context.user._id
+                        owners: context.user._id
                     },
                     {
                         $set: {
@@ -246,7 +246,7 @@ const resolvers = {
                 const updatedList = await GroceryList.findOneAndUpdate(
                     {
                         _id: listId,
-                        user: context.user._id
+                        owners: context.user._id
                     },
                     {
                         $set: {
@@ -454,7 +454,7 @@ const resolvers = {
         shareGroceryList: async (parent, { listId, username}, context) => {
             if (context.user) {
 
-                const user = User.findOne({ username });
+                const user = await User.findOne({ username });
 
                 if (!user) {
                     throw new Error("Cannot find user with the provided username.")
@@ -466,8 +466,11 @@ const resolvers = {
                         $addToSet: {
                             owners: user._id
                         }
+                    },
+                    {
+                        new: true
                     }
-                );
+                ).populate("owners");
 
                 return updatedGroceryList;
             }
