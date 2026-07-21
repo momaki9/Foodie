@@ -18,6 +18,8 @@ import GroceryListEditor from "../components/GroceryListEditor";
 import GroceryListsSidebar from "../components/GroceryListsSidebar";
 import { sortGroceryItems } from "../utils/helpers";
 
+console.log("here")
+
 const GroceryList = () => {
     const [showSidebar, setShowSidebar] = useState(false);
     const [items, setItems] = useState([]);
@@ -48,6 +50,11 @@ const GroceryList = () => {
 
     const groceryLists = data?.myGroceryLists;
     const groceryList = groceryListData?.getGroceryList;
+
+    console.log(groceryList)
+
+    var isShared = false;
+
 
     useEffect(() => {
         if (groceryList) {
@@ -198,6 +205,10 @@ const GroceryList = () => {
         return <p>Something went wrong...</p>
     };
 
+    const handleShareList = async () => {
+        console.log("testing")
+    }
+
     return (
         <>
             <GroceryListsSidebar
@@ -214,6 +225,8 @@ const GroceryList = () => {
                     setTitle={setTitle}
                     onOpenSidebar={() => setShowSidebar(true)}
                     onTitleBlur={handleTitleBlur}
+                    isShared={isShared}
+                    shareList={handleShareList}
                 />
                 <GroceryListEditor
                     items={items}

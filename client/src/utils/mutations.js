@@ -202,3 +202,12 @@ export const UPDATE_GROCERY_TITLE = gql`
         }
     }
 `;
+
+export const SHARE_GROCERY_LIST = gql`
+    mutation ShareGroceryList($listId: ID!, $username: String!) {
+        shareGroceryList(listId: $listId, username: $username) {
+            _id
+            title
+        }
+    }
+`;
