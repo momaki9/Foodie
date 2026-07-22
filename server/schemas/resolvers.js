@@ -209,37 +209,37 @@ const resolvers = {
                 const newGroceryList = await GroceryList.create({
                     ...listData,
                     status: "active",
-                    owners: context.user._id
+                    owners: [context.user._id]
                 });
                 return newGroceryList;
             }
             throw new AuthenticationError("Login first")
         },
         updateGroceryItem: async (parent, { listId, itemId, updatedItem }, context) => {
-            if (context.user) {
-                const updatedList = await GroceryList.findOneAndUpdate(
-                    {
-                        _id: listId,
-                        "items._id": itemId,
-                        owners: context.user._id
-                    },
-                    {
-                        $set: {
-                            "items.$.value": updatedItem.trim()
-                        }
-                    },
-                    {
-                        new: true
-                    }
-                );
-
-                if (!updatedList) {
-                    throw new Error("Grocery list not found");
-                }
-
-                return updatedList;
+            if (!context.user) {
+                throw new AuthenticationError("Login first!");
             }
-            throw new AuthenticationError("Login first!");
+
+            const groceryList = await GroceryList.findOne({
+                _id: listId,
+                owners: context.user._id
+            });
+
+            if (!groceryList) {
+                throw new Error("List not found");
+            }
+
+            const item = groceryList.items.id(itemId);
+
+            if (!item) {
+                throw new Error("Item not found");
+            }
+
+            item.value = updatedItem.trim();
+
+            await groceryList.save();
+
+            return groceryList;
         },
         updateGroceryTitle: async (parent, { listId, newTitle }, context) => {
             if (context.user) {
@@ -254,7 +254,8 @@ const resolvers = {
                         }
                     },
                     {
-                        new: true
+                        new: true,
+                        runValidators: true
                     }
                 );
 
@@ -324,20 +325,22 @@ const resolvers = {
         },
         deleteGroceryItem: async (parent, { listId, itemId }, context) => {
             if (context.user) {
-                return await GroceryList.findOneAndUpdate(
-                    {
-                        _id: listId,
-                        owners: context.user._id
-                    },
-                    {
-                        $pull: {
-                            items: { _id: itemId }
-                        }
-                    },
-                    {
-                        new: true
-                    }
-                )
+                const groceryList = await GroceryList.findOne({
+                    _id: listId,
+                    owners: context.user._id
+                });
+                if (!groceryList) {
+                    throw new Error("Grocery List wasn't found!")
+                };
+
+                const item = groceryList.items.id(itemId);
+                if (!item) {
+                    throw new Error("Item wasn't found!")
+                };
+                item.deleteOne();
+
+                await groceryList.save();
+                return groceryList;
             }
             throw new AuthenticationError("Not logged in")
         },
@@ -362,7 +365,8 @@ const resolvers = {
                         status: "active"
                     },
                     {
-                        new: true
+                        new: true,
+                        runValidators: true
                     }
                 );
                 if (!groceryList) {
@@ -451,7 +455,7 @@ const resolvers = {
             }
             throw new AuthenticationError("You must be logged in first!")
         },
-        shareGroceryList: async (parent, { listId, username}, context) => {
+        shareGroceryList: async (parent, { listId, username }, context) => {
             if (context.user) {
 
                 const user = await User.findOne({ username });
@@ -460,8 +464,11 @@ const resolvers = {
                     throw new Error("Cannot find user with the provided username.")
                 };
 
-                const updatedGroceryList = await GroceryList.findByIdAndUpdate(
-                    listId,
+                const updatedGroceryList = await GroceryList.findOneAndUpdate(
+                    {
+                        _id: listId,
+                        owners: context.user._id
+                    },
                     {
                         $addToSet: {
                             owners: user._id
@@ -470,7 +477,11 @@ const resolvers = {
                     {
                         new: true
                     }
-                ).populate("owners");
+                ).populate("owners")
+
+                if (!updatedGroceryList) {
+                    throw new Error("Grocery list not found.");
+                }
 
                 return updatedGroceryList;
             }

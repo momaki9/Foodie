@@ -50,7 +50,7 @@ const GroceryListEditor = ({
             )
         );
     };
-
+    console.log(items)
     return (
         <Card className="shadow-sm border-0 rounded-lg">
             <Card.Body className="p-0">

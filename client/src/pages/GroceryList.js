@@ -126,6 +126,7 @@ const GroceryList = () => {
     };
 
     const handleUpdateItem = async (itemId, updatedValue) => {
+        console.log("updating", itemId, updatedValue)
         try {
             await updateGroceryItem({
                 variables: {
