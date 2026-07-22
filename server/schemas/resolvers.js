@@ -325,22 +325,20 @@ const resolvers = {
         },
         deleteGroceryItem: async (parent, { listId, itemId }, context) => {
             if (context.user) {
-                const groceryList = await GroceryList.findOne({
-                    _id: listId,
-                    owners: context.user._id
-                });
-                if (!groceryList) {
-                    throw new Error("Grocery List wasn't found!")
-                };
-
-                const item = groceryList.items.id(itemId);
-                if (!item) {
-                    throw new Error("Item wasn't found!")
-                };
-                item.deleteOne();
-
-                await groceryList.save();
-                return groceryList;
+                return await GroceryList.findOneAndUpdate(
+                    {
+                        _id: listId,
+                        owners: context.user._id
+                    },
+                    {
+                        $pull: {
+                            items: {_id: itemId}
+                        }
+                    },
+                    {
+                        new: true
+                    }
+                )
             }
             throw new AuthenticationError("Not logged in")
         },
