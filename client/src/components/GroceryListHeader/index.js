@@ -20,9 +20,9 @@ const GroceryListHeader = ({
     shareList
 }) => {
     return (
-        <Row className="align-items-center mb-4">
+        <Row className="mb-4">
             {!isNew && (
-                <Col xs="auto">
+                <Col xs={12} md="auto" className="mb-2 mb-md-0">
                     <Button
                         variant="light"
                         className="border"
@@ -33,7 +33,7 @@ const GroceryListHeader = ({
                     </Button>
                 </Col>
             )}
-            <Col>
+            <Col xs={12} md>
                 <Form.Control
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -50,11 +50,15 @@ const GroceryListHeader = ({
             </Col>
 
             {!isNew && (
-                <Col xs='auto' className="d-flex align-items-center gap-2">
+                <Col
+                    xs={12}
+                    md="auto"
+                    className="d-flex justify-content-center justify-content-md-end mt-2 mt-md-0"
+                >
                     {!isShared && (
                         <Button
                             variant="light"
-                            style={{marginRight: "1.8rem"}}
+                            style={{ marginRight: "1.8rem" }}
                             onClick={shareList}
                         >
                             <FaShare />
