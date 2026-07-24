@@ -43,18 +43,18 @@ const MyRecipeForm = ({
     return (
         <Form onSubmit={handleSubmit} className='form-el'>
             <Form.Row>
-                <Form.Group as={Col} className="mb-4">
+                <Form.Group as={Col} className="mb-4 font-weight-bold">
                     <Form.Label>Title</Form.Label>
                     <Form.Control name='title' type="text" placeholder="Give your recipe a title" value={recipeForm.title} onChange={handleChange} />
                 </Form.Group>
             </Form.Row>
 
-            <Form.Group className="mb-4">
+            <Form.Group className="mb-4 font-weight-bold">
                 <Form.Label>Summary</Form.Label>
                 <Form.Control name='summary' placeholder="Summary of your recipe..." value={recipeForm.summary} onChange={handleChange} as="textarea" rows={5} />
             </Form.Group>
             <Form.Group className='mb-4'>
-                <Form.Label>Instructions</Form.Label>
+                <Form.Label className="font-weight-bold">Instructions</Form.Label>
                 <ReactQuill
                     className="recipe-editor"
                     theme='snow'
@@ -64,11 +64,11 @@ const MyRecipeForm = ({
                     modules={modules}
                 />
             </Form.Group>
-            <h5 className="mt-4 mb-3">Ingredients</h5>
+            <h5 className="mt-4 mb-3">Add Your Ingredients:</h5>
             <Row className="font-weight-bold d-none d-md-flex mb-2">
                 <Col md={5}>Ingredient</Col>
                 <Col md={3}>Amount</Col>
-                <Col md={3}>Unit</Col>
+                <Col md={3}>Unit (if any)</Col>
                 <Col md={1}></Col>
             </Row>
             {ingredientForm.map((row) => (
@@ -79,13 +79,19 @@ const MyRecipeForm = ({
                     updateRow={updateRow}
                 />
             ))}
-            <Button type='button' onClick={addRow} variant='outline-primary'> + Add ingredient </Button>
-            <Form.Group className="mb-4">
+            <Button
+                type='button'
+                onClick={addRow}
+                variant='outline-primary'
+                className="mb-3 mt-3"
+            > + Add ingredient
+            </Button>
+            <Form.Group className="mb-4 font-weight-bold">
                 <Form.Label>Image</Form.Label>
                 <Form.Control name='image' placeholder="Provide a link to an image" value={recipeForm.image} onChange={handleChange} />
             </Form.Group>
 
-            <Form.Group className="mb-4">
+            <Form.Group className="mb-4 font-weight-bold">
                 <Form.Label>Link</Form.Label>
                 <Form.Control name='link' value={recipeForm.link} onChange={handleChange} placeholder='video or site link' />
             </Form.Group>

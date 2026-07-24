@@ -14,6 +14,7 @@ import "../index.css";
 
 const Recipe = () => {
     const { id } = useParams();
+    const [saved, setSaved] = useState(false);
     const [showAddToListModal, setShowAddToListModal] = useState(false);
     const { loading, data: recipeData, error } = useQuery(GET_RECIPE_BY_ID, {
         variables: { id: parseInt(id) }
@@ -31,7 +32,7 @@ const Recipe = () => {
         error: myListsError
     } = useQuery(MY_GROCERY_LISTS);
 
-    const [saved, setSaved] = useState(false);
+
 
     const navigate = useNavigate();
     const user = data?.me;
@@ -40,12 +41,12 @@ const Recipe = () => {
     useEffect(() => {
         if (!user || !Auth.loggedIn()) return;
 
-        const alreadySaved = user.savedRecipes.some(
+        const alreadySaved = user.savedRecipes?.some(
             (savedRecipe) => savedRecipe.sourceId === id
         );
 
         setSaved(alreadySaved);
-    }, [user, id])
+    }, [user, id]);
 
     if (loading) {
         return <h1>Loading...</h1>
@@ -70,7 +71,7 @@ const Recipe = () => {
         }
     };
 
-    const handleCreatingNewGroceryList = async ({title, items}) => {
+    const handleCreatingNewGroceryList = async ({ title, items }) => {
         const groceryItems = recipe.extendedIngredients.map(
             ingredient => ({
                 value: ingredient.name,
@@ -110,7 +111,10 @@ const Recipe = () => {
                         image: recipe.image,
                         source: "spoonacular"
                     }
-                }
+                },
+                refetchQueries: [{
+                    query: QUERY_ME
+                }]
             });
 
             setSaved(true);
@@ -140,23 +144,23 @@ const Recipe = () => {
                         <Button
                             variant="outline-dark"
                             disabled={!Auth.loggedIn()}
-                            style={{margin: "4px"}}
+                            style={{ margin: "4px" }}
                             className="rounded-pill"
                             onClick={() => setShowAddToListModal(true)}
                         >
-                            <FaShoppingCart className="me-2" style={{marginRight: "6px"}}/>
+                            <FaShoppingCart className="me-2" style={{ marginRight: "6px" }} />
                             Add to Grocery List
                         </Button>
                         <Button
                             variant="outline-danger"
                             disabled={!Auth.loggedIn()}
                             className="rounded-pill"
-                            style={{margin: "4px"}}
+                            style={{ margin: "4px" }}
                             onClick={() => {
                                 handleSaveRecipe();
                             }}
                         >
-                            <FaHeart className="me-2"/>
+                            <FaHeart className="me-2" />
                             {saved ? " Saved!" : " Save"}
                         </Button>
                     </div>

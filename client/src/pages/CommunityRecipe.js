@@ -44,11 +44,11 @@ const CommunityRecipe = () => {
         if (!me || !Auth.loggedIn()) return;
 
         const alreadySaved = me.savedRecipes?.some(
-            (savedRecipe) => savedRecipe._id === id
+            (savedRecipe) => savedRecipe.sourceId === id
         );
 
         setSaved(alreadySaved);
-    }, [me, id])
+    }, [me, id]);
 
     const handleSaveRecipe = async () => {
 
@@ -80,7 +80,7 @@ const CommunityRecipe = () => {
     const handleAddIngredientsToGroceryList = async (listId) => {
 
         const ingredientNames = ingredientHelper(recipeData.ingredients, "local");
-        
+
         try {
             await addItemsToGroceryList({
                 variables: {
@@ -142,17 +142,17 @@ const CommunityRecipe = () => {
                             variant="outline-dark"
                             disabled={!Auth.loggedIn()}
                             className="rounded-pill"
-                            style={{margin: "4px"}}
+                            style={{ margin: "4px" }}
                             onClick={() => setShowAddToListModal(true)}
                         >
-                            <FaShoppingCart className="me-2" style={{marginRight: "6px"}}/>
+                            <FaShoppingCart className="me-2" style={{ marginRight: "6px" }} />
                             Add to Grocery List
                         </Button>
                         <Button
                             variant="outline-danger"
                             disabled={!Auth.loggedIn()}
                             className="rounded-pill"
-                            style={{margin: "4px"}}
+                            style={{ margin: "4px" }}
                             onClick={() => {
                                 handleSaveRecipe();
                             }}
