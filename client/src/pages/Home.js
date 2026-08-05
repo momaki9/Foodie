@@ -167,33 +167,56 @@ const Home = () => {
               Your Dashboard
             </h2>
             <Row>
-              <Col md={4}>
+              <Col md={3}>
                 <Card className="border-0 shadow-sm">
                   <Card.Body>
-                    <h5>Saved Recipes</h5>
+                    <h5>
+                      <Link to={"/savedRecipes"} className='recipe-link'>
+                        Saved Recipes
+                      </Link>
+                    </h5>
                     <h2>
                       {user.savedRecipes?.length || 0}
                     </h2>
                   </Card.Body>
                 </Card>
               </Col>
-              <Col md={4}>
+              <Col md={3}>
                 <Card className="border-0 shadow-sm">
                   <Card.Body>
-                    <h5>Grocery Lists</h5>
+                    <h5>
+                      <Link to={"/groceryList"} className='recipe-link'>
+                        Grocery Lists
+                      </Link>
+                    </h5>
                     <h2>
                       {myGroceryLists.length || 0}
                     </h2>
                   </Card.Body>
                 </Card>
               </Col>
-              <Col md={4}>
+              <Col md={3}>
                 <Card className="border-0 shadow-sm">
                   <Card.Body>
-                    <h5>Your Recipes</h5>
+                    <h5>
+                      <Link to={"/myRecipes"} className='recipe-link'>
+                        Your Recipes
+                      </Link>
+                    </h5>
                     <h2>
                       {user.createdRecipes?.length || 0}
                     </h2>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={3}>
+                <Card className="border-1 shadow-sm">
+                  <Card.Body>
+                    <h3 className="text-dark text-center mb-2">
+                      <Link to={`/profile/${user._id}`} className='recipe-link'>
+                        View my Profile
+                      </Link>
+                    </h3>
                   </Card.Body>
                 </Card>
               </Col>

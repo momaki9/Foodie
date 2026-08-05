@@ -14,6 +14,11 @@ const resolvers = {
             }
             throw new AuthenticationError("You need to be logged in");
         },
+        user: async (parent, { id }) => {
+            return await User.findOne({
+                _id: id
+            }).populate("createdRecipes savedRecipes");
+        },
         users: async () => {
             return User.find();
         },

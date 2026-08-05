@@ -20,6 +20,26 @@ export const QUERY_ME = gql`
   }  
 `;
 
+export const USER = gql`
+  query User($id: ID!) {
+    user(id: $id) {
+      _id
+      username
+      createdRecipes {
+        _id
+        title
+        image
+      }
+      savedRecipes {
+        sourceId
+        title
+        image
+        source
+      }
+    }
+  }
+`;
+
 // returns all user-created recipes
 export const ALL_RECIPES = gql`
   query AllRecipes {

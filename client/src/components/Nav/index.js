@@ -140,6 +140,7 @@ function NavComp({ loggedIn, setLoggedIn }) {
                                 id="profile-dropdown"
                                 alignRight
                             >
+
                                 <NavDropdown.Item as={Link} to="/myRecipes" onClick={() => setExpanded(false)}>
                                     My Recipes
                                 </NavDropdown.Item>

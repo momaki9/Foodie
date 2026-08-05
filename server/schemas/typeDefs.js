@@ -10,6 +10,15 @@ const typeDefs = gql`
         savedRecipes: [SavedRecipe]
         createdRecipes: [Recipe]
     }
+
+    type Friendship {
+        _id: ID
+        userA: User!
+        userB: User!
+        requestedBy: User!
+        status: String
+        acceptedAt: String
+    }
     
     type Recipe {
         _id: ID
@@ -123,6 +132,7 @@ const typeDefs = gql`
 
     type Query {
         me: User
+        user(id: ID!): User
         users: [User]!
         getARecipeById(id: ID!): Recipe
         getMyRecipeById(id: ID!): Recipe

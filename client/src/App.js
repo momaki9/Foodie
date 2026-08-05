@@ -25,6 +25,7 @@ import MyRecipesPage from "./pages/MyRecipes";
 import MyRecipe from "./pages/MyRecipe";
 import EditRecipe from "./pages/EditRecipe";
 import CommunityRecipe from "./pages/CommunityRecipe";
+import Profile from "./pages/Profile";
 
 // React bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -117,6 +118,10 @@ function App() {
           <Route
             path="/communityRecipes/:id"
             element={<CommunityRecipe />}
+          />
+          <Route 
+            path="/profile/:id"
+            element={<Profile />}
           />
         </Routes>
       </Router>
