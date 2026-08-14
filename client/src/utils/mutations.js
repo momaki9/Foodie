@@ -215,3 +215,25 @@ export const SHARE_GROCERY_LIST = gql`
         }
     }
 `;
+
+export const SEND_FRIEND_REQUEST = gql`
+    mutation SendFriendRequest($recipientId: ID!) {
+        sendFriendRequest(recipientId: $recipientId) {
+            _id
+            userA {
+                _id
+                username
+            }
+            userB {
+            _id
+            username
+            }
+            requestedBy {
+                _id
+                username
+            }
+            status
+            acceptedAt
+        }
+    }
+`;

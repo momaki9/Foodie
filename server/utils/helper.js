@@ -35,6 +35,13 @@ const getFeaturedCategory = () => {
     ];
 };
 
+const getRecipientId = (friendship) => {
+    return friendship.requestedBy.toString() === friendship.userA.toString()
+        ? friendship.userB
+        : friendship.userA;
+};
+
 module.exports = {
-    getFeaturedCategory
+    getFeaturedCategory,
+    getRecipientId
 };

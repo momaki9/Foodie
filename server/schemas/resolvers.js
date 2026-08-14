@@ -1,6 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { User, Recipe, GroceryList } = require("../models");
-const { getFeaturedCategory } = require("../utils/helper")
+const { User, Recipe, GroceryList, Friendship } = require("../models");
+const { getFeaturedCategory, getRecipientId } = require("../utils/helper")
 const { signToken } = require("../utils/auth");
 const fetch = require("node-fetch");
 
@@ -111,6 +111,51 @@ const resolvers = {
                 }).populate("owners");
             }
             throw new AuthenticationError("Log-in first!")
+        },
+        myFriends: async (parent, args, context) => {
+            if (context.user) {
+                const friendList = await Friendship.find({
+                    status: "accepted",
+                    $or: [
+                        { userA: context.user._id },
+                        { userB: context.user._id }
+                    ]
+                });
+
+                return friendList;
+            }
+            throw new AuthenticationError("Login first!")
+        },
+        myPendingRequests: async (parent, args, context) => {
+            if (!context.user) {
+                throw new AuthenticationError("Login first")
+            }
+            return await Friendship.find({
+                status: "pending",
+                requestedBy: { $ne: context.user._id },
+                $or: [
+                    { userA: context.user._id },
+                    { userB: context.user._id }
+                ]
+            }).populate([
+                "userA",
+                "userB",
+                "requestedBy"
+            ]);
+        },
+        mySentRequests: async (parent, args, context) => {
+            if (!context.user) {
+                throw new AuthenticationError("Log-in first")
+            }
+            return await Friendship.find({
+                requestedBy: context.user._id,
+                status: "pending"
+            }).populate([
+                "userA",
+                "userB",
+                "requestedBy"
+            ]);
+
         }
     },
     Mutation: {
@@ -337,7 +382,7 @@ const resolvers = {
                     },
                     {
                         $pull: {
-                            items: {_id: itemId}
+                            items: { _id: itemId }
                         }
                     },
                     {
@@ -489,6 +534,116 @@ const resolvers = {
                 return updatedGroceryList;
             }
             throw new AuthenticationError("You have to be logged in!")
+        },
+        sendFriendRequest: async (parent, { recipientId }, context) => {
+            if (context.user) {
+                const requesterId = context.user._id;
+                if (requesterId.toString() === recipientId.toString()) {
+                    throw new Error("Cannot friend request yourself!")
+                }
+
+                const recipient = await User.findById(recipientId);
+                if (!recipient) {
+                    throw new Error("User not found with the given ID!")
+                }
+
+                const [userA, userB] =
+                    requesterId.toString() < recipientId.toString()
+                        ? [requesterId, recipientId]
+                        : [recipientId, requesterId];
+
+                const requestExist = await Friendship.findOne({
+                    userA,
+                    userB
+                });
+                if (requestExist) {
+                    switch (requestExist.status) {
+                        case "pending":
+                            throw new Error("already pending request");
+                        case "accepted":
+                            throw new Error("Already friends!");
+                        case "blocked":
+                            throw new Error("Cannot send a friend request to this user.");
+                        case "rejected":
+                            requestExist.status = "pending";
+                            requestExist.requestedBy = requesterId;
+                            requestExist.acceptedAt = null;
+                            await requestExist.save();
+                            return await requestExist.populate(["userA", "userB", "requestedBy"]);
+                    }
+                };
+                const newFriend = await Friendship.create({
+                    userA,
+                    userB,
+                    requestedBy: requesterId
+                });
+                return await newFriend.populate([
+                    "userA",
+                    "userB",
+                    "requestedBy"
+                ]);
+            }
+            throw new AuthenticationError("Login first!");
+        },
+        acceptFriendRequest: async (parent, { requestId }, context) => {
+            if (!context.user) {
+                throw new AuthenticationError("Login first!!");
+            }
+
+            const friendRequest = await Friendship.findById(requestId);
+
+            if (!friendRequest) {
+                throw new Error("Request not found!")
+            };
+
+            if (friendRequest.status !== "pending") {
+                throw new Error("Wrong status for friend request. Try again!")
+            };
+
+            const recipientId = getRecipientId(friendRequest);
+
+            if (!recipientId.toString() === context.user._id.toString()) {
+                throw new AuthenticationError("Not authorized for this action.")
+            }
+
+            friendRequest.status = "accepted";
+            friendRequest.acceptedAt = new Date();
+
+            await friendRequest.save();
+            return await friendRequest.populate([
+                "userA",
+                "userB",
+                "requestedBy"
+            ]);
+        },
+        rejectFriendRequest: async (parent, { requestId }, context) => {
+            if (!context.user) {
+                throw new AuthenticationError("Login first!!!");
+            }
+            const friendRequest = await Friendship.findById(requestId);
+
+            if (!friendRequest) {
+                throw new Error("Request not found.")
+            };
+
+            if (friendRequest.status !== "pending") {
+                throw new Error("The request isn't pending.")
+            };
+
+            const recipientId = getRecipientId(friendRequest);
+
+            if (!recipientId.toString() === context.user._id.toString()) {
+                throw new AuthenticationError("Not authorized!")
+            };
+
+            friendRequest.status = "rejected";
+            await friendRequest.save();
+
+            return await friendRequest.populate([
+                "userA",
+                "userB",
+                "requestedBy"
+            ])
         }
     }
 }

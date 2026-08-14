@@ -12,11 +12,11 @@ const typeDefs = gql`
     }
 
     type Friendship {
-        _id: ID
+        _id: ID!
         userA: User!
         userB: User!
         requestedBy: User!
-        status: String
+        status: String!
         acceptedAt: String
     }
     
@@ -143,6 +143,9 @@ const typeDefs = gql`
         myGroceryLists: [GroceryList]!
         getGroceryList(id: ID!): GroceryList
         myActiveGroceryList: GroceryList
+        myPendingRequests: [Friendship]
+        mySentRequests: [Friendship]
+        myFriends: [User]
     }
 
     type Mutation {
@@ -163,6 +166,9 @@ const typeDefs = gql`
         deleteGroceryList(listId: ID!): GroceryList
         addItemsToGroceryList(listId: ID!, items: [GroceryItemInput]!): GroceryList
         shareGroceryList(listId: ID!, username: String!): GroceryList
+        sendFriendRequest(recipientId: ID!): Friendship
+        acceptFriendRequest(requestId: ID!): Friendship
+        rejectFriendRequest(requestId: ID!): Friendship
     }
 `;
 

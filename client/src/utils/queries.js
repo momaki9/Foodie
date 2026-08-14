@@ -211,3 +211,45 @@ export const MY_ACTIVE_GROCERY_LIST = gql`
     }
   }
 `;
+
+export const MY_PENDING_REQUESTS = gql`
+  query MyPendingRequests {
+    myPendingRequests {
+      _id
+      userA {
+          _id
+          username
+      }
+      userB {
+      _id
+      username
+      }
+      requestedBy {
+          _id
+          username
+      }
+      status
+    }
+  }
+`;
+
+export const MY_SENT_REQUESTS = gql`
+  query MySentRequests {
+    mySentRequests {
+      _id
+      userA {
+          _id
+          username
+      }
+      userB {
+      _id
+      username
+      }
+      requestedBy {
+          _id
+          username
+      }
+      status
+    }
+  }
+`;
